@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/settings_general_category_title_text">
+
+        <ListPreference
+            android:title="@string/settings_startup_screen_title_text"
+            android:summary="@string/settings_startup_screen_text"
+            android:defaultValue="@string/settings_startup_screen_value"
+            android:entries="@array/listStartupScreensArray"
+            android:entryValues="@array/listStartupScreensValues"
+            android:key="@string/settings_key_startup_screen" />
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -13,6 +13,7 @@ proguard/
 .navigation/
 captures/
 *.iml
+.idea/
 .idea/workspace.xml
 .idea/libraries
 *.jks

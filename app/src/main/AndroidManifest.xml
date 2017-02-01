@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.marekhakala.mynomadlifeapp">
+
+    <!-- Permissions required by the REST adapter -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name="com.marekhakala.mynomadlifeapp.MyNomadLifeApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.NomadList">
+
+        <activity
+            android:name="com.marekhakala.mynomadlifeapp.UI.Activity.SplashActivity"
+            android:theme="@style/Theme.NomadList.Splash">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity"
+            android:label="@string/section_main_list_title"
+            android:theme="@style/Theme.NomadList">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchResultsActivity" />
+        </activity>
+
+        <activity
+            android:name="com.marekhakala.mynomadlifeapp.UI.Activity.FilterActivity"
+            android:label="@string/section_filter_title"
+            android:parentActivityName="com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity"
+            android:theme="@style/Theme.NomadList.Filter">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity" />
+        </activity>
+
+        <activity
+            android:name="com.marekhakala.mynomadlifeapp.UI.Activity.SearchActivity"
+            android:parentActivityName="com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity"
+            android:theme="@style/Theme.NomadList.Search">
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity" />
+        </activity>
+
+        <activity
+            android:name="com.marekhakala.mynomadlifeapp.UI.Activity.DetailViewActivity"
+            android:parentActivityName="com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity"
+            android:theme="@style/Theme.NomadList.Detail">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity" />
+        </activity>
+
+        <activity
+            android:name="com.marekhakala.mynomadlifeapp.UI.Activity.OfflineDetailViewActivity"
+            android:parentActivityName="com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity"
+            android:theme="@style/Theme.NomadList.Detail">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity" />
+        </activity>
+
+        <activity
+            android:name="com.marekhakala.mynomadlifeapp.UI.Activity.AboutActivity"
+            android:parentActivityName="com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity"
+            android:theme="@style/Theme.NomadList.About">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity" />
+        </activity>
+
+        <activity
+            android:name="com.marekhakala.mynomadlifeapp.UI.Activity.SettingsActivity"
+            android:parentActivityName="com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity"
+            android:theme="@style/Theme.NomadList.Settings">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity" />
+        </activity>
+    </application>
+</manifest>

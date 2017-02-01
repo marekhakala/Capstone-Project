@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MyNomadLife</string>
+
+    <!-- Section titles -->
+    <string name="section_main_list_title">Home</string>
+    <string name="section_favourites_list_title">Favourites</string>
+    <string name="section_offline_mode_list_title">Offline mode</string>
+    <string name="section_filter_title">Filter</string>
+    <string name="section_search_title">Search</string>
+    <string name="section_settings_title">Settings</string>
+    <string name="section_about_title">About</string>
+
+    <!-- Settings: General -->
+    <string name="settings_general_category_title_text">General</string>
+
+    <string name="settings_startup_screen_title_text">Startup screen</string>
+    <string name="settings_startup_screen_value">home</string>
+
+    <string name="settings_startup_screen_home_text">Home</string>
+    <string name="settings_startup_screen_favourites_text">Favourites</string>
+    <string name="settings_startup_screen_offline_mode_text">Offline mode</string>
+
+    <string name="settings_startup_screen_home_value">home</string>
+    <string name="settings_startup_screen_favourites_value">favourites</string>
+    <string name="settings_startup_screen_offline_mode_value">offline</string>
+
+    <string name="settings_startup_screen_text">Select your startup screen: Home, Favourites or Offline mode.</string>
+
+    <!-- Settings: Keys -->
+    <string name="settings_key_startup_screen">startup_screen</string>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="listStartupScreensArray">
+        <item>@string/settings_startup_screen_home_text</item>
+        <item>@string/settings_startup_screen_favourites_text</item>
+        <item>@string/settings_startup_screen_offline_mode_text</item>
+    </string-array>
+
+    <string-array name="listStartupScreensValues">
+        <item>@string/settings_startup_screen_home_value</item>
+        <item>@string/settings_startup_screen_favourites_value</item>
+        <item>@string/settings_startup_screen_offline_mode_value</item>
+    </string-array>
+</resources>

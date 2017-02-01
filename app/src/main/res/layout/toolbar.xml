@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbar"
+    app:popupTheme="@style/ActionBar.PopupThemeOverlay"
+    app:titleTextAppearance="@style/ActionBar.TitleText"
+    style="@style/Toolbar" />
