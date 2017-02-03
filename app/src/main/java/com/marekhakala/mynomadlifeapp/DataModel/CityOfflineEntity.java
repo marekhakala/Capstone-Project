@@ -1,12 +1,13 @@
 package com.marekhakala.mynomadlifeapp.DataModel;
 
+import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CityEntity implements Parcelable {
+public class CityOfflineEntity implements Parcelable {
 
     @Expose
     private String slug;
@@ -66,9 +67,19 @@ public class CityEntity implements Parcelable {
     @SerializedName("cost_of_living")
     private CityCostOfLivingEntity costOfLiving;
 
+    private Bitmap bitmapImage;
+
     private boolean favourite;
 
     private boolean offline;
+
+    public Bitmap getBitmapImage() {
+        return bitmapImage;
+    }
+
+    public void setBitmapImage(Bitmap bitmapImage) {
+        this.bitmapImage = bitmapImage;
+    }
 
     public String getSlug() {
         return slug;
@@ -241,10 +252,10 @@ public class CityEntity implements Parcelable {
         dest.writeByte(this.offline ? (byte) 1 : (byte) 0);
     }
 
-    public CityEntity() {
+    public CityOfflineEntity() {
     }
 
-    protected CityEntity(Parcel in) {
+    protected CityOfflineEntity(Parcel in) {
         this.slug = in.readString();
         this.region = in.readString();
         this.country = in.readString();
@@ -265,40 +276,15 @@ public class CityEntity implements Parcelable {
         this.offline = in.readByte() != 0;
     }
 
-    public CityOfflineEntity offlineCopy() {
-        CityOfflineEntity entity = new CityOfflineEntity();
-
-        entity.setSlug(getSlug());
-        entity.setRegion(getRegion());
-        entity.setCountry(getCountry());
-        entity.setTemperatureC(getTemperatureC());
-        entity.setTemperatureF(getTemperatureF());
-        entity.setHumidity(getHumidity());
-        entity.setRank(getRank());
-        entity.setCostPerMonth(getCostPerMonth());
-        entity.setInternetSpeed(getInternetSpeed());
-        entity.setPopulation(getPopulation());
-        entity.setGenderRatio(getGenderRatio());
-        entity.setReligious(getReligious());
-        entity.setCityCurrency(getCityCurrency());
-        entity.setCityCurrencyRate(getCityCurrencyRate());
-        entity.setScores(getScores());
-        entity.setCostOfLiving(getCostOfLiving());
-        entity.setFavourite(isFavourite());
-        entity.setOffline(isOffline());
-
-        return entity;
-    }
-
-    public static final Creator<CityEntity> CREATOR = new Creator<CityEntity>() {
+    public static final Creator<CityOfflineEntity> CREATOR = new Creator<CityOfflineEntity>() {
         @Override
-        public CityEntity createFromParcel(Parcel source) {
-            return new CityEntity(source);
+        public CityOfflineEntity createFromParcel(Parcel source) {
+            return new CityOfflineEntity(source);
         }
 
         @Override
-        public CityEntity[] newArray(int size) {
-            return new CityEntity[size];
+        public CityOfflineEntity[] newArray(int size) {
+            return new CityOfflineEntity[size];
         }
     };
 }
