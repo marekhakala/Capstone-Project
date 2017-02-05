@@ -2,8 +2,8 @@ package com.marekhakala.mynomadlifeapp.DataSource;
 
 import com.marekhakala.mynomadlifeapp.DataModel.CitiesOfflineResultEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CitiesResultEntity;
-import com.marekhakala.mynomadlifeapp.DataModel.CityEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityPlacesToWorkResultEntity;
+import com.marekhakala.mynomadlifeapp.DataModel.CityEntity;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;

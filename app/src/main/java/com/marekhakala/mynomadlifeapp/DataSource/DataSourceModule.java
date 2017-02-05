@@ -56,6 +56,7 @@ public class DataSourceModule {
                 .baseUrl(url)
                 .client(okClient)
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
                 .build();
     }
 

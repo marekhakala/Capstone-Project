@@ -5,10 +5,18 @@ public class ConstantValues {
     // REST API
     public static final String BASE_URL = "http://mnl.showmelink.co.uk";
     public static final String ENDPOINT_URL = BASE_URL + "/api/v1/";
+    public static final String API_SEARCH_PARAM = "slugs";
+    public static final String HTTP_DATA_TYPE = "application/json; charset=utf-8";
 
     // Realm DB options
     public static String REALM_DB_FILE = "mynomadlife.realm.db";
     public static long DB_SCHEMA_VERSION = 1;
+
+    public static final String NAME_COLUMN_NAME = "name";
+    public static final String SUB_NAME_COLUMN_NAME = "subName";
+    public static final String CITY_SLUG_COLUMN_NAME = "citySlug";
+    public static final String SLUG_COLUMN_NAME = "slug";
+    public static final String ID_COLUMN_NAME = "id";
 
     // UI sections
     public static final String MAIN_SECTION_CODE = "main_list";
@@ -20,4 +28,7 @@ public class ConstantValues {
     public static final String DETAIL_VIEW_SECTION_CODE = "detail_view";
     public static final String SETTINGS_SECTION_CODE = "settings";
     public static final String ABOUT_SECTION_CODE = "about";
+
+    // Settings
+    public static final String SETTINGS_OFFLINE_MODE_AUTO_UPDATES_IMAGES = "offline_mode_auto_updates_images";
 }
