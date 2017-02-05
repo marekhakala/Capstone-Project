@@ -6,6 +6,10 @@ public class ConstantValues {
     public static final String BASE_URL = "http://mnl.showmelink.co.uk";
     public static final String ENDPOINT_URL = BASE_URL + "/api/v1/";
 
+    // Realm DB options
+    public static String REALM_DB_FILE = "mynomadlife.realm.db";
+    public static long DB_SCHEMA_VERSION = 1;
+
     // UI sections
     public static final String MAIN_SECTION_CODE = "main_list";
     public static final String START_SECTION_CODE = "start_list";

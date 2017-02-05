@@ -6,8 +6,15 @@ import android.content.Context;
 import com.marekhakala.mynomadlifeapp.DataSource.DataSourceModule;
 import com.marekhakala.mynomadlifeapp.Repository.RepositoryModule;
 import com.marekhakala.mynomadlifeapp.UI.UiModule;
+import com.marekhakala.mynomadlifeapp.Utilities.ConstantValues;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.Iconics;
+
+import java.io.File;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.rx.RealmObservableFactory;
 import timber.log.Timber;
 
 public class MyNomadLifeApplication extends Application {
@@ -46,5 +53,21 @@ public class MyNomadLifeApplication extends Application {
                 .repositoryModule(new RepositoryModule())
                 .uiModule(new UiModule())
                 .build();
+    }
+
+    public static Realm getDatabaseInstance(Application application) {
+        String path = MyNomadLifeApplication.get(application).getPath();
+
+        RealmConfiguration realmConfig = new RealmConfiguration
+                .Builder(application, new File(path))
+                .name(ConstantValues.REALM_DB_FILE)
+                .schemaVersion(ConstantValues.DB_SCHEMA_VERSION)
+                .deleteRealmIfMigrationNeeded()
+                .rxFactory(new RealmObservableFactory())
+                .build();
+
+        Realm.setDefaultConfiguration(realmConfig);
+
+        return Realm.getDefaultInstance();
     }
 }
