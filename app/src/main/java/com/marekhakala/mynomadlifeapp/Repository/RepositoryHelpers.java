@@ -22,7 +22,6 @@ import com.marekhakala.mynomadlifeapp.Repository.Arguments.CostPerMonthArguments
 import com.marekhakala.mynomadlifeapp.Repository.Arguments.InternetSpeedArguments;
 import com.marekhakala.mynomadlifeapp.Repository.Arguments.OtherFiltersArguments;
 import com.marekhakala.mynomadlifeapp.Repository.Arguments.PopulationArguments;
-import com.marekhakala.mynomadlifeapp.UI.Activity.FilterActivity;
 import com.marekhakala.mynomadlifeapp.Utilities.ConstantValues;
 import com.marekhakala.mynomadlifeapp.Utilities.UtilityHelper;
 
