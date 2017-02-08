@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <declare-styleable name="DataSourceRecyclerView">
+        <attr name="dsIsRefreshable" format="boolean" />
+        <attr name="dsLoadingLayoutId" format="reference" />
+        <attr name="dsEmptyLayoutId" format="reference" />
+        <attr name="dsErrorLayoutId" format="reference" />
+        <attr name="dsLayoutType">
+            <enum name="LinearLayout" value="0" />
+            <enum name="Grid" value="1" />
+            <enum name="LinearLayoutWithHeaders" value="2" />
+        </attr>
+        <attr name="dsGridLayoutSpanCount" format="integer" />
+        <attr name="dsGridLayoutItemWidth" format="dimension" />
+    </declare-styleable>
+</resources>
