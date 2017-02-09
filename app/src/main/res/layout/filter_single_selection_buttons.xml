@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.85">
+
+        <com.marekhakala.mynomadlifeapp.UI.Component.FilterSingleButton
+            android:id="@+id/ssbp_first_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            app:layout_widthPercent="33%" />
+
+        <com.marekhakala.mynomadlifeapp.UI.Component.FilterSingleButton
+            android:id="@+id/ssbp_second_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/ssbp_first_button"
+            app:layout_widthPercent="33%" />
+
+        <com.marekhakala.mynomadlifeapp.UI.Component.FilterSingleButton
+            android:id="@+id/ssbp_third_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/ssbp_second_button"
+            app:layout_widthPercent="33%" />
+    </android.support.percent.PercentRelativeLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_weight="0.002"
+        android:layout_height="match_parent" />
+
+    <ImageButton
+        android:id="@+id/ssbp_clear_button"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.148"
+        android:src="@drawable/ic_close"
+        android:contentDescription="@string/deselect"
+        android:background="@color/theme_primary" />
+</LinearLayout>

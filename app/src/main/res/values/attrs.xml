@@ -14,6 +14,13 @@
         <attr name="dsGridLayoutItemWidth" format="dimension" />
     </declare-styleable>
 
+    <declare-styleable name="FilterSingleSelectionButtons">
+        <attr name="ssbpFirstButton" format="string" />
+        <attr name="ssbpSecondButton" format="string" />
+        <attr name="ssbpThirdButton" format="string" />
+        <attr name="ssbpSelectedButton" format="integer" />
+    </declare-styleable>
+
     <declare-styleable name="ColorBarView">
         <attr name="yellowColorFrom" format="integer" />
         <attr name="greenColorFrom" format="integer" />
@@ -35,5 +42,4 @@
         <attr name="secondCurrencyValue" format="string" />
         <attr name="secondCurrencyPeriod" format="string" />
     </declare-styleable>
-
 </resources>
