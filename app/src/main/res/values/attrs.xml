@@ -13,4 +13,27 @@
         <attr name="dsGridLayoutSpanCount" format="integer" />
         <attr name="dsGridLayoutItemWidth" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="ColorBarView">
+        <attr name="yellowColorFrom" format="integer" />
+        <attr name="greenColorFrom" format="integer" />
+        <attr name="redColor" format="color" />
+        <attr name="yellowColor" format="color" />
+        <attr name="greenColor" format="color" />
+        <attr name="percentage" format="integer" />
+        <attr name="textSize" format="dimension" />
+        <attr name="textValue" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="PriceValueView">
+        <attr name="firstCurrencyText" format="string" />
+        <attr name="firstCurrencySymbol" format="string" />
+        <attr name="firstCurrencyValue" format="string" />
+        <attr name="firstCurrencyPeriod" format="string" />
+        <attr name="secondCurrencyText" format="string" />
+        <attr name="secondCurrencySymbol" format="string" />
+        <attr name="secondCurrencyValue" format="string" />
+        <attr name="secondCurrencyPeriod" format="string" />
+    </declare-styleable>
+
 </resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/color_bar_percent_background"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_widthPercent="10%"
+        android:padding="@dimen/color_bar_background_padding_default"
+        android:background="@color/color_bar_green_default" />
+
+    <TextView
+        android:id="@+id/color_bar_text_value"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/color_bar_component_text_placeholder"
+        android:paddingTop="@dimen/color_bar_padding_top_bottom_default"
+        android:paddingBottom="@dimen/color_bar_padding_top_bottom_default"
+        android:paddingEnd="@dimen/color_bar_padding_end_default"
+        android:paddingStart="@dimen/color_bar_padding_start_default"
+        android:textSize="@dimen/color_bar_text_size_default"
+        android:textColor="@color/text_black"
+        android:layout_gravity="end|center_horizontal" />
+</android.support.percent.PercentRelativeLayout>

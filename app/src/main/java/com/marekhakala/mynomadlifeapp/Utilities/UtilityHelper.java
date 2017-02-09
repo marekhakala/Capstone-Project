@@ -1,5 +1,6 @@
 package com.marekhakala.mynomadlifeapp.Utilities;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -7,15 +8,20 @@ import com.marekhakala.mynomadlifeapp.DataModel.CitiesResultEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityOfflineEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.ImageResponseBodyEntity;
+import com.marekhakala.mynomadlifeapp.R;
 import com.marekhakala.mynomadlifeapp.RealmDataModel.CityFavouriteSlug;
 import com.marekhakala.mynomadlifeapp.RealmDataModel.CityOfflineImage;
 import com.marekhakala.mynomadlifeapp.RealmDataModel.CityOfflineSlug;
 import com.marekhakala.mynomadlifeapp.Repository.RepositoryHelpers;
+import com.marekhakala.mynomadlifeapp.UI.Component.PriceValueHolder;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -24,6 +30,60 @@ import retrofit2.Response;
 import timber.log.Timber;
 
 public class UtilityHelper {
+
+    public static Map<String, String> getCurrencies(Context context) {
+        Map<String, String> CURRENCIES = new HashMap<>();
+
+        CURRENCIES.put(context.getString(R.string.currency_usd_code),
+                context.getString(R.string.currency_usd_symbol));
+        CURRENCIES.put(context.getString(R.string.currency_eur_code),
+                context.getString(R.string.currency_eur_symbol));
+        CURRENCIES.put(context.getString(R.string.currency_gbp_code),
+                context.getString(R.string.currency_gbp_symbol));
+        CURRENCIES.put(context.getString(R.string.currency_cad_code),
+                context.getString(R.string.currency_cad_symbol));
+        CURRENCIES.put(context.getString(R.string.currency_aud_code),
+                context.getString(R.string.currency_aud_symbol));
+        CURRENCIES.put(context.getString(R.string.currency_cny_code),
+                context.getString(R.string.currency_cny_symbol));
+
+        return CURRENCIES;
+    }
+
+    public static String getPriceValueNormal(PriceValueHolder priceValueHolder, Context context) {
+        DecimalFormat formatter = new DecimalFormat(context.getResources().getString(R.string.currency_format_value));
+        return getPriceValue(priceValueHolder, formatter, context);
+    }
+
+    public static String getPriceValueExchange(PriceValueHolder priceValueHolder, Context context) {
+        DecimalFormat formatter = new DecimalFormat(context.getResources().getString(R.string.currency_format_exchange_value_second));
+        return getPriceValue(priceValueHolder, formatter, context);
+    }
+
+    private static String getPriceValue(PriceValueHolder priceValueHolder, DecimalFormat formatter, Context context) {
+        String formattedString = formatter.format(Float.parseFloat(priceValueHolder.getValue()));
+        String periodString = setupPeriod(priceValueHolder.getValuePeriod(), context);
+
+        if(priceValueHolder.hasCurrencySymbol()) {
+            return String.format(context.getResources().getString(R.string.currency_format),
+                    priceValueHolder.getCurrencySymbol(), formattedString, periodString);
+        } else {
+            return String.format(context.getResources().getString(R.string.currency_format),
+                    formattedString, " " + priceValueHolder.getCurrencyText(), periodString);
+        }
+    }
+
+    public static String setupPeriod(String valuePeriod, Context context) {
+        switch(valuePeriod) {
+            case PriceValueHolder.DAILY_PERIOD:
+                return context.getResources().getString(R.string.currency_format_daily);
+            case PriceValueHolder.MONTHLY_PERIOD:
+                return context.getResources().getString(R.string.currency_format_monthly);
+            default:
+                return PriceValueHolder.UNLIMITED_PERIOD_VALUE;
+        }
+    }
+
     public static byte[] bitmapToByteArray(Bitmap image) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.PNG, 90, stream);

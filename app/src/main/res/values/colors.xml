@@ -14,4 +14,9 @@
     <!-- Text colors -->
     <color name="text_black">#000000</color>
     <color name="text_white">#ffffff</color>
+
+    <!-- Color bar view -->
+    <color name="color_bar_red_default">#FF4742</color>
+    <color name="color_bar_yellow_default">#FFC924</color>
+    <color name="color_bar_green_default">#2BDE73</color>
 </resources>

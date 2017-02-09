@@ -29,4 +29,39 @@
 
     <!-- Settings: Keys -->
     <string name="settings_key_startup_screen">startup_screen</string>
+
+    <!-- Currencies -->
+    <string name="currency_usd_code">USD</string>
+    <string name="currency_usd_symbol">$</string>
+    <string name="currency_eur_code">EUR</string>
+    <string name="currency_eur_symbol">€</string>
+    <string name="currency_gbp_code">GBP</string>
+    <string name="currency_gbp_symbol">£</string>
+    <string name="currency_cad_code">CAD</string>
+    <string name="currency_cad_symbol">$</string>
+    <string name="currency_aud_code">AUD</string>
+    <string name="currency_aud_symbol">$</string>
+    <string name="currency_cny_code">CNY</string>
+    <string name="currency_cny_symbol">$</string>
+    <string name="currency_format" formatted="false">%s%s %s</string>
+    <string name="currency_format_value" formatted="false">#,###,###.##</string>
+    <string name="currency_format_daily" formatted="false">/ d</string>
+    <string name="currency_format_monthly" formatted="false">/ m</string>
+    <string name="currency_format_exchange" formatted="false">%s in %s / %s in %s</string>
+    <string name="currency_format_exchange_value_second" formatted="false">#,###,###.######</string>
+
+    <!-- RecyclerView - Empty layout -->
+    <string name="empty_layout_image_text">List is empty</string>
+    <string name="empty_layout_image_description">Empty</string>
+
+    <!-- RecyclerView - Error layout -->
+    <string name="error_layout_image_text">No internet connection</string>
+    <string name="error_layout_image_description">Problem</string>
+
+    <!-- Color bar View -->
+    <string name="color_bar_component_text_placeholder">9 / 10</string>
+
+    <!-- Price value View -->
+    <string name="price_value_component_first_placeholder">$2,322 / m</string>
+    <string name="price_value_component_second_placeholder">€2,082 / m</string>
 </resources>

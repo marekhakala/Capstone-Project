@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/price_value_first_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/price_value_first_text_size_default"
+        android:text="@string/price_value_component_first_placeholder"
+        android:gravity="end" />
+
+    <TextView
+        android:id="@+id/price_value_second_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/price_value_second_text_size_default"
+        android:gravity="end"
+        android:text="@string/price_value_component_second_placeholder" />
+</LinearLayout>
