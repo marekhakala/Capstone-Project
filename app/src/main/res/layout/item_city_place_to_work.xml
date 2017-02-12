@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_city_place_to_work_content_container"
+    style="@style/ItemCardView">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <!-- City - Place to work - Info Layout -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0">
+
+                <LinearLayout
+                    android:id="@+id/item_city_place_to_work_image_layout"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/item_city_place_to_work_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/item_city_detail_view_place_to_work_layout_height"
+                        android:contentDescription="@string/city_item_detail_view_places_to_work_placeholder"
+                        style="@style/CityItemPlaceToWorkItemImage"
+                        android:src="@drawable/placeholder_loading" />
+                </LinearLayout>
+
+                <!-- City - Place to work - Name -->
+                <TextView
+                    android:id="@+id/item_city_place_to_work_name_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@id/item_city_place_to_work_image_layout"
+                    android:layout_alignEnd="@id/item_city_place_to_work_image_layout"
+                    style="@style/CityItemPlaceToWorkItemName"
+                    android:text="@string/city_item_detail_view_places_to_work_name_placeholder" />
+
+                <!-- City - Place to work - SubName -->
+                <TextView
+                    android:id="@+id/item_city_sub_name_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@id/item_city_place_to_work_image_layout"
+                    android:layout_alignEnd="@id/item_city_place_to_work_image_layout"
+                    android:layout_alignTop="@id/item_city_place_to_work_name_text"
+                    style="@style/CityItemPlaceToWorkItemSubName"
+                    android:text="@string/city_item_detail_view_places_to_work_sub_name_placeholder" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_height="@dimen/item_city_detail_view_place_to_work_label_layout_height"
+                android:padding="@dimen/item_city_detail_view_place_to_work_label_padding"
+                android:layout_width="match_parent"
+                android:background="@color/theme_primary">
+
+                <!-- City - Place to work - web -->
+                <Button
+                    android:id="@+id/item_city_place_to_work_web_button"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    style="@style/CityItemPlaceToWorkWeb"
+                    android:text="@string/city_item_detail_view_places_to_work_web_button" />
+
+                <!-- City - Place to work - distance -->
+                <TextView
+                    android:id="@+id/item_city_place_to_work_distance"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    style="@style/CityItemPlaceToWorkDistance"
+                    android:text="@string/city_item_detail_view_places_to_work_distance_placeholder" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- City - Place to work - Navigation button -->
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/item_city_place_to_work_navigation_fab"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            app:layout_anchor="@id/item_city_place_to_work_image_layout"
+            app:layout_anchorGravity="bottom|right|end"
+            android:src="@drawable/ic_navigation"
+            style="@style/CityPlaceToWorkItemNavigationButton" />
+    </android.support.design.widget.CoordinatorLayout>
+</android.support.v7.widget.CardView>

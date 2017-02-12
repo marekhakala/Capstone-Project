@@ -31,7 +31,7 @@
     <string name="settings_key_startup_screen">startup_screen</string>
 
     <string name="deselect">Unselect all</string>
-    
+
     <!-- Currencies -->
     <string name="currency_usd_code">USD</string>
     <string name="currency_usd_symbol">$</string>
