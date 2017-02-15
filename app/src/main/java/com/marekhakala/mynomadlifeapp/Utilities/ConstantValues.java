@@ -8,6 +8,9 @@ public class ConstantValues {
     public static final String API_SEARCH_PARAM = "slugs";
     public static final String HTTP_DATA_TYPE = "application/json; charset=utf-8";
 
+    // General
+    public static final String USD_CURRENCY = "USD";
+
     // Realm DB options
     public static String REALM_DB_FILE = "mynomadlife.realm.db";
     public static long DB_SCHEMA_VERSION = 1;
@@ -28,6 +31,9 @@ public class ConstantValues {
     public static final String DETAIL_VIEW_SECTION_CODE = "detail_view";
     public static final String SETTINGS_SECTION_CODE = "settings";
     public static final String ABOUT_SECTION_CODE = "about";
+
+    public static final String CITY_ENTITY = "City";
+    public static final String CITY_OFFLINE_ENTITY = "CityOffline";
 
     // Settings
     public static final String SETTINGS_OFFLINE_MODE_AUTO_UPDATES_IMAGES = "offline_mode_auto_updates_images";

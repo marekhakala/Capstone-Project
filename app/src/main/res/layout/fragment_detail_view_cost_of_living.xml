@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Nomad Cost -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_cost_of_living_nomad_cost_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_cost_of_living_nomad_cost_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.PriceValueView
+                android:id="@+id/city_item_detail_view_cost_of_living_nomad_cost_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewCostOfLivingValue"
+                app:firstCurrencyValue="@string/city_item_detail_view_cost_of_living_nomad_cost_c1_placeholder"
+                app:firstCurrencyPeriod="@string/city_item_detail_view_cost_of_living_period_monthly"
+                app:secondCurrencyValue="@string/city_item_detail_view_cost_of_living_nomad_cost_c2_placeholder"
+                app:secondCurrencyPeriod="@string/city_item_detail_view_cost_of_living_period_monthly" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Expat cost of living -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_cost_of_living_expat_cost_of_living_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_cost_of_living_expat_cost_of_living_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.PriceValueView
+                android:id="@+id/city_item_detail_view_cost_of_living_expat_cost_of_living_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewCostOfLivingValue"
+                app:firstCurrencyValue="@string/city_item_detail_view_cost_of_living_expat_cost_of_living_c1_placeholder"
+                app:firstCurrencyPeriod="@string/city_item_detail_view_cost_of_living_period_monthly"
+                app:secondCurrencyValue="@string/city_item_detail_view_cost_of_living_expat_cost_of_living_c2_placeholder"
+                app:secondCurrencyPeriod="@string/city_item_detail_view_cost_of_living_period_monthly" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Local cost of living -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_cost_of_living_local_cost_of_living_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_cost_of_living_local_cost_of_living_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.PriceValueView
+                android:id="@+id/city_item_detail_view_cost_of_living_local_cost_of_living_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewCostOfLivingValue"
+                app:firstCurrencyValue="@string/city_item_detail_view_cost_of_living_local_cost_of_living_c1_placeholder"
+                app:firstCurrencyPeriod="@string/city_item_detail_view_cost_of_living_period_monthly"
+                app:secondCurrencyValue="@string/city_item_detail_view_cost_of_living_local_cost_of_living_c2_placeholder"
+                app:secondCurrencyPeriod="@string/city_item_detail_view_cost_of_living_period_monthly" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Hotel room -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_cost_of_living_hotel_room_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_cost_of_living_hotel_room_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.PriceValueView
+                android:id="@+id/city_item_detail_view_cost_of_living_hotel_room_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewCostOfLivingValue"
+                app:firstCurrencyValue="@string/city_item_detail_view_cost_of_living_hotel_room_c1_placeholder"
+                app:firstCurrencyPeriod="@string/city_item_detail_view_cost_of_living_period_monthly"
+                app:secondCurrencyValue="@string/city_item_detail_view_cost_of_living_hotel_room_c2_placeholder"
+                app:secondCurrencyPeriod="@string/city_item_detail_view_cost_of_living_period_monthly" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Airbnb apartment month -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_cost_of_living_airbnb_apartment_month_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_cost_of_living_airbnb_apartment_month_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.PriceValueView
+                android:id="@+id/city_item_detail_view_cost_of_living_airbnb_apartment_month_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewCostOfLivingValue"
+                app:firstCurrencyValue="@string/city_item_detail_view_cost_of_living_airbnb_apartment_month_c1_placeholder"
+                app:firstCurrencyPeriod="@string/city_item_detail_view_cost_of_living_period_monthly"
+                app:secondCurrencyValue="@string/city_item_detail_view_cost_of_living_airbnb_apartment_month_c2_placeholder"
+                app:secondCurrencyPeriod="@string/city_item_detail_view_cost_of_living_period_monthly" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Airbnb apartment day -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_cost_of_living_airbnb_apartment_day_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_cost_of_living_airbnb_apartment_day_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.PriceValueView
+                android:id="@+id/city_item_detail_view_cost_of_living_airbnb_apartment_day_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewCostOfLivingValue"
+                app:firstCurrencyValue="@string/city_item_detail_view_cost_of_living_airbnb_apartment_day_c1_placeholder"
+                app:firstCurrencyPeriod="@string/city_item_detail_view_cost_of_living_period_daily"
+                app:secondCurrencyValue="@string/city_item_detail_view_cost_of_living_airbnb_apartment_day_c2_placeholder"
+                app:secondCurrencyPeriod="@string/city_item_detail_view_cost_of_living_period_daily" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Coworking space -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_cost_of_living_coworking_space_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_cost_of_living_coworking_space_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.PriceValueView
+                android:id="@+id/city_item_detail_view_cost_of_living_coworking_space_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewCostOfLivingValue"
+                app:firstCurrencyValue="@string/city_item_detail_view_cost_of_living_coworking_space_c1_placeholder"
+                app:firstCurrencyPeriod="@string/city_item_detail_view_cost_of_living_period_monthly"
+                app:secondCurrencyValue="@string/city_item_detail_view_cost_of_living_coworking_space_c2_placeholder"
+                app:secondCurrencyPeriod="@string/city_item_detail_view_cost_of_living_period_monthly" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Coca-Cola (0.3L) in cafe -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_cost_of_living_coca_cola_in_cafe_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_cost_of_living_coca_cola_in_cafe_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.PriceValueView
+                android:id="@+id/city_item_detail_view_cost_of_living_coca_cola_in_cafe_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewCostOfLivingValue"
+                app:firstCurrencyValue="@string/city_item_detail_view_cost_of_living_coca_cola_in_cafe_c1_placeholder"
+                app:secondCurrencyValue="@string/city_item_detail_view_cost_of_living_coca_cola_in_cafe_c2_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Pint of beer (0.5L) in bar -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_cost_of_living_pint_of_beer_in_bar_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_cost_of_living_pint_of_beer_in_bar_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.PriceValueView
+                android:id="@+id/city_item_detail_view_cost_of_living_pint_of_beer_in_bar_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewCostOfLivingValue"
+                app:firstCurrencyValue="@string/city_item_detail_view_cost_of_living_pint_of_beer_in_bar_c1_placeholder"
+                app:secondCurrencyValue="@string/city_item_detail_view_cost_of_living_pint_of_beer_in_bar_c2_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Cappucino in cafe -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_cost_of_living_cappucino_in_cafe_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_cost_of_living_cappucino_in_cafe_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.PriceValueView
+                android:id="@+id/city_item_detail_view_cost_of_living_cappucino_in_cafe_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewCostOfLivingValue"
+                app:firstCurrencyValue="@string/city_item_detail_view_cost_of_living_airbnb_apartment_day_c1_placeholder"
+                app:secondCurrencyValue="@string/city_item_detail_view_cost_of_living_airbnb_apartment_day_c2_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- C1 in C2 -->
+        <LinearLayout
+            android:id="@+id/city_item_detail_view_cost_of_living_1_c1_in_c2_container"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_cost_of_living_1_c1_in_c2_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_cost_of_living_1_c1_in_c2_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.PriceValueView
+                android:id="@+id/city_item_detail_view_cost_of_living_1_c1_in_c2_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewCostOfLivingValue"
+                app:firstCurrencyValue="@string/city_item_detail_view_cost_of_living_1_c1_in_c2_c1_placeholder"
+                app:secondCurrencyValue="@string/city_item_detail_view_cost_of_living_1_c1_in_c2_c2_placeholder" />
+        </LinearLayout>
+        <include
+            android:id="@+id/city_item_detail_view_cost_of_living_1_c1_in_c2_line_break"
+            layout="@layout/detail_view_line_break" />
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Rank -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_info_rank_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_info_rank_text" />
+
+            <TextView
+                android:id="@+id/city_item_detail_view_info_rank_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewInfoValue"
+                android:text="@string/city_item_detail_view_info_rank_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Region -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_info_region_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_info_region_text" />
+
+            <TextView
+                android:id="@+id/city_item_detail_view_info_region_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewInfoValue"
+                android:text="@string/city_item_detail_view_info_region_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Country -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_info_country_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_info_country_text" />
+
+            <TextView
+                android:id="@+id/city_item_detail_view_info_country_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewInfoValue"
+                android:text="@string/city_item_detail_view_info_country_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Temperature -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_info_temperature_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_info_temperature_text" />
+
+            <TextView
+                android:id="@+id/city_item_detail_view_info_temperature_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewInfoValue"
+                android:text="@string/city_item_detail_view_info_temperature_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Humidity -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_info_humidity_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_info_humidity_text" />
+
+            <TextView
+                android:id="@+id/city_item_detail_view_info_humidity_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewInfoValue"
+                android:text="@string/city_item_detail_view_info_humidity_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Internet speed -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_info_internet_speed_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_info_internet_speed_text" />
+
+            <TextView
+                android:id="@+id/city_item_detail_view_info_internet_speed_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewInfoValue"
+                android:text="@string/city_item_detail_view_info_internet_speed_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Population -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_info_population_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_info_population_text" />
+
+            <TextView
+                android:id="@+id/city_item_detail_view_info_population_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewInfoValue"
+                android:text="@string/city_item_detail_view_info_population_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Gender ratio F/M -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_info_gender_ratio_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_info_gender_ration_text" />
+
+            <TextView
+                android:id="@+id/city_item_detail_view_info_gender_ratio_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewInfoValue"
+                android:text="@string/city_item_detail_view_info_gender_ration_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Religious -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_info_religious_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_info_religious_text" />
+
+            <TextView
+                android:id="@+id/city_item_detail_view_info_religious_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewInfoValue"
+                android:text="@string/city_item_detail_view_info_religious_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- City currency -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_info_city_currency_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_info_city_currency_text" />
+
+            <TextView
+                android:id="@+id/city_item_detail_view_info_city_currency_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewInfoValue"
+                android:text="@string/city_item_detail_view_info_city_currency_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

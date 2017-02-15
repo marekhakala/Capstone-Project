@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/detail_view_line_break" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- City - Place to work - Search edit -->
+        <EditText
+            android:id="@+id/city_item_detail_view_places_to_work_search_edit_text"
+            android:layout_weight="0.7"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
+            android:hint="@string/city_item_detail_view_places_to_work_search_hint"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1" />
+
+        <!-- City - Place to work - Clean button -->
+        <ImageButton
+            android:id="@+id/city_item_detail_view_places_to_work_clean_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_close_black"
+            android:clickable="true"
+            android:background="@color/text_white" />
+
+        <!-- City - Place to work - Search button -->
+        <ImageButton
+            android:id="@+id/city_item_detail_view_places_to_work_search_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_search_white"
+            android:clickable="true"
+            android:background="@color/fab_background_color" />
+    </LinearLayout>
+
+    <com.marekhakala.mynomadlifeapp.UI.Component.DataSourceRecyclerView
+        android:id="@+id/city_item_detail_view_places_to_work_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:dsIsRefreshable="false"
+        app:dsLayoutType="Grid"
+        app:dsGridLayoutSpanCount="1"
+        app:dsLoadingLayoutId="@layout/loading_layout_detail"
+        app:dsEmptyLayoutId="@layout/empty_layout_detail"
+        app:dsErrorLayoutId="@layout/error_layout_detail" />
+</LinearLayout>

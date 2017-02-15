@@ -15,6 +15,9 @@
     <color name="text_black">#000000</color>
     <color name="text_white">#ffffff</color>
 
+    <!-- FAB -->
+    <color name="fab_background_color">#842522</color>
+
     <!-- Color bar view -->
     <color name="color_bar_red_default">#FF4742</color>
     <color name="color_bar_yellow_default">#FFC924</color>

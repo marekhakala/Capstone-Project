@@ -20,4 +20,134 @@
         <item name="android:textColor">@color/text_white</item>
         <item name="android:textSize">@dimen/text_size_large</item>
     </style>
+
+    <!-- City item -->
+    <style name="ItemCardView" parent="CardView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="cardCornerRadius">@dimen/item_card_view_corner_radius</item>
+        <item name="cardElevation">@dimen/item_card_view_elevation</item>
+        <item name="cardBackgroundColor">@color/theme_light</item>
+        <item name="android:layout_margin">@dimen/item_card_view_layout_margin</item>
+    </style>
+
+
+    <!-- City detail view -->
+    <style name="CityItemCollapsingToolbar">
+        <item name="expandedTitleTextAppearance">@android:color/transparent</item>
+        <item name="layout_scrollFlags">scroll|exitUntilCollapsed</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="contentScrim">?attr/colorPrimary</item>
+        <item name="expandedTitleMarginStart">@dimen/item_city_detail_view_collapsing_toolbar_margin_start</item>
+        <item name="expandedTitleMarginEnd">@dimen/item_city_detail_view_collapsing_toolbar_margin_end</item>
+    </style>
+
+    <style name="CityDetailContainer">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">@dimen/item_city_detail_view_container_width</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginBottom">@dimen/item_city_detail_view_container_margin_bottom</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="CityItemDetailViewCountry">
+        <item name="android:layout_marginTop">@dimen/item_city_internet_speed_margin_top</item>
+        <item name="android:layout_marginEnd">@dimen/item_city_internet_speed_margin_end</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/item_city_detail_view_speed_text_size</item>
+        <item name="android:textColor">@color/text_white</item>
+    </style>
+
+    <style name="CityItemDetailViewInternetSpeed">
+        <item name="android:layout_marginEnd">@dimen/item_city_detail_view_internet_speed_margin_end</item>
+        <item name="android:layout_marginBottom">@dimen/item_city_detail_view_internet_speed_margin_bottom</item>
+        <item name="android:textSize">@dimen/item_city_detail_view_speed_text_size</item>
+        <item name="android:textColor">@color/text_white</item>
+    </style>
+
+    <style name="CityItemDetailViewText">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingTop">@dimen/item_city_detail_view_text_padding_top</item>
+        <item name="android:paddingBottom">@dimen/item_city_detail_view_text_padding_bottom</item>
+        <item name="android:paddingStart">@dimen/item_city_detail_view_text_padding_start</item>
+        <item name="android:textSize">@dimen/item_city_detail_view_text_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_black</item>
+    </style>
+
+    <style name="CityItemDetailViewScoresValue">
+        <item name="android:padding">@dimen/item_city_detail_view_scores_padding</item>
+        <item name="yellowColorFrom">30</item>
+        <item name="greenColorFrom">70</item>
+        <item name="textSize">@dimen/item_city_detail_view_scores_text_size</item>
+    </style>
+
+    <style name="CityItemDetailViewCostOfLivingValue">
+        <item name="android:padding">@dimen/item_city_detail_view_cost_of_living_padding</item>
+        <item name="firstCurrencyText">@string/city_item_detail_view_cost_of_living_c1_currency_text</item>
+        <item name="firstCurrencySymbol">@string/city_item_detail_view_cost_of_living_c1_currency_symbol</item>
+        <item name="secondCurrencyText">@string/city_item_detail_view_cost_of_living_c2_currency_text</item>
+        <item name="secondCurrencySymbol">@string/city_item_detail_view_cost_of_living_c2_currency_symbol</item>
+    </style>
+
+    <style name="CityItemDetailViewInfoValue">
+        <item name="android:padding">@dimen/item_city_detail_view_info_padding</item>
+        <item name="android:gravity">end|center_vertical</item>
+        <item name="textSize">@dimen/item_city_detail_view_info_text_size</item>
+        <item name="android:paddingEnd">@dimen/item_city_detail_view_info_padding_end</item>
+        <item name="android:paddingStart">@dimen/item_city_detail_view_info_padding_start</item>
+    </style>
+
+    <style name="CityItemDetailViewRow">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/item_city_detail_view_row_min_height</item>
+    </style>
+
+    <!-- Place to Work  -->
+    <style name="CityItemPlaceToWorkItemName">
+        <item name="android:layout_marginTop">@dimen/item_city_detail_view_place_to_work_title_margin_top</item>
+        <item name="android:textSize">@dimen/item_city_detail_view_place_to_work_title_text_size</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/text_white</item>
+    </style>
+
+    <style name="CityItemPlaceToWorkItemSubName">
+        <item name="android:layout_marginTop">@dimen/item_city_detail_view_place_to_work_sub_name_margin_top</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/item_city_detail_view_place_to_work_sub_name_text_size</item>
+        <item name="android:textColor">@color/text_white</item>
+    </style>
+
+    <style name="CityItemPlaceToWorkItemImage">
+        <item name="android:padding">0dp</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:layout_margin">0dp</item>
+    </style>
+
+    <style name="CityItemPlaceToWorkWeb">
+        <item name="android:textSize">@dimen/item_city_detail_view_place_to_work_web_text_size</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/text_white</item>
+        <item name="backgroundTint">@color/fab_background_color</item>
+        <item name="android:layout_marginEnd">@dimen/item_city_detail_view_place_to_work_margin_end</item>
+    </style>
+
+    <style name="CityItemPlaceToWorkDistance">
+        <item name="android:textSize">@dimen/item_city_detail_view_place_to_work_distance_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textColor">@color/text_white</item>
+    </style>
+
+    <style name="CityPlaceToWorkItemNavigationButton">
+        <item name="android:layout_margin">@dimen/item_city_detail_view_place_to_work_navigation_button_layout_margin</item>
+        <item name="backgroundTint">@color/fab_background_color</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="CityItemDetailViewPlaceToWorkSearchButton">
+        <item name="backgroundTint">@color/fab_background_color</item>
+    </style>
 </resources>

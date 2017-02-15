@@ -1,8 +1,10 @@
 package com.marekhakala.mynomadlifeapp.Utilities;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.preference.PreferenceManager;
 
 import com.marekhakala.mynomadlifeapp.DataModel.CitiesResultEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityEntity;
@@ -30,6 +32,42 @@ import retrofit2.Response;
 import timber.log.Timber;
 
 public class UtilityHelper {
+
+    public static String getInternetSpeed(long internetDownload, Context context) {
+        return Long.toString(internetDownload) + " " + context.getResources().getString(R.string.internet_speed_label);
+    }
+
+    public static String getTemperature(CityEntity city, Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String prefsTemperatureUnit = prefs.getString(context.getString(R.string.settings_key_temperature_unit_type), "1");
+
+        if(prefsTemperatureUnit.equals(context.getString(R.string.settings_temperature_celsius_unit_value)))
+            return Float.toString(city.getTemperatureC())
+                    + " " + context.getResources().getString(R.string.temperature_celsius_label);
+
+        return Float.toString(city.getTemperatureF())
+                + " " + context.getResources().getString(R.string.temperature_fahrenheit_label);
+    }
+
+    public static String getTemperature(CityOfflineEntity city, Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String prefsTemperatureUnit = prefs.getString(context.getString(R.string.settings_key_temperature_unit_type), "1");
+
+        if(prefsTemperatureUnit.equals(context.getString(R.string.settings_temperature_celsius_unit_value)))
+            return Float.toString(city.getTemperatureC())
+                    + " " + context.getResources().getString(R.string.temperature_celsius_label);
+
+        return Float.toString(city.getTemperatureF())
+                + " " + context.getResources().getString(R.string.temperature_fahrenheit_label);
+    }
+
+    public static String getHumidity(CityEntity city, Context context) {
+        return Float.toString(city.getHumidity()) + context.getResources().getString(R.string.humidity_label);
+    }
+
+    public static String getHumidity(CityOfflineEntity city, Context context) {
+        return Float.toString(city.getHumidity()) + context.getResources().getString(R.string.humidity_label);
+    }
 
     public static Map<String, String> getCurrencies(Context context) {
         Map<String, String> CURRENCIES = new HashMap<>();
@@ -92,6 +130,11 @@ public class UtilityHelper {
 
     public static Bitmap byteArrayToBitmap(byte[] array) {
         return BitmapFactory.decodeByteArray(array, 0, array.length);
+    }
+
+    public static String getPopulation(Double population, Context context) {
+        DecimalFormat formatter = new DecimalFormat(context.getString(R.string.currency_format_value));
+        return formatter.format(population);
     }
 
     public static void setupImageFromDatabase(CityOfflineImage cityOfflineImage, CityOfflineEntity cityOfflineEntity) {
@@ -165,6 +208,10 @@ public class UtilityHelper {
 
     public static String cityIdFactory(CityOfflineSlug result) {
         return result.getSlug();
+    }
+
+    public static int getIntegerFromDoublePercentage(Double value) {
+        return (int) Math.round(value*10);
     }
 
     public static CitiesResultEntity setupFavouriteOfflineItems(CitiesResultEntity result,

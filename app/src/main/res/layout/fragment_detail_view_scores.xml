@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Nomad Score -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_scores_nomad_score_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_scores_nomad_score_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.ColorBarView
+                android:id="@+id/city_item_detail_view_scores_nomad_score_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                app:percentage="84"
+                style="@style/CityItemDetailViewScoresValue"
+                app:textValue="@string/city_item_detail_view_scores_nomad_score_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Life Score -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_scores_life_score_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_scores_life_score_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.ColorBarView
+                android:id="@+id/city_item_detail_view_scores_life_score_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                app:percentage="92"
+                style="@style/CityItemDetailViewScoresValue"
+                app:textValue="@string/city_item_detail_view_scores_life_score_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Fun -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_scores_fun_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_scores_fun_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.ColorBarView
+                android:id="@+id/city_item_detail_view_scores_fun_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                app:percentage="100"
+                style="@style/CityItemDetailViewScoresValue"
+                app:textValue="@string/city_item_detail_view_scores_fun_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Safety -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_scores_safety_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_scores_safety_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.ColorBarView
+                android:id="@+id/city_item_detail_view_scores_safety_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                app:percentage="100"
+                style="@style/CityItemDetailViewScoresValue"
+                app:textValue="@string/city_item_detail_view_scores_safety_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Peace -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_scores_peace_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_scores_peace_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.ColorBarView
+                android:id="@+id/city_item_detail_view_scores_peace_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                app:percentage="100"
+                style="@style/CityItemDetailViewScoresValue"
+                app:textValue="@string/city_item_detail_view_scores_peace_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Nightlife -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_scores_nightlife_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_scores_nightlife_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.ColorBarView
+                android:id="@+id/city_item_detail_view_scores_nightlife_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                app:percentage="100"
+                style="@style/CityItemDetailViewScoresValue"
+                app:textValue="@string/city_item_detail_view_scores_nightlife_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Free WiFi in city -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_scores_free_wifi_in_city_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_scores_free_wifi_in_city_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.ColorBarView
+                android:id="@+id/city_item_detail_view_scores_free_wifi_in_city_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                app:percentage="100"
+                style="@style/CityItemDetailViewScoresValue"
+                app:textValue="@string/city_item_detail_view_scores_free_wifi_in_city_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Places to work -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_scores_places_to_work_from_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_scores_places_to_work_from_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.ColorBarView
+                android:id="@+id/city_item_detail_view_scores_places_to_work_from_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                app:percentage="85"
+                style="@style/CityItemDetailViewScoresValue"
+                app:textValue="@string/city_item_detail_view_scores_places_to_work_from_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- A/C or heating -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_scores_ac_or_heating_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_scores_ac_or_heating_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.ColorBarView
+                android:id="@+id/city_item_detail_view_scores_ac_or_heating_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                app:percentage="33"
+                style="@style/CityItemDetailViewScoresValue"
+                app:textValue="@string/city_item_detail_view_scores_ac_or_heating_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Friendly to foreigners -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_scores_friendly_to_foreigners_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_scores_friendly_to_foreigners_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.ColorBarView
+                android:id="@+id/city_item_detail_view_scores_friendly_to_foreigners_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                app:percentage="100"
+                style="@style/CityItemDetailViewScoresValue"
+                app:textValue="@string/city_item_detail_view_scores_friendly_to_foreigners_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Gay friendly -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_scores_gay_friendly_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_scores_gay_friendly_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.ColorBarView
+                android:id="@+id/city_item_detail_view_scores_gay_friendly_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                app:percentage="100"
+                style="@style/CityItemDetailViewScoresValue"
+                app:textValue="@string/city_item_detail_view_scores_gay_friendly_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- Startup Score -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_scores_startup_score_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_scores_startup_score_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.ColorBarView
+                android:id="@+id/city_item_detail_view_scores_startup_score_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                app:percentage="92"
+                style="@style/CityItemDetailViewScoresValue"
+                app:textValue="@string/city_item_detail_view_scores_startup_score_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+
+        <!-- English speaking -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/CityItemDetailViewRow">
+
+            <TextView
+                android:id="@+id/city_item_detail_view_scores_english_speaking_text"
+                android:layout_width="0dp"
+                android:layout_weight="0.40"
+                android:layout_height="match_parent"
+                style="@style/CityItemDetailViewText"
+                android:text="@string/city_item_detail_view_scores_english_speaking_text" />
+
+            <com.marekhakala.mynomadlifeapp.UI.Component.ColorBarView
+                android:id="@+id/city_item_detail_view_scores_english_speaking_value"
+                android:layout_width="0dp"
+                android:layout_weight="0.60"
+                android:layout_height="match_parent"
+                app:percentage="100"
+                style="@style/CityItemDetailViewScoresValue"
+                app:textValue="@string/city_item_detail_view_scores_english_speaking_placeholder" />
+        </LinearLayout>
+        <include layout="@layout/detail_view_line_break" />
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
