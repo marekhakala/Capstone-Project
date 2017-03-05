@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 
 import com.marekhakala.mynomadlifeapp.DataModel.CitiesResultEntity;
@@ -32,6 +33,9 @@ import retrofit2.Response;
 import timber.log.Timber;
 
 public class UtilityHelper {
+    public static String getCityImageUri(String baseUrl, CityEntity city) {
+        return Uri.parse(baseUrl).buildUpon().appendEncodedPath(city.getSlug() + ConstantValues.IMAGE_URL_PATH).build().toString();
+    }
 
     public static String getInternetSpeed(long internetDownload, Context context) {
         return Long.toString(internetDownload) + " " + context.getResources().getString(R.string.internet_speed_label);
@@ -67,6 +71,24 @@ public class UtilityHelper {
 
     public static String getHumidity(CityOfflineEntity city, Context context) {
         return Float.toString(city.getHumidity()) + context.getResources().getString(R.string.humidity_label);
+    }
+
+    public static String getMonthlyPrice(CityEntity city, Context context) {
+        String preferredCurrency = ConstantValues.USD_CURRENCY;
+        String currencySymbol = UtilityHelper.getCurrencies(context).get(preferredCurrency);
+
+        PriceValueHolder priceValueHolder = new PriceValueHolder(city.getCostPerMonth().toString(),
+                preferredCurrency, currencySymbol != null ? currencySymbol : "", PriceValueHolder.MONTHLY_PERIOD);
+        return UtilityHelper.getPriceValueNormal(priceValueHolder, context);
+    }
+
+    public static String getMonthlyPrice(CityOfflineEntity city, Context context) {
+        String preferredCurrency = ConstantValues.USD_CURRENCY;
+        String currencySymbol = UtilityHelper.getCurrencies(context).get(preferredCurrency);
+
+        PriceValueHolder priceValueHolder = new PriceValueHolder(city.getCostPerMonth().toString(),
+                preferredCurrency, currencySymbol != null ? currencySymbol : "", PriceValueHolder.MONTHLY_PERIOD);
+        return UtilityHelper.getPriceValueNormal(priceValueHolder, context);
     }
 
     public static Map<String, String> getCurrencies(Context context) {

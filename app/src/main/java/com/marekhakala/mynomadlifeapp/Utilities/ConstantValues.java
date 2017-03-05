@@ -5,6 +5,9 @@ public class ConstantValues {
     // REST API
     public static final String BASE_URL = "http://mnl.showmelink.co.uk";
     public static final String ENDPOINT_URL = BASE_URL + "/api/v1/";
+    public static final String IMAGE_URL = ENDPOINT_URL + "cities/";
+    public static final String IMAGE_URL_PATH = "/image";
+
     public static final String API_SEARCH_PARAM = "slugs";
     public static final String HTTP_DATA_TYPE = "application/json; charset=utf-8";
 
