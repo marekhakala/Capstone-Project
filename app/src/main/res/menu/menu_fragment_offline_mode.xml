@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_offline_mode_refresh"
+        android:title="@string/menu_refresh"
+        android:icon="@drawable/ic_refresh" />
+
+    <item
+        android:id="@+id/menu_offline_mode_update_data"
+        android:title="@string/menu_update_data"
+        android:orderInCategory="0"
+        android:icon="@drawable/ic_refresh" />
+
+    <item
+        android:id="@+id/menu_offline_mode_update_images"
+        android:title="@string/menu_update_images"
+        android:orderInCategory="1"
+        android:icon="@drawable/ic_close" />
+
+    <item
+        android:id="@+id/menu_offline_mode_places_to_work"
+        android:title="@string/menu_update_places_to_work"
+        android:orderInCategory="2"
+        android:icon="@drawable/ic_close" />
+
+    <item
+        android:id="@+id/menu_offline_delete_all_data"
+        android:title="@string/menu_delete_all_data"
+        android:orderInCategory="3"
+        android:icon="@drawable/ic_close" />
+
+    <item
+        android:id="@+id/menu_offline_delete_images"
+        android:title="@string/menu_delete_images"
+        android:orderInCategory="4"
+        android:icon="@drawable/ic_close" />
+</menu>

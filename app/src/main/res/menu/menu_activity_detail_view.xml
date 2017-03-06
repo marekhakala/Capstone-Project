@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_detail_view_favourite_button"
+        android:icon="@drawable/ic_star"
+        android:title="@string/menu_detail_view_add_to_favourites" />
+
+    <item
+        android:id="@+id/menu_detail_view_offline_mode_button"
+        android:icon="@drawable/ic_offline_pin"
+        android:title="@string/menu_detail_view_add_to_offline_mode" />
+</menu>
