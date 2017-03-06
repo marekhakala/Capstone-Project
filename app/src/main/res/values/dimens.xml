@@ -83,6 +83,18 @@
     <item name="wrap_content" type="dimen">-2</item>
     <dimen name="item_city_detail_view_appbar_height">256dp</dimen>
 
+    <!-- Filter Activity -->
+    <dimen name="filter_width_span">5dp</dimen>
+    <dimen name="filter_height_span">15dp</dimen>
+
+    <dimen name="filter_button_row_padding_top">10dp</dimen>
+    <dimen name="filter_button_row_padding_start">5dp</dimen>
+    <dimen name="filter_button_row_padding_end">5dp</dimen>
+
+    <dimen name="filter_safe_nightlife_fun_height">60dp</dimen>
+    <dimen name="filter_places_to_work_startup_score_english_speaking_height">70dp</dimen>
+    <dimen name="filter_friendly_to_foreigners_female_gay_friendly_height">70dp</dimen>
+
     <!--Color bar View -->
     <dimen name="color_bar_text_size_default">15sp</dimen>
     <dimen name="color_bar_padding_start_default">0dp</dimen>

@@ -35,6 +35,9 @@ public class ConstantValues {
     public static final String SETTINGS_SECTION_CODE = "settings";
     public static final String ABOUT_SECTION_CODE = "about";
 
+    public static final String EXTRA_ITEM_CITY = "city";
+    public static final String EXTRA_ITEM_CITY_TYPE = "cityType";
+    
     public static final String CITY_ENTITY = "City";
     public static final String CITY_OFFLINE_ENTITY = "CityOffline";
 

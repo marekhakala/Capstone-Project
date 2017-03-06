@@ -2,6 +2,30 @@
 <resources>
     <string name="app_name">MyNomadLife</string>
 
+    <!-- Menus -->
+    <string name="menu_go_up">Go Up</string>
+    <string name="menu_filter">Filter</string>
+    <string name="menu_refresh">Refresh</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_settings">Settings</string>
+
+    <string name="menu_filter_done">Done</string>
+    <string name="menu_close">Close</string>
+
+    <string name="menu_reset">Reset to default</string>
+    <string name="menu_update_data">Update all</string>
+    <string name="menu_delete_all_data">Delete all data</string>
+
+    <string name="menu_delete_images">Delele images</string>
+    <string name="menu_update_images">Update images</string>
+    <string name="menu_update_places_to_work">Update places to work</string>
+
+    <string name="menu_detail_view_add_to_favourites">Add to favourites</string>
+    <string name="menu_detail_view_remove_from_favourites">Remove from favourites</string>
+
+    <string name="menu_detail_view_add_to_offline_mode">Add to offline</string>
+    <string name="menu_detail_view_remove_from_offline_mode">Remove from offline</string>
+
     <!-- Section titles -->
     <string name="section_main_list_title">Home</string>
     <string name="section_favourites_list_title">Favourites</string>
@@ -10,6 +34,31 @@
     <string name="section_search_title">Search</string>
     <string name="section_settings_title">Settings</string>
     <string name="section_about_title">About</string>
+
+    <!-- Filters -->
+    <string name="filter_cheap_text">CHEAP</string>
+    <string name="filter_affordable_text">AFFORDABLE</string>
+    <string name="filter_expensive_text">EXPENSIVE</string>
+
+    <string name="filter_town_text">TOWN</string>
+    <string name="filter_big_city_text">BIG CITY</string>
+    <string name="filter_mega_city_text">MEGA CITY</string>
+
+    <string name="filter_slow_internet_text">SLOW\n INTERNET</string>
+    <string name="filter_good_internet_text">GOOD\n INTERNET</string>
+    <string name="filter_fast_internet_text">FAST\n INTERNET</string>
+
+    <string name="filter_safe_text">SAFE</string>
+    <string name="filter_nightlife_text">NIGHTLIFE</string>
+    <string name="filter_fun_text">FUN</string>
+
+    <string name="filter_places_to_work_text">PLACES\n TO WORK</string>
+    <string name="filter_startup_score_text">STARTUP\n SCORE</string>
+    <string name="filter_english_speaking_text">ENGLISH\n SPEAKING</string>
+
+    <string name="filter_friendly_to_foreigners_text">FRIENDLY\n TO FOREIGNERS</string>
+    <string name="filter_female_friendly_text">FEMALE\n FRIENDLY</string>
+    <string name="filter_gay_friendly_text">GAY\n FRIENDLY</string>
 
     <!-- Settings: General -->
     <string name="settings_general_category_title_text">General</string>
@@ -62,6 +111,92 @@
     <string name="settings_key_other_filters_friendly_to_foreigners_from">other_filters_friendly_to_foreigners_from</string>
     <string name="settings_key_other_filters_female_friendly_from">other_filters_female_friendly_from</string>
     <string name="settings_key_other_filters_gay_friendly_from">other_filters_gay_friendly_from</string>
+
+    <!-- Settings: Quality values  -->
+    <string name="settings_quality_first_title_text">1 - Bad</string>
+    <string name="settings_quality_second_title_text">2 - Not bad</string>
+    <string name="settings_quality_third_title_text">3 - Okay</string>
+    <string name="settings_quality_fourth_title_text">4 - Good</string>
+    <string name="settings_quality_fifth_title_text">5 – Great</string>
+
+    <!-- Settings: Startup Score Quality values -->
+    <string name="settings_startup_score_quality_first_title_text">2 - Bad</string>
+    <string name="settings_startup_score_quality_second_title_text">4 - Not bad</string>
+    <string name="settings_startup_score_quality_third_title_text">6 - Okay</string>
+    <string name="settings_startup_score_quality_fourth_title_text">8 - Good</string>
+    <string name="settings_startup_score_quality_fifth_title_text">10 – Great</string>
+
+    <!-- Settings: Cost of living -->
+    <string name="settings_cost_of_living_category_title_text">Filter - Cost of living</string>
+    <string name="settings_cheap_cost_of_living_title_text">Cheap to (USD / month)</string>
+    <string name="settings_affordable_cost_of_living_title_text">Affordable to (USD / month)</string>
+    <string name="settings_expensive_cost_of_living_title_text">Expensive from (USD / month)</string>
+
+    <string name="settings_cheap_cost_of_living_text">To set the cost of living for cheap filter.</string>
+    <string name="settings_affordable_cost_of_living_text">To set the cost of living for affordable filter.</string>
+    <string name="settings_expensive_cost_of_living_text">To set the cost of living for expensive filter.</string>
+
+    <string name="settings_cheap_cost_of_living_value">1000</string>
+    <string name="settings_affordable_cost_of_living_value">2000</string>
+    <string name="settings_expensive_cost_of_living_value">5000</string>
+
+    <!-- Settings: Population -->
+    <string name="settings_population_category_title_text">Filter - Population</string>
+    <string name="settings_town_population_title_text">Town to (Population)</string>
+    <string name="settings_big_city_population_title_text">Big city to (Population)</string>
+    <string name="settings_mega_city_population_title_text">Mega city from (Population)</string>
+
+    <string name="settings_town_population_text">To set the population for town filter.</string>
+    <string name="settings_big_city_population_text">To set the population for big city filter.</string>
+    <string name="settings_mega_city_population_text">To set the population for mega city filter.</string>
+
+    <string name="settings_town_population_value">5000</string>
+    <string name="settings_big_city_population_value">100000</string>
+    <string name="settings_mega_city_population_value">500000</string>
+
+    <!-- Settings: Internet speed -->
+    <string name="settings_internet_speed_category_title_text">Filter - Internet speed</string>
+    <string name="settings_slow_internet_title_text">Slow internet from (Mbps)</string>
+    <string name="settings_good_internet_title_text">Good internet from (Mbps)</string>
+    <string name="settings_fast_internet_title_text">Fast internet from (Mbps)</string>
+
+    <string name="settings_fast_internet_text">To set the internet speed for fast filter.</string>
+    <string name="settings_good_internet_text">To set the internet speed for good filter.</string>
+    <string name="settings_slow_internet_text">To set the internet speed for slow filter.</string>
+
+    <string name="settings_fast_internet_value">50</string>
+    <string name="settings_good_internet_value">20</string>
+    <string name="settings_slow_internet_value">5</string>
+
+    <!-- Settings: Other filters -->
+    <string name="settings_other_filters_category_title_text">Other filters</string>
+
+    <string name="settings_safe_title_text">Safe (from)</string>
+    <string name="settings_safe_value">3</string>
+
+    <string name="settings_nightlife_title_text">Nightlife (from)</string>
+    <string name="settings_nightlife_value">3</string>
+
+    <string name="settings_fun_title_text">Fun (from)</string>
+    <string name="settings_fun_value">3</string>
+
+    <string name="settings_places_to_work_title_text">Places to work (from)</string>
+    <string name="settings_places_to_work_value">3</string>
+
+    <string name="settings_startup_score_title_text">Startup score (from)</string>
+    <string name="settings_startup_score_value">4</string>
+
+    <string name="settings_english_speaking_title_text">English speaking (from)</string>
+    <string name="settings_english_speaking_value">3</string>
+
+    <string name="settings_friendly_to_foreigners_title_text">Friendly to foreigners (from)</string>
+    <string name="settings_friendly_to_foreigners_value">3</string>
+
+    <string name="settings_female_friendly_title_text">Female friendly (from)</string>
+    <string name="settings_female_friendly_value">3</string>
+
+    <string name="settings_gay_friendly_title_text">Gay friendly (from)</string>
+    <string name="settings_gay_friendly_value">3</string>
 
     <!-- City item -->
     <string name="city_item_title_placeholder">Berlin</string>

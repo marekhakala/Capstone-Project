@@ -1,15 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar" />
 
-    <LinearLayout
-        android:orientation="vertical"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Filters: Cheap/Affordable/Expensive -->
+            <com.marekhakala.mynomadlifeapp.UI.Component.FilterSingleSelectionButtons
+                android:id="@+id/filter_cheap_affordable_expensive_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/FilterButtonsRow"
+                app:ssbpFirstButton="@string/filter_cheap_text"
+                app:ssbpSecondButton="@string/filter_affordable_text"
+                app:ssbpThirdButton="@string/filter_expensive_text" />
+
+            <!-- Filters: Town/Big city/Mega city -->
+            <com.marekhakala.mynomadlifeapp.UI.Component.FilterSingleSelectionButtons
+                android:id="@+id/filter_town_big_city_mega_city_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/FilterButtonsRow"
+                app:ssbpFirstButton="@string/filter_town_text"
+                app:ssbpSecondButton="@string/filter_big_city_text"
+                app:ssbpThirdButton="@string/filter_mega_city_text" />
+
+            <!-- Filters: Slow/Good/Fast internet -->
+            <com.marekhakala.mynomadlifeapp.UI.Component.FilterSingleSelectionButtons
+                android:id="@+id/filter_internet_slow_good_fast_city_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/FilterButtonsRow"
+                app:ssbpFirstButton="@string/filter_slow_internet_text"
+                app:ssbpSecondButton="@string/filter_good_internet_text"
+                app:ssbpThirdButton="@string/filter_fast_internet_text" />
+
+            <!-- Filters: Safe/Nightlife/Fun -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/filter_safe_nightlife_fun_height"
+                style="@style/FilterButtonsRow">
+
+                <com.marekhakala.mynomadlifeapp.UI.Component.FilterSingleButton
+                    android:id="@+id/filter_safe_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/filter_safe_text" />
+
+                <View
+                    android:layout_width="@dimen/filter_width_span"
+                    android:layout_height="wrap_content" />
+
+                <com.marekhakala.mynomadlifeapp.UI.Component.FilterSingleButton
+                    android:id="@+id/filter_nightlife_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/filter_nightlife_text" />
+
+                <View
+                    android:layout_width="@dimen/filter_width_span"
+                    android:layout_height="wrap_content" />
+
+                <com.marekhakala.mynomadlifeapp.UI.Component.FilterSingleButton
+                    android:id="@+id/filter_fun_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/filter_fun_text" />
+            </LinearLayout>
+
+            <!-- Filters: Places to work/Startup score/English speaking -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/filter_places_to_work_startup_score_english_speaking_height"
+                style="@style/FilterButtonsRow">
+
+                <com.marekhakala.mynomadlifeapp.UI.Component.FilterSingleButton
+                    android:id="@+id/filter_places_to_work_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/filter_places_to_work_text" />
+
+                <View
+                    android:layout_width="@dimen/filter_width_span"
+                    android:layout_height="wrap_content" />
+
+                <com.marekhakala.mynomadlifeapp.UI.Component.FilterSingleButton
+                    android:id="@+id/filter_startup_score_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/filter_startup_score_text" />
+
+                <View
+                    android:layout_width="@dimen/filter_width_span"
+                    android:layout_height="wrap_content" />
+
+                <com.marekhakala.mynomadlifeapp.UI.Component.FilterSingleButton
+                    android:id="@+id/filter_english_speaking_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/filter_english_speaking_text" />
+            </LinearLayout>
+
+            <!-- Filters: Friendly to foreigners/Female friendly/Gay friendly -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/filter_friendly_to_foreigners_female_gay_friendly_height"
+                style="@style/FilterButtonsRow">
+
+                <com.marekhakala.mynomadlifeapp.UI.Component.FilterSingleButton
+                    android:id="@+id/filter_friendly_to_foreigners_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/filter_friendly_to_foreigners_text" />
+
+                <View
+                    android:layout_width="@dimen/filter_width_span"
+                    android:layout_height="wrap_content" />
+
+                <com.marekhakala.mynomadlifeapp.UI.Component.FilterSingleButton
+                    android:id="@+id/filter_female_friendly_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/filter_female_friendly_text" />
+
+                <View
+                    android:layout_width="@dimen/filter_width_span"
+                    android:layout_height="wrap_content" />
+
+                <com.marekhakala.mynomadlifeapp.UI.Component.FilterSingleButton
+                    android:id="@+id/filter_gay_friendly_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/filter_gay_friendly_text" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/filter_height_span" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

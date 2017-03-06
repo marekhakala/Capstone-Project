@@ -12,5 +12,185 @@
             android:entries="@array/listStartupScreensArray"
             android:entryValues="@array/listStartupScreensValues"
             android:key="@string/settings_key_startup_screen" />
+
+        <ListPreference
+            android:title="@string/settings_temperature_unit_title_text"
+            android:summary="@string/settings_temperature_unit_text"
+            android:defaultValue="@string/settings_temperature_fahrenheit_unit_value"
+            android:entries="@array/listUnitsArray"
+            android:entryValues="@array/listUnitsValues"
+            android:key="@string/settings_key_temperature_unit_type" />
+
+        <CheckBoxPreference
+            android:title="@string/settings_offline_mode_auto_updates_images_title_text"
+            android:defaultValue="true"
+            android:summary="@string/settings_offline_mode_auto_updates_images_text"
+            android:key="@string/settings_key_offline_mode_auto_updates_images" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_cost_of_living_category_title_text">
+
+        <EditTextPreference
+            android:title="@string/settings_cheap_cost_of_living_title_text"
+            android:summary="@string/settings_cheap_cost_of_living_text"
+            android:defaultValue="@string/settings_cheap_cost_of_living_value"
+            android:inputType="number"
+            android:numeric="integer"
+            android:key="@string/settings_key_cheap_cost_of_living_from" />
+
+        <EditTextPreference
+            android:title="@string/settings_affordable_cost_of_living_title_text"
+            android:summary="@string/settings_affordable_cost_of_living_text"
+            android:defaultValue="@string/settings_affordable_cost_of_living_value"
+            android:inputType="number"
+            android:numeric="integer"
+            android:key="@string/settings_key_affordable_cost_of_living_from" />
+
+        <EditTextPreference
+            android:title="@string/settings_expensive_cost_of_living_title_text"
+            android:summary="@string/settings_expensive_cost_of_living_text"
+            android:defaultValue="@string/settings_expensive_cost_of_living_value"
+            android:inputType="number"
+            android:numeric="integer"
+            android:key="@string/settings_key_expensive_cost_of_living_from" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_population_category_title_text">
+
+        <EditTextPreference
+            android:title="@string/settings_town_population_title_text"
+            android:summary="@string/settings_town_population_text"
+            android:defaultValue="@string/settings_town_population_value"
+            android:inputType="number"
+            android:numeric="integer"
+            android:key="@string/settings_key_town_population_from" />
+
+        <EditTextPreference
+            android:title="@string/settings_big_city_population_title_text"
+            android:summary="@string/settings_big_city_population_text"
+            android:defaultValue="@string/settings_big_city_population_value"
+            android:inputType="number"
+            android:numeric="integer"
+            android:key="@string/settings_key_big_city_population_from" />
+
+        <EditTextPreference
+            android:title="@string/settings_mega_city_population_title_text"
+            android:summary="@string/settings_mega_city_population_text"
+            android:defaultValue="@string/settings_mega_city_population_value"
+            android:inputType="number"
+            android:numeric="integer"
+            android:key="@string/settings_key_mega_city_from" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_internet_speed_category_title_text">
+
+        <EditTextPreference
+            android:title="@string/settings_slow_internet_title_text"
+            android:summary="@string/settings_slow_internet_text"
+            android:defaultValue="@string/settings_slow_internet_value"
+            android:inputType="number"
+            android:numeric="integer"
+            android:key="@string/settings_key_slow_internet_from" />
+
+        <EditTextPreference
+            android:title="@string/settings_good_internet_title_text"
+            android:summary="@string/settings_good_internet_text"
+            android:defaultValue="@string/settings_good_internet_value"
+            android:inputType="number"
+            android:numeric="integer"
+            android:key="@string/settings_key_good_internet_from" />
+
+        <EditTextPreference
+            android:title="@string/settings_fast_internet_title_text"
+            android:summary="@string/settings_fast_internet_text"
+            android:defaultValue="@string/settings_fast_internet_value"
+            android:inputType="number"
+            android:numeric="integer"
+            android:key="@string/settings_key_fast_internet_from" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings_other_filters_category_title_text">
+
+        <ListPreference
+            android:title="@string/settings_safe_title_text"
+            android:defaultValue="@string/settings_safe_value"
+            android:entries="@array/listOtherFiltersArray"
+            android:entryValues="@array/listOtherFiltersValues"
+            android:inputType="number"
+            android:numeric="integer"
+            android:key="@string/settings_key_other_filters_safe_from" />
+
+        <ListPreference
+            android:title="@string/settings_nightlife_title_text"
+            android:defaultValue="@string/settings_nightlife_value"
+            android:entries="@array/listOtherFiltersArray"
+            android:entryValues="@array/listOtherFiltersValues"
+            android:inputType="number"
+            android:numeric="integer"
+            android:key="@string/settings_key_other_filters_nightlife_from" />
+
+        <ListPreference
+            android:title="@string/settings_fun_title_text"
+            android:defaultValue="@string/settings_fun_value"
+            android:entries="@array/listOtherFiltersArray"
+            android:entryValues="@array/listOtherFiltersValues"
+            android:inputType="number"
+            android:numeric="integer"
+            android:key="@string/settings_key_other_filters_fun_from" />
+
+        <ListPreference
+            android:title="@string/settings_places_to_work_title_text"
+            android:defaultValue="@string/settings_places_to_work_value"
+            android:entries="@array/listOtherFiltersArray"
+            android:entryValues="@array/listOtherFiltersValues"
+            android:inputType="number"
+            android:numeric="integer"
+            android:key="@string/settings_key_other_filters_places_to_work_from" />
+
+        <ListPreference
+            android:title="@string/settings_startup_score_title_text"
+            android:defaultValue="@string/settings_startup_score_value"
+            android:entries="@array/listStartupScoreFilterArray"
+            android:entryValues="@array/listStartupScoreFilterValues"
+            android:inputType="numberDecimal"
+            android:key="@string/settings_key_other_filters_startup_score_from" />
+
+        <ListPreference
+            android:title="@string/settings_english_speaking_title_text"
+            android:defaultValue="@string/settings_english_speaking_value"
+            android:entries="@array/listOtherFiltersArray"
+            android:entryValues="@array/listOtherFiltersValues"
+            android:inputType="number"
+            android:numeric="integer"
+            android:key="@string/settings_key_other_filters_english_speaking_from" />
+
+        <ListPreference
+            android:title="@string/settings_friendly_to_foreigners_title_text"
+            android:defaultValue="@string/settings_friendly_to_foreigners_value"
+            android:entries="@array/listOtherFiltersArray"
+            android:entryValues="@array/listOtherFiltersValues"
+            android:inputType="number"
+            android:numeric="integer"
+            android:key="@string/settings_key_other_filters_friendly_to_foreigners_from" />
+
+        <ListPreference
+            android:title="@string/settings_female_friendly_title_text"
+            android:defaultValue="@string/settings_female_friendly_value"
+            android:entries="@array/listOtherFiltersArray"
+            android:entryValues="@array/listOtherFiltersValues"
+            android:inputType="number"
+            android:numeric="integer"
+            android:key="@string/settings_key_other_filters_female_friendly_from" />
+
+        <ListPreference
+            android:title="@string/settings_gay_friendly_title_text"
+            android:defaultValue="@string/settings_gay_friendly_value"
+            android:entries="@array/listOtherFiltersArray"
+            android:entryValues="@array/listOtherFiltersValues"
+            android:inputType="number"
+            android:numeric="integer"
+            android:key="@string/settings_key_other_filters_gay_friendly_from" />
     </PreferenceCategory>
 </PreferenceScreen>

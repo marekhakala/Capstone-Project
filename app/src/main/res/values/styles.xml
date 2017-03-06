@@ -153,6 +153,13 @@
         <item name="android:clickable">true</item>
     </style>
 
+    <!-- Filter -->
+    <style name="FilterButtonsRow">
+        <item name="android:paddingTop">@dimen/filter_button_row_padding_top</item>
+        <item name="android:paddingStart">@dimen/filter_button_row_padding_start</item>
+        <item name="android:paddingEnd">@dimen/filter_button_row_padding_end</item>
+    </style>
+
     <!-- Place to Work  -->
     <style name="CityItemPlaceToWorkItemName">
         <item name="android:layout_marginTop">@dimen/item_city_detail_view_place_to_work_title_margin_top</item>

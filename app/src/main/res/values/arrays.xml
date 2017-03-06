@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="listUnitsArray">
+        <item>@string/settings_temperature_celsius_unit_text</item>
+        <item>@string/settings_temperature_fahrenheit_unit_text</item>
+    </string-array>
+
+    <string-array name="listUnitsValues">
+        <item>@string/settings_temperature_celsius_unit_value</item>
+        <item>@string/settings_temperature_fahrenheit_unit_value</item>
+    </string-array>
+
     <string-array name="listStartupScreensArray">
         <item>@string/settings_startup_screen_home_text</item>
         <item>@string/settings_startup_screen_favourites_text</item>
@@ -10,5 +20,37 @@
         <item>@string/settings_startup_screen_home_value</item>
         <item>@string/settings_startup_screen_favourites_value</item>
         <item>@string/settings_startup_screen_offline_mode_value</item>
+    </string-array>
+
+    <string-array name="listOtherFiltersArray">
+        <item>@string/settings_quality_first_title_text</item>
+        <item>@string/settings_quality_second_title_text</item>
+        <item>@string/settings_quality_third_title_text</item>
+        <item>@string/settings_quality_fourth_title_text</item>
+        <item>@string/settings_quality_fifth_title_text</item>
+    </string-array>
+
+    <string-array name="listOtherFiltersValues">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="listStartupScoreFilterArray">
+        <item>@string/settings_startup_score_quality_first_title_text</item>
+        <item>@string/settings_startup_score_quality_second_title_text</item>
+        <item>@string/settings_startup_score_quality_third_title_text</item>
+        <item>@string/settings_startup_score_quality_fourth_title_text</item>
+        <item>@string/settings_startup_score_quality_fifth_title_text</item>
+    </string-array>
+
+    <string-array name="listStartupScoreFilterValues">
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
+        <item>10</item>
     </string-array>
 </resources>
