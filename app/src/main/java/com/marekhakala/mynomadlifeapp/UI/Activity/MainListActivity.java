@@ -6,9 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.marekhakala.mynomadlifeapp.AppComponent;
+import com.marekhakala.mynomadlifeapp.DataModel.CityEntity;
+import com.marekhakala.mynomadlifeapp.DataModel.CityOfflineEntity;
 import com.marekhakala.mynomadlifeapp.R;
 import com.marekhakala.mynomadlifeapp.UI.Fragment.AbstractBaseFragment;
 import com.marekhakala.mynomadlifeapp.UI.Fragment.AbstractListFragment;
@@ -28,8 +32,9 @@ import butterknife.Bind;
 import static com.marekhakala.mynomadlifeapp.Utilities.ConstantValues.FAVOURITES_SECTION_CODE;
 import static com.marekhakala.mynomadlifeapp.Utilities.ConstantValues.MAIN_SECTION_CODE;
 import static com.marekhakala.mynomadlifeapp.Utilities.ConstantValues.OFFLINE_MODE_SECTION_CODE;
+import static com.marekhakala.mynomadlifeapp.Utilities.ConstantValues.SEARCH_SECTION_CODE;
 
-public class MainListActivity extends AbstractBaseActivity {
+public class MainListActivity extends AbstractBaseActivity implements AbstractListFragment.Listener {
 
     public interface OnFragmentActionsListener {
         void onGoToTop();
@@ -37,11 +42,10 @@ public class MainListActivity extends AbstractBaseActivity {
         void onReloadDataFromCache();
     }
 
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
+    @Bind(R.id.toolbar) Toolbar mToolbar;
 
     public static final String ACTIVITY_TAG = "activity_main_list";
-    public static final String EXTRA_SECTION = "current_section";
+    public static final String EXTRA_SECTION = "currentSection";
 
     // Sections
     protected Drawer drawer = null;
@@ -56,6 +60,7 @@ public class MainListActivity extends AbstractBaseActivity {
     public static final int SETTINGS_REQUEST_CODE = 104;
     public static final int DETAIL_VIEW_REQUEST_CODE = 105;
     public static final int ABOUT_APP_REQUEST_CODE = 106;
+
 
     // Sections - Result codes
     public static final int LIST_VIEW_RESULT_CODE = 301;
@@ -87,6 +92,49 @@ public class MainListActivity extends AbstractBaseActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch(resultCode) {
+            case DETAIL_VIEW_RESULT_CODE:
+                mListener.onReloadDataFromCache();
+                break;
+
+            case SEARCH_RESULT_CODE:
+                mListener.onReloadDataFromCache();
+                break;
+
+            case FILTER_RESULT_CODE:
+                if(data.hasExtra(FilterActivity.FILTER_CHANGES_APPLIED)
+                        && data.getBooleanExtra(FilterActivity.FILTER_CHANGES_APPLIED, false)) {
+                    mListener.onReloadData();
+                }
+
+                break;
+
+            case SETTINGS_RESULT_CODE:
+                if(data.hasExtra(SettingsActivity.EXTRA_TEMPERATURE_UNIT_TYPE_CHANGED)) {
+                    if(data.hasExtra(SettingsActivity.EXTRA_FILTER_VALUES_CHANGED))
+                        mListener.onReloadData();
+                    else
+                        mListener.onReloadDataFromCache();
+                }
+                break;
+
+            case ABOUT_APP_RESULT_CODE:
+                if(data.hasExtra(MainListActivity.EXTRA_SECTION)) {
+                    mSectionClickEnabled = false;
+                    setupSectionFromBundle(data.getStringExtra(MainListActivity.EXTRA_SECTION));
+                    mSectionClickEnabled = true;
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle bandle) {
         super.onSaveInstanceState(bandle);
 
@@ -94,6 +142,46 @@ public class MainListActivity extends AbstractBaseActivity {
             mCurrentSection = MAIN_SECTION_CODE;
 
         bandle.putString(EXTRA_SECTION, mCurrentSection);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_activity_main_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.menu_main_list_go_to_top:
+                if(mListener != null)
+                    mListener.onGoToTop();
+                return true;
+            case R.id.menu_main_list_refresh:
+                if(mListener != null)
+                    mListener.onReloadData();
+                return true;
+            case R.id.menu_main_list_search:
+                startActivityForSection(new Intent(this, SearchActivity.class),
+                        SEARCH_SECTION_CODE, SEARCH_REQUEST_CODE);
+                return true;
+            case R.id.menu_favourites_refresh:
+                if(mListener != null)
+                    mListener.onReloadData();
+                return true;
+            case R.id.menu_offline_mode_refresh:
+                if(mListener != null)
+                    mListener.onReloadData();
+                return true;
+            case R.id.menu_settings:
+                startActivityForSection(new Intent(this, SettingsActivity.class),
+                        ConstantValues.SETTINGS_SECTION_CODE, SETTINGS_REQUEST_CODE);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     protected void setupSection(String section) {
@@ -313,4 +401,23 @@ public class MainListActivity extends AbstractBaseActivity {
     protected void setupComponent(AppComponent component) {
         component.inject(this);
     }
+
+    @Override
+    public void onCitySelected(CityEntity entity, View view) {
+        Intent intent = new Intent(this, DetailViewActivity.class);
+        intent.putExtra(ConstantValues.EXTRA_ITEM_CITY_TYPE, ConstantValues.CITY_ENTITY);
+        intent.putExtra(ConstantValues.EXTRA_ITEM_CITY, entity);
+        intent.putExtra(EXTRA_SECTION, mCurrentSection);
+        startActivityForResult(intent, DETAIL_VIEW_REQUEST_CODE);
+    }
+
+    @Override
+    public void onCitySelected(CityOfflineEntity entity, View view) {
+        Intent intent = new Intent(this, OfflineDetailViewActivity.class);
+        intent.putExtra(ConstantValues.EXTRA_ITEM_CITY_TYPE, ConstantValues.CITY_ENTITY);
+        intent.putExtra(ConstantValues.EXTRA_ITEM_CITY, entity);
+        intent.putExtra(EXTRA_SECTION, mCurrentSection);
+        startActivityForResult(intent, DETAIL_VIEW_REQUEST_CODE);
+    }
 }
+

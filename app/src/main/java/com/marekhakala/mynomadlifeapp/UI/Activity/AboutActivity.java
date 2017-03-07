@@ -14,9 +14,7 @@ import butterknife.Bind;
 
 public class AboutActivity extends AbstractBaseActivity {
 
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
-
+    @Bind(R.id.toolbar) Toolbar mToolbar;
     public static final String ACTIVITY_TAG = "activity_about";
 
     protected String mCurrentSection = ConstantValues.ABOUT_SECTION_CODE;
