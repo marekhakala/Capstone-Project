@@ -14,6 +14,7 @@ import com.marekhakala.mynomadlifeapp.R;
 import com.marekhakala.mynomadlifeapp.UI.Component.FilterSingleButton;
 import com.marekhakala.mynomadlifeapp.UI.Component.FilterSingleSelectionButtons;
 import com.marekhakala.mynomadlifeapp.Utilities.ConstantValues;
+
 import butterknife.Bind;
 
 public class FilterActivity extends AbstractBaseActivity {

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Line -->
+    <dimen name="line_container">13dp</dimen>
+    <dimen name="line_trailer_container">80dp</dimen>
+
     <!-- Text size -->
     <dimen name="text_size_micro">12sp</dimen>
     <dimen name="text_size_small">14sp</dimen>
@@ -83,6 +87,9 @@
     <item name="wrap_content" type="dimen">-2</item>
     <dimen name="item_city_detail_view_appbar_height">256dp</dimen>
 
+    <!-- Toolbar -->
+    <dimen name="toolbar_elevation">10dp</dimen>
+
     <!-- Filter Activity -->
     <dimen name="filter_width_span">5dp</dimen>
     <dimen name="filter_height_span">15dp</dimen>
@@ -127,6 +134,9 @@
     <dimen name="loading_layout_detail_height">32dp</dimen>
     <dimen name="loading_layout_detail_width">32dp</dimen>
 
-    <!-- Toolbar -->
-    <dimen name="toolbar_elevation">10dp</dimen>
+    <!-- About app -->
+    <dimen name="about_app_name_padding_top">15dp</dimen>
+    <dimen name="about_app_copyright_padding_top">10dp</dimen>
+    <dimen name="about_app_copyright_padding_bottom">10dp</dimen>
+    <dimen name="about_app_description">25dp</dimen>
 </resources>

@@ -22,6 +22,7 @@ import com.marekhakala.mynomadlifeapp.Repository.Arguments.CostPerMonthArguments
 import com.marekhakala.mynomadlifeapp.Repository.Arguments.InternetSpeedArguments;
 import com.marekhakala.mynomadlifeapp.Repository.Arguments.OtherFiltersArguments;
 import com.marekhakala.mynomadlifeapp.Repository.Arguments.PopulationArguments;
+import com.marekhakala.mynomadlifeapp.UI.Activity.FilterActivity;
 import com.marekhakala.mynomadlifeapp.Utilities.ConstantValues;
 import com.marekhakala.mynomadlifeapp.Utilities.UtilityHelper;
 
@@ -330,21 +331,132 @@ public class RepositoryHelpers {
 
     public static CostPerMonthArguments prepareCostPerMonthArguments(Context context, SharedPreferences settings) {
         CostPerMonthArguments arguments = new CostPerMonthArguments();
+        Integer cheapAffordableExpensiveState = settings.getInt(FilterActivity.FILTER_CHEAP_AFFORDABLE_EXPENSIVE_STATE, FilterActivity.FILTER_BUTTONS_NONE_STATE);
+
+        if(cheapAffordableExpensiveState != -1) {
+            String cheapCostOfLiving = context.getString(R.string.settings_key_cheap_cost_of_living_from);
+            String affordableCostOfLiving = context.getApplicationContext().getString(R.string.settings_key_affordable_cost_of_living_from);
+            String expensiveCostOfLiving = context.getApplicationContext().getString(R.string.settings_key_expensive_cost_of_living_from);
+
+            if(cheapAffordableExpensiveState == 0) {
+                arguments.setCostPerMonthTo(UtilityHelper.settingsStringToFloat(settings, cheapCostOfLiving,
+                        Float.valueOf(context.getString(R.string.settings_cheap_cost_of_living_value))));
+            } else if(cheapAffordableExpensiveState == 1) {
+                arguments.setCostPerMonthTo(UtilityHelper.settingsStringToFloat(settings, affordableCostOfLiving,
+                        Float.valueOf(context.getString(R.string.settings_affordable_cost_of_living_value))));
+            } else if(cheapAffordableExpensiveState == 2) {
+                arguments.setCostPerMonthFrom(UtilityHelper.settingsStringToFloat(settings, expensiveCostOfLiving,
+                        Float.valueOf(context.getString(R.string.settings_expensive_cost_of_living_value))));
+            }
+        }
         return arguments;
     }
 
     public static PopulationArguments preparePopulationArguments(Context context, SharedPreferences settings) {
         PopulationArguments arguments = new PopulationArguments();
+        Integer townBigCityMegaCityState = settings.getInt(FilterActivity.FILTER_TOWN_BIG_CITY_MEGA_CITY_STATE, FilterActivity.FILTER_BUTTONS_NONE_STATE);
+
+        if(townBigCityMegaCityState != -1) {
+            String townPopulation = context.getString(R.string.settings_key_town_population_from);
+            String bigCityPopulation = context.getString(R.string.settings_key_big_city_population_from);
+            String megaCityPopulation = context.getString(R.string.settings_key_mega_city_from);
+
+            if(townBigCityMegaCityState == 0) {
+                arguments.setPopulationTo(UtilityHelper.settingsStringToLong(settings, townPopulation,
+                        Long.valueOf(context.getString(R.string.settings_town_population_value))));
+            } else if(townBigCityMegaCityState == 1) {
+                arguments.setPopulationTo(UtilityHelper.settingsStringToLong(settings, bigCityPopulation,
+                        Long.valueOf(context.getString(R.string.settings_mega_city_population_value))));
+            } else if(townBigCityMegaCityState == 2) {
+                arguments.setPopulationFrom(UtilityHelper.settingsStringToLong(settings, megaCityPopulation,
+                        Long.valueOf(context.getString(R.string.settings_big_city_population_value))));
+            }
+        }
+
         return arguments;
     }
 
     public static InternetSpeedArguments prepareInternetSpeedArguments(Context context, SharedPreferences settings) {
         InternetSpeedArguments arguments = new InternetSpeedArguments();
+        Integer internetSlowGoodFastState = settings.getInt(FilterActivity.FILTER_INTERNET_SLOW_GOOD_FAST_CITY_STATE, FilterActivity.FILTER_BUTTONS_NONE_STATE);
+
+        if(internetSlowGoodFastState != -1) {
+            String slowInternetSpeed = context.getString(R.string.settings_key_slow_internet_from);
+            String goodInternetSpeed = context.getString(R.string.settings_key_good_internet_from);
+            String fastInternetSpeed = context.getString(R.string.settings_key_fast_internet_from);
+
+            if(internetSlowGoodFastState == 0) {
+                arguments.setInternetSpeedFrom(UtilityHelper.settingsStringToInt(settings, slowInternetSpeed,
+                        Integer.valueOf(context.getString(R.string.settings_slow_internet_value))));
+            } else if(internetSlowGoodFastState == 1) {
+                arguments.setInternetSpeedFrom(UtilityHelper.settingsStringToInt(settings, goodInternetSpeed,
+                        Integer.valueOf(context.getString(R.string.settings_good_internet_value))));
+            } else if(internetSlowGoodFastState == 2) {
+                arguments.setInternetSpeedFrom(UtilityHelper.settingsStringToInt(settings, fastInternetSpeed,
+                        Integer.valueOf(context.getString(R.string.settings_fast_internet_value))));
+            }
+        }
+
         return arguments;
     }
 
     public static OtherFiltersArguments prepareOtherFiltersArguments(Context context, SharedPreferences settings) {
         OtherFiltersArguments arguments = new OtherFiltersArguments();
+
+        if(settings.getBoolean(FilterActivity.FILTER_SAFE_STATE, false)) {
+            String safeFrom = context.getString(R.string.settings_key_other_filters_safe_from);
+            arguments.setSafetyFrom(UtilityHelper.settingsStringToInt(settings, safeFrom,
+                    Integer.valueOf(context.getString(R.string.settings_safe_value))));
+        }
+
+        if(settings.getBoolean(FilterActivity.FILTER_NIGHTLIFE_STATE, false)) {
+            String nightlifeFrom = context.getString(R.string.settings_key_other_filters_nightlife_from);
+            arguments.setNightlifeFrom(UtilityHelper.settingsStringToInt(settings, nightlifeFrom,
+                    Integer.valueOf(context.getString(R.string.settings_nightlife_value))));
+        }
+
+        if(settings.getBoolean(FilterActivity.FILTER_PLACES_TO_WORK_STATE, false)) {
+            String placesToWorkFrom = context.getString(R.string.settings_key_other_filters_places_to_work_from);
+            arguments.setPlacesToWorkFrom(UtilityHelper.settingsStringToInt(settings, placesToWorkFrom,
+                    Integer.valueOf(context.getString(R.string.settings_places_to_work_value))));
+        }
+
+        if(settings.getBoolean(FilterActivity.FILTER_FUN_STATE, false)) {
+            String funFrom = context.getString(R.string.settings_key_other_filters_fun_from);
+            arguments.setFunFrom(UtilityHelper.settingsStringToInt(settings, funFrom,
+                    Integer.valueOf(context.getString(R.string.settings_fun_value))));
+        }
+
+        if(settings.getBoolean(FilterActivity.FILTER_ENGLISH_SPEAKING_STATE, false)) {
+            String englishSpeakingFrom = context.getString(R.string.settings_key_other_filters_english_speaking_from);
+            arguments.setEnglishSpeakingFrom(UtilityHelper.settingsStringToInt(settings, englishSpeakingFrom,
+                    Integer.valueOf(context.getString(R.string.settings_english_speaking_value))));
+        }
+
+        if(settings.getBoolean(FilterActivity.FILTER_STARTUP_SCORE_STATE, false)) {
+            String startupScoreFrom = context.getString(R.string.settings_key_other_filters_startup_score_from);
+            arguments.setStartupScoreFrom(UtilityHelper.settingsStringToFloat(settings, startupScoreFrom,
+                    Float.valueOf(context.getString(R.string.settings_startup_score_value))));
+        }
+
+        if(settings.getBoolean(FilterActivity.FILTER_FRIENDLY_TO_FOREIGNERS_STATE, false)) {
+            String friendlyToForeignersFrom = context.getString(R.string.settings_key_other_filters_friendly_to_foreigners_from);
+            arguments.setFriendlyToForeignersFrom(UtilityHelper.settingsStringToInt(settings, friendlyToForeignersFrom,
+                    Integer.valueOf(context.getString(R.string.settings_friendly_to_foreigners_value))));
+        }
+
+        if(settings.getBoolean(FilterActivity.FILTER_FEMALE_FRIENDLY_STATE, false)) {
+            String femaleFriendlyFrom = context.getString(R.string.settings_key_other_filters_female_friendly_from);
+            arguments.setFemaleFriendlyFrom(UtilityHelper.settingsStringToInt(settings, femaleFriendlyFrom,
+                    Integer.valueOf(context.getString(R.string.settings_female_friendly_value))));
+        }
+
+        if(settings.getBoolean(FilterActivity.FILTER_GAY_FRIENDLY_STATE, false)) {
+            String gayFriendlyFrom = context.getString(R.string.settings_key_other_filters_gay_friendly_from);
+            arguments.setGayFriendlyFrom(UtilityHelper.settingsStringToInt(settings, gayFriendlyFrom,
+                    Integer.valueOf(context.getString(R.string.settings_gay_friendly_value))));
+        }
+
         return arguments;
     }
 

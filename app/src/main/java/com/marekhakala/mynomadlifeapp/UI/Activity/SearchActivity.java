@@ -14,7 +14,7 @@ import com.marekhakala.mynomadlifeapp.DataModel.CityEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityOfflineEntity;
 import com.marekhakala.mynomadlifeapp.R;
 import com.marekhakala.mynomadlifeapp.Repository.IMyNomadLifeRepository;
-import com.marekhakala.mynomadlifeapp.UI.Adapter.AbstractDataSourceRecyclerViewAdapter;
+import com.marekhakala.mynomadlifeapp.UI.Adapter.AbstractDataSourceRecyclerViewAdapter.StateType;
 import com.marekhakala.mynomadlifeapp.UI.Adapter.CitiesDSRecyclerViewAdapter;
 import com.marekhakala.mynomadlifeapp.UI.Component.DataSourceRecyclerView;
 import com.marekhakala.mynomadlifeapp.UI.Component.OnCityItemClickListener;
@@ -98,7 +98,9 @@ public class SearchActivity extends AbstractBaseActivity implements
             else
                 mSearchResults = new ArrayList<>();
 
-            mCurrentPage = bundle.getInt(EXTRA_STATE_CURRENT_PAGE, 1);
+            if(bundle != null)
+                mCurrentPage = bundle.getInt(EXTRA_STATE_CURRENT_PAGE, 1);
+
             mReturnSection = bundle.getString(MainListActivity.EXTRA_SECTION, ConstantValues.MAIN_SECTION_CODE);
             restoreUi();
         }
@@ -193,7 +195,7 @@ public class SearchActivity extends AbstractBaseActivity implements
     protected void loadDataFromAPI(Integer page, boolean loadMore) {
         if (!mSearchData) {
             mSearchData = true;
-            mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.LOADING_STATE);
+            mAdapter.setCurrentState(StateType.LOADING_STATE);
 
             if (mSubscription != null)
                 mSubscription.unsubscribe();
@@ -209,7 +211,7 @@ public class SearchActivity extends AbstractBaseActivity implements
                         UtilityHelper.closeDatabase(realm);
                     }, throwable -> {
                         mSearchResults = new ArrayList<>();
-                        mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.ERROR_STATE);
+                        mAdapter.setCurrentState(StateType.ERROR_STATE);
                         mSearchData = false;
                         UtilityHelper.closeDatabase(realm);
                     });
@@ -218,7 +220,7 @@ public class SearchActivity extends AbstractBaseActivity implements
 
     private void loadDataFromCache() {
         mSearchData = true;
-        mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.LOADING_STATE);
+        mAdapter.setCurrentState(StateType.LOADING_STATE);
 
         Realm realm = mRepository.getRealm();
 
@@ -243,7 +245,7 @@ public class SearchActivity extends AbstractBaseActivity implements
                     UtilityHelper.closeDatabase(realm);
                 }, throwable -> {
                     mSearchResults = new ArrayList<>();
-                    mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.ERROR_STATE);
+                    mAdapter.setCurrentState(StateType.ERROR_STATE);
                     mSearchData = false;
                     UtilityHelper.closeDatabase(realm);
                 });

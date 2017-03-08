@@ -11,8 +11,8 @@ import com.marekhakala.mynomadlifeapp.DataModel.CitiesResultEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityOfflineEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.ImageResponseBodyEntity;
-import com.marekhakala.mynomadlifeapp.R;
 import com.marekhakala.mynomadlifeapp.RealmDataModel.CityFavouriteSlug;
+import com.marekhakala.mynomadlifeapp.R;
 import com.marekhakala.mynomadlifeapp.RealmDataModel.CityOfflineImage;
 import com.marekhakala.mynomadlifeapp.RealmDataModel.CityOfflineSlug;
 import com.marekhakala.mynomadlifeapp.Repository.RepositoryHelpers;
@@ -91,6 +91,18 @@ public class UtilityHelper {
         return UtilityHelper.getPriceValueNormal(priceValueHolder, context);
     }
 
+    public static String cityIdFactory(CityFavouriteSlug result) {
+        return result.getSlug();
+    }
+
+    public static String cityIdFactory(CityOfflineSlug result) {
+        return result.getSlug();
+    }
+
+    public static int getIntegerFromDoublePercentage(Double value) {
+        return (int) Math.round(value*10);
+    }
+
     public static Map<String, String> getCurrencies(Context context) {
         Map<String, String> CURRENCIES = new HashMap<>();
 
@@ -144,6 +156,36 @@ public class UtilityHelper {
         }
     }
 
+    public static CitiesResultEntity setupFavouriteOfflineItems(CitiesResultEntity result,
+                                                                List<String> favouriteSlugs, List<String> offlineSlugs) {
+        for(CityEntity city : result.getEntries()) {
+            city.setFavourite(favouriteSlugs.contains(city.getSlug()));
+            city.setOffline(offlineSlugs.contains(city.getSlug()));
+        }
+
+        return result;
+    }
+
+    public static List<CityEntity> setupFavouriteOfflineItems(List<CityEntity> cityEntities,
+                                                              List<String> favouriteSlugs, List<String> offlineSlugs) {
+         for(CityEntity city : cityEntities) {
+             city.setFavourite(favouriteSlugs.contains(city.getSlug()));
+            city.setOffline(offlineSlugs.contains(city.getSlug()));
+        }
+
+        return cityEntities;
+    }
+
+    public static List<CityOfflineEntity> setupOfflineFavouriteOfflineItems(List<CityOfflineEntity> cityEntities,
+                                                                            List<String> favouriteSlugs, List<String> offlineSlugs) {
+        for(CityOfflineEntity city : cityEntities) {
+            city.setFavourite(favouriteSlugs.contains(city.getSlug()));
+            city.setOffline(offlineSlugs.contains(city.getSlug()));
+        }
+
+        return cityEntities;
+    }
+
     public static byte[] bitmapToByteArray(Bitmap image) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.PNG, 90, stream);
@@ -159,9 +201,9 @@ public class UtilityHelper {
         return formatter.format(population);
     }
 
-    public static void setupImageFromDatabase(CityOfflineImage cityOfflineImage, CityOfflineEntity cityOfflineEntity) {
-        Bitmap cityImage = UtilityHelper.byteArrayToBitmap(cityOfflineImage.getImageData());
-        cityOfflineEntity.setBitmapImage(cityImage);
+    public static void closeDatabase(Realm realm) {
+        if(realm != null && !realm.isClosed())
+            realm.close();
     }
 
     public static ImageResponseBodyEntity processImageFromApi(String slug, Response<ResponseBody> response) {
@@ -180,6 +222,11 @@ public class UtilityHelper {
         }
 
         return imageResponseBodyEntity;
+    }
+
+    public static void setupImageFromDatabase(CityOfflineImage cityOfflineImage, CityOfflineEntity cityOfflineEntity) {
+        Bitmap cityImage = UtilityHelper.byteArrayToBitmap(cityOfflineImage.getImageData());
+        cityOfflineEntity.setBitmapImage(cityImage);
     }
 
     public static List<Boolean> processImagesFromApi(Realm innerRealm, Object[] imageResponses) {
@@ -223,51 +270,42 @@ public class UtilityHelper {
         return images;
     }
 
+    public static int settingsStringToInt(SharedPreferences settings, String settingsKey, int defaultValue) {
+        if(settings == null || settingsKey == null)
+            return defaultValue;
 
-    public static String cityIdFactory(CityFavouriteSlug result) {
-        return result.getSlug();
-    }
+        String value = settings.getString(settingsKey, String.valueOf(defaultValue));
 
-    public static String cityIdFactory(CityOfflineSlug result) {
-        return result.getSlug();
-    }
-
-    public static int getIntegerFromDoublePercentage(Double value) {
-        return (int) Math.round(value*10);
-    }
-
-    public static CitiesResultEntity setupFavouriteOfflineItems(CitiesResultEntity result,
-                                                                List<String> favouriteSlugs, List<String> offlineSlugs) {
-        for(CityEntity city : result.getEntries()) {
-            city.setFavourite(favouriteSlugs.contains(city.getSlug()));
-            city.setOffline(offlineSlugs.contains(city.getSlug()));
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException exception) {
+            return defaultValue;
         }
-
-        return result;
     }
 
-    public static List<CityEntity> setupFavouriteOfflineItems(List<CityEntity> cityEntities,
-                                                              List<String> favouriteSlugs, List<String> offlineSlugs) {
-        for(CityEntity city : cityEntities) {
-            city.setFavourite(favouriteSlugs.contains(city.getSlug()));
-            city.setOffline(offlineSlugs.contains(city.getSlug()));
+    public static Float settingsStringToFloat(SharedPreferences settings, String settingsKey, Float defaultValue) {
+        if(settings == null || settingsKey == null)
+            return defaultValue;
+
+        String value = settings.getString(settingsKey, String.valueOf(defaultValue));
+
+        try {
+            return Float.parseFloat(value);
+        } catch (NumberFormatException exception) {
+            return defaultValue;
         }
-
-        return cityEntities;
     }
 
-    public static List<CityOfflineEntity> setupOfflineFavouriteOfflineItems(List<CityOfflineEntity> cityEntities,
-                                                                            List<String> favouriteSlugs, List<String> offlineSlugs) {
-        for(CityOfflineEntity city : cityEntities) {
-            city.setFavourite(favouriteSlugs.contains(city.getSlug()));
-            city.setOffline(offlineSlugs.contains(city.getSlug()));
+    public static Long settingsStringToLong(SharedPreferences settings, String settingsKey, Long defaultValue) {
+        if(settings == null || settingsKey == null)
+            return defaultValue;
+
+        String value = settings.getString(settingsKey, String.valueOf(defaultValue));
+
+        try {
+            return Long.parseLong(value);
+        } catch (NumberFormatException exception) {
+            return defaultValue;
         }
-
-        return cityEntities;
-    }
-
-    public static void closeDatabase(Realm realm) {
-        if(realm != null && !realm.isClosed())
-            realm.close();
     }
 }

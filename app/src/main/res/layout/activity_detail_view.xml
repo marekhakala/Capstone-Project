@@ -1,15 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/city_detail_view_layout"
     android:layout_width="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
-    <include layout="@layout/toolbar" />
-
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/city_detail_view_appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </LinearLayout>
-</LinearLayout>
+        android:layout_height="@dimen/item_city_detail_view_appbar_height"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/city_detail_view_collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/CityItemCollapsingToolbar"
+            app:title="@string/city_item_title_placeholder">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0">
+
+                <LinearLayout
+                    android:id="@+id/city_detail_view_image_layout"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <!-- Image -->
+                    <ImageView
+                        android:id="@+id/city_detail_view_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="0dp"
+                        android:scaleType="fitXY"
+                        android:layout_margin="0dp"
+                        android:contentDescription="@string/city_item_country_placeholder"
+                        android:src="@drawable/city_placeholder" />
+                </LinearLayout>
+
+                <!-- Country -->
+                <TextView
+                    android:id="@+id/city_detail_view_country_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/city_detail_view_image_layout"
+                    android:layout_alignEnd="@id/city_detail_view_image_layout"
+                    android:layout_alignStart="@id/city_detail_view_image_layout"
+                    style="@style/CityItemDetailViewCountry"
+                    android:text="@string/city_item_country_placeholder" />
+
+                <!-- Internet speed -->
+                <TextView
+                    android:id="@+id/city_detail_view_internet_speed_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/city_detail_view_image_layout"
+                    android:layout_alignEnd="@id/city_detail_view_image_layout"
+                    style="@style/CityItemDetailViewInternetSpeed"
+                    android:text="@string/city_item_speed_placeholder" />
+            </RelativeLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/city_datail_view_nested_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <include layout="@layout/layout_detail_view" />
+    </android.support.v4.widget.NestedScrollView>
+
+    <!-- Favourite button -->
+    <com.marekhakala.mynomadlifeapp.UI.Component.FavouriteActionButton
+        android:id="@+id/city_detail_view_favourite_fab"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_anchor="@id/city_detail_view_appbar"
+        app:layout_anchorGravity="bottom|right|end"
+        style="@style/CityItemFavouriteButton" />
+</android.support.design.widget.CoordinatorLayout>

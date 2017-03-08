@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MyNomadLife</string>
 
@@ -59,144 +58,6 @@
     <string name="filter_friendly_to_foreigners_text">FRIENDLY\n TO FOREIGNERS</string>
     <string name="filter_female_friendly_text">FEMALE\n FRIENDLY</string>
     <string name="filter_gay_friendly_text">GAY\n FRIENDLY</string>
-
-    <!-- Settings: General -->
-    <string name="settings_general_category_title_text">General</string>
-
-    <string name="settings_startup_screen_title_text">Startup screen</string>
-    <string name="settings_startup_screen_value">home</string>
-
-    <string name="settings_startup_screen_home_text">Home</string>
-    <string name="settings_startup_screen_favourites_text">Favourites</string>
-    <string name="settings_startup_screen_offline_mode_text">Offline mode</string>
-
-    <string name="settings_startup_screen_home_value">home</string>
-    <string name="settings_startup_screen_favourites_value">favourites</string>
-    <string name="settings_startup_screen_offline_mode_value">offline</string>
-
-    <string name="settings_startup_screen_text">Select your startup screen: Home, Favourites or Offline mode.</string>
-
-    <string name="settings_temperature_unit_title_text">Temperature unit</string>
-    <string name="settings_temperature_unit_text">To set the unit of temperature, choose either Celsius or Fahrenheit.</string>
-
-    <string name="settings_temperature_celsius_unit_text">Celsius (°C)</string>
-    <string name="settings_temperature_fahrenheit_unit_text">Fahrenheit (°F)</string>
-
-    <string name="settings_temperature_celsius_unit_value">c</string>
-    <string name="settings_temperature_fahrenheit_unit_value">f</string>
-
-    <string name="settings_offline_mode_auto_updates_images_title_text">Allow images for offline mode</string>
-    <string name="settings_offline_mode_auto_updates_images_text">This option if selected will allow the application to download images for offline mode.</string>
-
-    <!-- Settings: Keys -->
-    <string name="settings_key_startup_screen">startup_screen</string>
-    <string name="settings_key_offline_mode_auto_updates_images">offline_mode_auto_updates_images</string>
-    <string name="settings_key_temperature_unit_type">temperature_unit_type</string>
-    <string name="settings_key_cheap_cost_of_living_from">cheap_cost_of_living_from</string>
-    <string name="settings_key_affordable_cost_of_living_from">affordable_cost_of_living_from</string>
-    <string name="settings_key_expensive_cost_of_living_from">expensive_cost_of_living_from</string>
-    <string name="settings_key_town_population_from">town_population_from</string>
-    <string name="settings_key_big_city_population_from">big_city_population_from</string>
-    <string name="settings_key_mega_city_from">mega_city_population_from</string>
-    <string name="settings_key_slow_internet_from">slow_internet_from</string>
-    <string name="settings_key_good_internet_from">good_internet_from</string>
-    <string name="settings_key_fast_internet_from">fast_internet_from</string>
-
-    <string name="settings_key_other_filters_nightlife_from">other_filters_nightlife_from</string>
-    <string name="settings_key_other_filters_safe_from">other_filters_safe_from</string>
-    <string name="settings_key_other_filters_fun_from">other_filters_fun_from</string>
-    <string name="settings_key_other_filters_places_to_work_from">other_filters_places_to_work_from</string>
-    <string name="settings_key_other_filters_startup_score_from">other_filters_startup_score_from</string>
-    <string name="settings_key_other_filters_english_speaking_from">other_filters_english_speaking_from</string>
-    <string name="settings_key_other_filters_friendly_to_foreigners_from">other_filters_friendly_to_foreigners_from</string>
-    <string name="settings_key_other_filters_female_friendly_from">other_filters_female_friendly_from</string>
-    <string name="settings_key_other_filters_gay_friendly_from">other_filters_gay_friendly_from</string>
-
-    <!-- Settings: Quality values  -->
-    <string name="settings_quality_first_title_text">1 - Bad</string>
-    <string name="settings_quality_second_title_text">2 - Not bad</string>
-    <string name="settings_quality_third_title_text">3 - Okay</string>
-    <string name="settings_quality_fourth_title_text">4 - Good</string>
-    <string name="settings_quality_fifth_title_text">5 – Great</string>
-
-    <!-- Settings: Startup Score Quality values -->
-    <string name="settings_startup_score_quality_first_title_text">2 - Bad</string>
-    <string name="settings_startup_score_quality_second_title_text">4 - Not bad</string>
-    <string name="settings_startup_score_quality_third_title_text">6 - Okay</string>
-    <string name="settings_startup_score_quality_fourth_title_text">8 - Good</string>
-    <string name="settings_startup_score_quality_fifth_title_text">10 – Great</string>
-
-    <!-- Settings: Cost of living -->
-    <string name="settings_cost_of_living_category_title_text">Filter - Cost of living</string>
-    <string name="settings_cheap_cost_of_living_title_text">Cheap to (USD / month)</string>
-    <string name="settings_affordable_cost_of_living_title_text">Affordable to (USD / month)</string>
-    <string name="settings_expensive_cost_of_living_title_text">Expensive from (USD / month)</string>
-
-    <string name="settings_cheap_cost_of_living_text">To set the cost of living for cheap filter.</string>
-    <string name="settings_affordable_cost_of_living_text">To set the cost of living for affordable filter.</string>
-    <string name="settings_expensive_cost_of_living_text">To set the cost of living for expensive filter.</string>
-
-    <string name="settings_cheap_cost_of_living_value">1000</string>
-    <string name="settings_affordable_cost_of_living_value">2000</string>
-    <string name="settings_expensive_cost_of_living_value">5000</string>
-
-    <!-- Settings: Population -->
-    <string name="settings_population_category_title_text">Filter - Population</string>
-    <string name="settings_town_population_title_text">Town to (Population)</string>
-    <string name="settings_big_city_population_title_text">Big city to (Population)</string>
-    <string name="settings_mega_city_population_title_text">Mega city from (Population)</string>
-
-    <string name="settings_town_population_text">To set the population for town filter.</string>
-    <string name="settings_big_city_population_text">To set the population for big city filter.</string>
-    <string name="settings_mega_city_population_text">To set the population for mega city filter.</string>
-
-    <string name="settings_town_population_value">5000</string>
-    <string name="settings_big_city_population_value">100000</string>
-    <string name="settings_mega_city_population_value">500000</string>
-
-    <!-- Settings: Internet speed -->
-    <string name="settings_internet_speed_category_title_text">Filter - Internet speed</string>
-    <string name="settings_slow_internet_title_text">Slow internet from (Mbps)</string>
-    <string name="settings_good_internet_title_text">Good internet from (Mbps)</string>
-    <string name="settings_fast_internet_title_text">Fast internet from (Mbps)</string>
-
-    <string name="settings_fast_internet_text">To set the internet speed for fast filter.</string>
-    <string name="settings_good_internet_text">To set the internet speed for good filter.</string>
-    <string name="settings_slow_internet_text">To set the internet speed for slow filter.</string>
-
-    <string name="settings_fast_internet_value">50</string>
-    <string name="settings_good_internet_value">20</string>
-    <string name="settings_slow_internet_value">5</string>
-
-    <!-- Settings: Other filters -->
-    <string name="settings_other_filters_category_title_text">Other filters</string>
-
-    <string name="settings_safe_title_text">Safe (from)</string>
-    <string name="settings_safe_value">3</string>
-
-    <string name="settings_nightlife_title_text">Nightlife (from)</string>
-    <string name="settings_nightlife_value">3</string>
-
-    <string name="settings_fun_title_text">Fun (from)</string>
-    <string name="settings_fun_value">3</string>
-
-    <string name="settings_places_to_work_title_text">Places to work (from)</string>
-    <string name="settings_places_to_work_value">3</string>
-
-    <string name="settings_startup_score_title_text">Startup score (from)</string>
-    <string name="settings_startup_score_value">4</string>
-
-    <string name="settings_english_speaking_title_text">English speaking (from)</string>
-    <string name="settings_english_speaking_value">3</string>
-
-    <string name="settings_friendly_to_foreigners_title_text">Friendly to foreigners (from)</string>
-    <string name="settings_friendly_to_foreigners_value">3</string>
-
-    <string name="settings_female_friendly_title_text">Female friendly (from)</string>
-    <string name="settings_female_friendly_value">3</string>
-
-    <string name="settings_gay_friendly_title_text">Gay friendly (from)</string>
-    <string name="settings_gay_friendly_value">3</string>
 
     <!-- City item -->
     <string name="city_item_title_placeholder">Berlin</string>
@@ -352,6 +213,157 @@
     <string name="currency_format_exchange" formatted="false">%s in %s / %s in %s</string>
     <string name="currency_format_exchange_value_second" formatted="false">#,###,###.######</string>
 
+    <!-- Settings: General -->
+    <string name="settings_general_category_title_text">General</string>
+
+    <string name="settings_startup_screen_title_text">Startup screen</string>
+    <string name="settings_startup_screen_value">home</string>
+
+    <string name="settings_startup_screen_home_text">Home</string>
+    <string name="settings_startup_screen_favourites_text">Favourites</string>
+    <string name="settings_startup_screen_offline_mode_text">Offline mode</string>
+
+    <string name="settings_startup_screen_home_value">home</string>
+    <string name="settings_startup_screen_favourites_value">favourites</string>
+    <string name="settings_startup_screen_offline_mode_value">offline</string>
+
+    <string name="settings_startup_screen_text">Select your startup screen: Home, Favourites or Offline mode.</string>
+
+    <string name="settings_temperature_unit_title_text">Temperature unit</string>
+    <string name="settings_temperature_unit_text">To set the unit of temperature, choose either Celsius or Fahrenheit.</string>
+
+    <string name="settings_temperature_celsius_unit_text">Celsius (°C)</string>
+    <string name="settings_temperature_fahrenheit_unit_text">Fahrenheit (°F)</string>
+
+    <string name="settings_temperature_celsius_unit_value">c</string>
+    <string name="settings_temperature_fahrenheit_unit_value">f</string>
+
+    <string name="settings_offline_mode_auto_updates_images_title_text">Allow images for offline mode</string>
+    <string name="settings_offline_mode_auto_updates_images_text">This option if selected will allow the application to download images for offline mode.</string>
+
+    <!-- Settings: Keys -->
+    <string name="settings_key_startup_screen">startup_screen</string>
+    <string name="settings_key_offline_mode_auto_updates_images">offline_mode_auto_updates_images</string>
+    <string name="settings_key_temperature_unit_type">temperature_unit_type</string>
+    <string name="settings_key_cheap_cost_of_living_from">cheap_cost_of_living_from</string>
+    <string name="settings_key_affordable_cost_of_living_from">affordable_cost_of_living_from</string>
+    <string name="settings_key_expensive_cost_of_living_from">expensive_cost_of_living_from</string>
+    <string name="settings_key_town_population_from">town_population_from</string>
+    <string name="settings_key_big_city_population_from">big_city_population_from</string>
+    <string name="settings_key_mega_city_from">mega_city_population_from</string>
+    <string name="settings_key_slow_internet_from">slow_internet_from</string>
+    <string name="settings_key_good_internet_from">good_internet_from</string>
+    <string name="settings_key_fast_internet_from">fast_internet_from</string>
+
+    <string name="settings_key_other_filters_nightlife_from">other_filters_nightlife_from</string>
+    <string name="settings_key_other_filters_safe_from">other_filters_safe_from</string>
+    <string name="settings_key_other_filters_fun_from">other_filters_fun_from</string>
+    <string name="settings_key_other_filters_places_to_work_from">other_filters_places_to_work_from</string>
+    <string name="settings_key_other_filters_startup_score_from">other_filters_startup_score_from</string>
+    <string name="settings_key_other_filters_english_speaking_from">other_filters_english_speaking_from</string>
+    <string name="settings_key_other_filters_friendly_to_foreigners_from">other_filters_friendly_to_foreigners_from</string>
+    <string name="settings_key_other_filters_female_friendly_from">other_filters_female_friendly_from</string>
+    <string name="settings_key_other_filters_gay_friendly_from">other_filters_gay_friendly_from</string>
+
+    <!-- Settings: Quality values  -->
+    <string name="settings_quality_first_title_text">1 - Bad</string>
+    <string name="settings_quality_second_title_text">2 - Not bad</string>
+    <string name="settings_quality_third_title_text">3 - Okay</string>
+    <string name="settings_quality_fourth_title_text">4 - Good</string>
+    <string name="settings_quality_fifth_title_text">5 – Great</string>
+
+    <!-- Settings: Startup Score Quality values -->
+    <string name="settings_startup_score_quality_first_title_text">2 - Bad</string>
+    <string name="settings_startup_score_quality_second_title_text">4 - Not bad</string>
+    <string name="settings_startup_score_quality_third_title_text">6 - Okay</string>
+    <string name="settings_startup_score_quality_fourth_title_text">8 - Good</string>
+    <string name="settings_startup_score_quality_fifth_title_text">10 – Great</string>
+
+    <!-- Settings: Cost of living -->
+    <string name="settings_cost_of_living_category_title_text">Filter - Cost of living</string>
+    <string name="settings_cheap_cost_of_living_title_text">Cheap to (USD / month)</string>
+    <string name="settings_affordable_cost_of_living_title_text">Affordable to (USD / month)</string>
+    <string name="settings_expensive_cost_of_living_title_text">Expensive from (USD / month)</string>
+
+    <string name="settings_cheap_cost_of_living_text">To set the cost of living for cheap filter.</string>
+    <string name="settings_affordable_cost_of_living_text">To set the cost of living for affordable filter.</string>
+    <string name="settings_expensive_cost_of_living_text">To set the cost of living for expensive filter.</string>
+
+    <string name="settings_cheap_cost_of_living_value">1000</string>
+    <string name="settings_affordable_cost_of_living_value">2000</string>
+    <string name="settings_expensive_cost_of_living_value">5000</string>
+
+    <!-- Settings: Population -->
+    <string name="settings_population_category_title_text">Filter - Population</string>
+    <string name="settings_town_population_title_text">Town to (Population)</string>
+    <string name="settings_big_city_population_title_text">Big city to (Population)</string>
+    <string name="settings_mega_city_population_title_text">Mega city from (Population)</string>
+
+    <string name="settings_town_population_text">To set the population for town filter.</string>
+    <string name="settings_big_city_population_text">To set the population for big city filter.</string>
+    <string name="settings_mega_city_population_text">To set the population for mega city filter.</string>
+
+    <string name="settings_town_population_value">5000</string>
+    <string name="settings_big_city_population_value">100000</string>
+    <string name="settings_mega_city_population_value">500000</string>
+
+    <!-- Settings: Internet speed -->
+    <string name="settings_internet_speed_category_title_text">Filter - Internet speed</string>
+    <string name="settings_slow_internet_title_text">Slow internet from (Mbps)</string>
+    <string name="settings_good_internet_title_text">Good internet from (Mbps)</string>
+    <string name="settings_fast_internet_title_text">Fast internet from (Mbps)</string>
+
+    <string name="settings_fast_internet_text">To set the internet speed for fast filter.</string>
+    <string name="settings_good_internet_text">To set the internet speed for good filter.</string>
+    <string name="settings_slow_internet_text">To set the internet speed for slow filter.</string>
+
+    <string name="settings_fast_internet_value">50</string>
+    <string name="settings_good_internet_value">20</string>
+    <string name="settings_slow_internet_value">5</string>
+
+    <!-- Settings: Other filters -->
+    <string name="settings_other_filters_category_title_text">Other filters</string>
+
+    <string name="settings_safe_title_text">Safe (from)</string>
+    <string name="settings_safe_value">3</string>
+
+    <string name="settings_nightlife_title_text">Nightlife (from)</string>
+    <string name="settings_nightlife_value">3</string>
+
+    <string name="settings_fun_title_text">Fun (from)</string>
+    <string name="settings_fun_value">3</string>
+
+    <string name="settings_places_to_work_title_text">Places to work (from)</string>
+    <string name="settings_places_to_work_value">3</string>
+
+    <string name="settings_startup_score_title_text">Startup score (from)</string>
+    <string name="settings_startup_score_value">4</string>
+
+    <string name="settings_english_speaking_title_text">English speaking (from)</string>
+    <string name="settings_english_speaking_value">3</string>
+
+    <string name="settings_friendly_to_foreigners_title_text">Friendly to foreigners (from)</string>
+    <string name="settings_friendly_to_foreigners_value">3</string>
+
+    <string name="settings_female_friendly_title_text">Female friendly (from)</string>
+    <string name="settings_female_friendly_value">3</string>
+
+    <string name="settings_gay_friendly_title_text">Gay friendly (from)</string>
+    <string name="settings_gay_friendly_value">3</string>
+
+    <!-- About app -->
+    <string name="about_title_text">@string/app_name</string>
+    <string name="about_body_text">
+        The application provides guide for digital nomads.
+        The app brings public information from website www.nomadlist.com to native android app.
+        Imagine that you are freelancer, which want work and travel around the world.
+        Then My Nomad Life app is right for you, because the app offer you score for cities.
+        Further have the ability to store information for offline mode and function for mark your favourite cities.
+    </string>
+    <string name="about_copyright_text">
+        v1.0.0 &#169; 2017
+    </string>
+
     <string name="internet_speed_label">Mbps</string>
     <string name="humidity_label">%</string>
     <string name="temperature_celsius_label">°C</string>
@@ -383,4 +395,5 @@
     <string name="city_item_detail_view_offline_mode_add">City was successfully added to offline mode.</string>
     <string name="city_item_detail_view_offline_mode_add_error">Error: City was not successfully add to offline mode.</string>
     <string name="city_item_detail_view_offline_mode_please_wait">Please wait...</string>
+
 </resources>

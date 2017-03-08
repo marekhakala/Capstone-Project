@@ -6,20 +6,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.marekhakala.mynomadlifeapp.AppComponent;
 import com.marekhakala.mynomadlifeapp.R;
+import com.marekhakala.mynomadlifeapp.AppComponent;
 import com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity;
-import com.marekhakala.mynomadlifeapp.UI.Adapter.AbstractDataSourceRecyclerViewAdapter;
+import com.marekhakala.mynomadlifeapp.UI.Adapter.AbstractDataSourceRecyclerViewAdapter.StateType;
 import com.marekhakala.mynomadlifeapp.UI.Adapter.OfflineCitiesDSRecyclerViewAdapter;
 import com.marekhakala.mynomadlifeapp.Utilities.UtilityHelper;
 
+import io.realm.Realm;
+import rx.Subscription;
+import rx.subscriptions.Subscriptions;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.Realm;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.subscriptions.Subscriptions;
 
 public class OfflineModeListFragment extends AbstractListFragment {
 
@@ -96,7 +96,7 @@ public class OfflineModeListFragment extends AbstractListFragment {
 
     @Override
     protected void loadDataFromDB() {
-        mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.LOADING_STATE);
+        mAdapter.setCurrentState(StateType.LOADING_STATE);
 
         if(mSubscription != null)
             mSubscription.unsubscribe();
@@ -113,14 +113,14 @@ public class OfflineModeListFragment extends AbstractListFragment {
 
                     UtilityHelper.closeDatabase(realm);
                 }, throwable -> {
-                    mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.ERROR_STATE);
+                    mAdapter.setCurrentState(StateType.ERROR_STATE);
                     UtilityHelper.closeDatabase(realm);
                 });
     }
 
     @Override
     protected void loadDataFromAPI() {
-        mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.LOADING_STATE);
+        mAdapter.setCurrentState(StateType.LOADING_STATE);
 
         if(mSubscription != null)
             mSubscription.unsubscribe();
@@ -132,17 +132,17 @@ public class OfflineModeListFragment extends AbstractListFragment {
                     if (citiesSlugs.size() > 0) {
                         getDataFromAPI(realm, citiesSlugs);
                     } else {
-                        mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.EMPTY_STATE);
+                        mAdapter.setCurrentState(StateType.EMPTY_STATE);
                         UtilityHelper.closeDatabase(realm);
                     }
                 }, throwable -> {
-                    mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.ERROR_STATE);
+                    mAdapter.setCurrentState(StateType.ERROR_STATE);
                     UtilityHelper.closeDatabase(realm);
                 });
     }
 
     protected void getDataFromAPI(Realm realm, List<String> citiesSlugs) {
-        mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.LOADING_STATE);
+        mAdapter.setCurrentState(StateType.LOADING_STATE);
 
         if(mSubscriptionApi != null)
             mSubscriptionApi.unsubscribe();
@@ -153,7 +153,7 @@ public class OfflineModeListFragment extends AbstractListFragment {
                     reloadUiFromDB();
                     UtilityHelper.closeDatabase(realm);
                 }, throwable -> {
-                    mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.ERROR_STATE);
+                    mAdapter.setCurrentState(StateType.ERROR_STATE);
                     UtilityHelper.closeDatabase(realm);
                 });
     }
@@ -202,7 +202,7 @@ public class OfflineModeListFragment extends AbstractListFragment {
     protected void reloadPlacesToWork() {
         if(!mAdapter.isWaitingForData()) {
             mSelectedPosition = mRecyclerView.getCurrentPosition();
-            mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.LOADING_STATE);
+            mAdapter.setCurrentState(StateType.LOADING_STATE);
 
             if(mSubscription != null)
                 mSubscription.unsubscribe();
@@ -214,18 +214,18 @@ public class OfflineModeListFragment extends AbstractListFragment {
                         if (citiesSlugs.size() > 0) {
                             getPlacesToWorkFromAPI(citiesSlugs);
                         } else {
-                            mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.EMPTY_STATE);
+                            mAdapter.setCurrentState(StateType.EMPTY_STATE);
                             UtilityHelper.closeDatabase(realm);
                         }
                     }, throwable -> {
-                        mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.ERROR_STATE);
+                        mAdapter.setCurrentState(StateType.ERROR_STATE);
                         UtilityHelper.closeDatabase(realm);
                     });
         }
     }
 
     protected void getPlacesToWorkFromAPI(List<String> citySlugs) {
-        mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.LOADING_STATE);
+        mAdapter.setCurrentState(StateType.LOADING_STATE);
 
         if(mSubscriptionApi != null)
             mSubscriptionApi.unsubscribe();
@@ -234,7 +234,7 @@ public class OfflineModeListFragment extends AbstractListFragment {
                 .subscribe(results -> {
                     reloadUiFromDB();
                 }, throwable -> {
-                    mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.ERROR_STATE);
+                    mAdapter.setCurrentState(StateType.ERROR_STATE);
                 });
     }
 
@@ -246,7 +246,7 @@ public class OfflineModeListFragment extends AbstractListFragment {
         if(!mAdapter.isWaitingForData()) {
             mRepository.removeAllOfflineCitiesImages();
 
-            mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.LOADING_STATE);
+            mAdapter.setCurrentState(StateType.LOADING_STATE);
 
             if(mSubscription != null)
                 mSubscription.unsubscribe();
@@ -258,18 +258,18 @@ public class OfflineModeListFragment extends AbstractListFragment {
                         if (citiesSlugs.size() > 0) {
                             getImagesFromAPI(citiesSlugs);
                         } else {
-                            mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.EMPTY_STATE);
+                            mAdapter.setCurrentState(StateType.EMPTY_STATE);
                             UtilityHelper.closeDatabase(realm);
                         }
                     }, throwable -> {
-                        mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.ERROR_STATE);
+                        mAdapter.setCurrentState(StateType.ERROR_STATE);
                         UtilityHelper.closeDatabase(realm);
                     });
         }
     }
 
     protected void getImagesFromAPI(List<String> citySlugs) {
-        mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.LOADING_STATE);
+        mAdapter.setCurrentState(StateType.LOADING_STATE);
 
         if(mSubscriptionApi != null)
             mSubscriptionApi.unsubscribe();
@@ -278,7 +278,7 @@ public class OfflineModeListFragment extends AbstractListFragment {
                 .subscribe(results -> {
                     reloadUiFromDB();
                 }, throwable -> {
-                    mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.ERROR_STATE);
+                    mAdapter.setCurrentState(StateType.ERROR_STATE);
                 });
     }
 

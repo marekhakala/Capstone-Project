@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal|center_vertical">
 
-</LinearLayout>
+    <ProgressBar
+        android:id="@+id/load_more_spinner"
+        android:layout_width="@dimen/loading_layout_width"
+        android:layout_height="@dimen/loading_layout_height"
+        android:layout_margin="@dimen/loading_layout_margin"
+        android:layout_centerInParent="true" />
+</RelativeLayout>
+

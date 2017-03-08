@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    style="@style/CityDetailContainer">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:padding="@dimen/line_container"
+        android:background="@color/theme_primary">
+
+        <!-- Temperature -->
+        <TextView
+            android:id="@+id/city_detail_view_temperature_text"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            style="@style/CityItemTemperature"
+            android:text="@string/city_item_temperature_placeholder" />
+
+        <!-- Month price -->
+        <TextView
+            android:id="@+id/city_detail_view_month_price_text"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="60dp"
+            style="@style/CityItemMonthPrice"
+            android:text="@string/city_item_month_price_placeholder" />
+    </LinearLayout>
+
+    <!-- Line break-->
+    <include layout="@layout/item_line_break" />
+
+    <!-- Tabs content -->
+    <android.support.design.widget.TabLayout
+        android:id="@+id/city_detail_view_sliding_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabMode="scrollable" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/city_detail_view_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:background="@android:color/white" />
+</LinearLayout>

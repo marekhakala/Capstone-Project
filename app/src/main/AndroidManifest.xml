@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.marekhakala.mynomadlifeapp">
 
     <!-- Permissions required by the REST adapter -->
@@ -69,7 +68,6 @@
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity" />

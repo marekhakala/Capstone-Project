@@ -4,15 +4,13 @@ public class ConstantValues {
 
     // REST API
     public static final String BASE_URL = "http://mnl.showmelink.co.uk";
+
     public static final String ENDPOINT_URL = BASE_URL + "/api/v1/";
     public static final String IMAGE_URL = ENDPOINT_URL + "cities/";
     public static final String IMAGE_URL_PATH = "/image";
-
-    public static final String API_SEARCH_PARAM = "slugs";
-    public static final String HTTP_DATA_TYPE = "application/json; charset=utf-8";
-
-    // General
     public static final String USD_CURRENCY = "USD";
+
+    public static final String HTTP_DATA_TYPE = "application/json; charset=utf-8";
 
     // Realm DB options
     public static String REALM_DB_FILE = "mynomadlife.realm.db";
@@ -37,9 +35,12 @@ public class ConstantValues {
 
     public static final String EXTRA_ITEM_CITY = "city";
     public static final String EXTRA_ITEM_CITY_TYPE = "cityType";
-    
+
     public static final String CITY_ENTITY = "City";
     public static final String CITY_OFFLINE_ENTITY = "CityOffline";
+
+    public static final String TAGS_SEPARATOR = ",";
+    public static final String API_SEARCH_PARAM = "slugs";
 
     // Settings
     public static final String SETTINGS_OFFLINE_MODE_AUTO_UPDATES_IMAGES = "offline_mode_auto_updates_images";

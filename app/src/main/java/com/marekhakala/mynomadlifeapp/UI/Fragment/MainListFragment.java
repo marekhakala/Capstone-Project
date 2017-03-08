@@ -7,18 +7,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.marekhakala.mynomadlifeapp.AppComponent;
 import com.marekhakala.mynomadlifeapp.R;
+import com.marekhakala.mynomadlifeapp.AppComponent;
 import com.marekhakala.mynomadlifeapp.UI.Activity.FilterActivity;
 import com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity;
-import com.marekhakala.mynomadlifeapp.UI.Adapter.AbstractDataSourceRecyclerViewAdapter;
+import com.marekhakala.mynomadlifeapp.UI.Adapter.AbstractDataSourceRecyclerViewAdapter.StateType;
 import com.marekhakala.mynomadlifeapp.UI.Adapter.CitiesDSRecyclerViewAdapter;
 import com.marekhakala.mynomadlifeapp.UI.Component.DataSourceRecyclerView;
 import com.marekhakala.mynomadlifeapp.Utilities.UtilityHelper;
 
-import java.util.ArrayList;
-
 import io.realm.Realm;
+import java.util.ArrayList;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class MainListFragment extends AbstractListFragment implements DataSourceRecyclerView.OnActionListener {
@@ -118,7 +117,7 @@ public class MainListFragment extends AbstractListFragment implements DataSource
 
     @Override
     protected void loadDataFromDB() {
-        mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.LOADING_STATE);
+        mAdapter.setCurrentState(StateType.LOADING_STATE);
 
         if(mSubscription != null)
             mSubscription.unsubscribe();
@@ -134,7 +133,7 @@ public class MainListFragment extends AbstractListFragment implements DataSource
 
                     UtilityHelper.closeDatabase(realm);
                 }, throwable -> {
-                    mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.ERROR_STATE);
+                    mAdapter.setCurrentState(StateType.ERROR_STATE);
                     UtilityHelper.closeDatabase(realm);
                 });
     }
@@ -150,12 +149,12 @@ public class MainListFragment extends AbstractListFragment implements DataSource
 
     protected void loadDataFromAPI(Integer page, boolean refreshing, boolean loadMore) {
         if (loadMore) {
-            mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.LOAD_MORE_STATE);
+            mAdapter.setCurrentState(StateType.LOAD_MORE_STATE);
         } else {
             if(refreshing) {
-                mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.REFRESHING_STATE);
+                mAdapter.setCurrentState(StateType.REFRESHING_STATE);
             } else {
-                mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.LOADING_STATE);
+                mAdapter.setCurrentState(StateType.LOADING_STATE);
             }
         }
 
@@ -177,7 +176,7 @@ public class MainListFragment extends AbstractListFragment implements DataSource
 
                     UtilityHelper.closeDatabase(realm);
                 }, throwable -> {
-                    mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.ERROR_STATE);
+                    mAdapter.setCurrentState(StateType.ERROR_STATE);
                     UtilityHelper.closeDatabase(realm);
                 });
     }

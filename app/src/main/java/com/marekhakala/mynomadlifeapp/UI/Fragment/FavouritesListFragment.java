@@ -9,7 +9,7 @@ import com.marekhakala.mynomadlifeapp.AppComponent;
 import com.marekhakala.mynomadlifeapp.DataModel.CityEntity;
 import com.marekhakala.mynomadlifeapp.R;
 import com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity;
-import com.marekhakala.mynomadlifeapp.UI.Adapter.AbstractDataSourceRecyclerViewAdapter;
+import com.marekhakala.mynomadlifeapp.UI.Adapter.AbstractDataSourceRecyclerViewAdapter.StateType;
 import com.marekhakala.mynomadlifeapp.UI.Adapter.CitiesDSRecyclerViewAdapter;
 import com.marekhakala.mynomadlifeapp.Utilities.UtilityHelper;
 
@@ -86,7 +86,7 @@ public class FavouritesListFragment extends AbstractListFragment {
 
     @Override
     protected void loadDataFromDB() {
-        mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.LOADING_STATE);
+        mAdapter.setCurrentState(StateType.LOADING_STATE);
 
         if(mSubscription != null)
             mSubscription.unsubscribe();
@@ -103,14 +103,14 @@ public class FavouritesListFragment extends AbstractListFragment {
 
                     UtilityHelper.closeDatabase(realm);
                 }, throwable -> {
-                    mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.ERROR_STATE);
+                    mAdapter.setCurrentState(StateType.ERROR_STATE);
                     UtilityHelper.closeDatabase(realm);
                 });
     }
 
     @Override
     protected void loadDataFromAPI() {
-        mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.LOADING_STATE);
+        mAdapter.setCurrentState(StateType.LOADING_STATE);
 
         if(mSubscription != null)
             mSubscription.unsubscribe();
@@ -122,17 +122,17 @@ public class FavouritesListFragment extends AbstractListFragment {
                     if (citiesSlugs.size() > 0) {
                         getDataFromAPI(realm, citiesSlugs);
                     } else {
-                        mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.EMPTY_STATE);
+                        mAdapter.setCurrentState(StateType.EMPTY_STATE);
                         UtilityHelper.closeDatabase(realm);
                     }
                 }, throwable -> {
-                    mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.ERROR_STATE);
+                    mAdapter.setCurrentState(StateType.ERROR_STATE);
                     UtilityHelper.closeDatabase(realm);
                 });
     }
 
     protected void getDataFromAPI(Realm realm, List<String> citiesSlugs) {
-        mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.LOADING_STATE);
+        mAdapter.setCurrentState(StateType.LOADING_STATE);
 
         if(mSubscriptionApi != null)
             mSubscriptionApi.unsubscribe();
@@ -144,7 +144,7 @@ public class FavouritesListFragment extends AbstractListFragment {
 
                     UtilityHelper.closeDatabase(realm);
                 }, throwable -> {
-                    mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.ERROR_STATE);
+                    mAdapter.setCurrentState(StateType.ERROR_STATE);
                     UtilityHelper.closeDatabase(realm);
                 });
     }
