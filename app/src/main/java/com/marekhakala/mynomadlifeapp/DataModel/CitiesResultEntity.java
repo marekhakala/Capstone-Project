@@ -30,6 +30,8 @@ public class CitiesResultEntity implements Parcelable {
     @Expose
     private List<CityEntity> entries;
 
+    private boolean loadMore = true;
+
     public long getTotalEntries() {
         return totalEntries;
     }
@@ -70,6 +72,14 @@ public class CitiesResultEntity implements Parcelable {
         this.entries = entries;
     }
 
+    public boolean isLoadMore() {
+        return loadMore;
+    }
+
+    public void setLoadMore(boolean loadMore) {
+        this.loadMore = loadMore;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -92,7 +102,7 @@ public class CitiesResultEntity implements Parcelable {
         this.totalPages = in.readInt();
         this.perPage = in.readLong();
         this.currentPage = in.readLong();
-        this.entries = new ArrayList<CityEntity>();
+        this.entries = new ArrayList<>();
         in.readList(this.entries, CityEntity.class.getClassLoader());
     }
 

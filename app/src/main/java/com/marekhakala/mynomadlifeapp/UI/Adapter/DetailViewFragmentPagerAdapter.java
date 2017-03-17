@@ -70,9 +70,8 @@ public class DetailViewFragmentPagerAdapter extends FragmentPagerAdapter {
     }
 
     protected PlacesToWorkViewFragment createPlacesToWorkView() {
-        if(city != null) {
+        if(city != null)
             return PlacesToWorkViewFragment.newInstance(city);
-        }
 
         return null;
     }

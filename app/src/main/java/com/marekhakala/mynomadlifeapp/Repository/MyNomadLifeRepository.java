@@ -1,7 +1,11 @@
 package com.marekhakala.mynomadlifeapp.Repository;
 
 import android.app.Application;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
@@ -13,22 +17,19 @@ import com.marekhakala.mynomadlifeapp.DataModel.CityOfflineEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityOfflinePlaceToWorkEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityPlaceToWorkEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityPlacesToWorkResultEntity;
+import com.marekhakala.mynomadlifeapp.DataModel.ExchangeRateEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.ImageResponseBodyEntity;
 import com.marekhakala.mynomadlifeapp.DataSource.MyNomadLifeAPI;
-import com.marekhakala.mynomadlifeapp.RealmDataModel.City;
-import com.marekhakala.mynomadlifeapp.RealmDataModel.CityFavouriteSlug;
-import com.marekhakala.mynomadlifeapp.RealmDataModel.CityOffline;
+import com.marekhakala.mynomadlifeapp.Database.CitiesContract;
+import com.marekhakala.mynomadlifeapp.Database.CitiesProjection;
 import com.marekhakala.mynomadlifeapp.MyNomadLifeApplication;
-import com.marekhakala.mynomadlifeapp.RealmDataModel.CityOfflineImage;
-import com.marekhakala.mynomadlifeapp.RealmDataModel.CityOfflinePlaceToWork;
-import com.marekhakala.mynomadlifeapp.RealmDataModel.CityOfflineSlug;
-import com.marekhakala.mynomadlifeapp.RealmDataModel.CityPlaceToWork;
 import com.marekhakala.mynomadlifeapp.Repository.Arguments.CostPerMonthArguments;
 import com.marekhakala.mynomadlifeapp.Repository.Arguments.InternetSpeedArguments;
 import com.marekhakala.mynomadlifeapp.Repository.Arguments.OtherFiltersArguments;
 import com.marekhakala.mynomadlifeapp.Repository.Arguments.PopulationArguments;
 import com.marekhakala.mynomadlifeapp.Utilities.ConstantValues;
 import com.marekhakala.mynomadlifeapp.Utilities.UtilityHelper;
+import com.squareup.sqlbrite.BriteContentResolver;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,10 +40,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.realm.Case;
-import io.realm.Realm;
-import io.realm.RealmQuery;
-import io.realm.RealmResults;
 import okhttp3.RequestBody;
 import rx.Observable;
 import rx.schedulers.Schedulers;
@@ -55,18 +52,20 @@ public class MyNomadLifeRepository implements IMyNomadLifeRepository {
     protected MyNomadLifeApplication mApp = null;
     protected CompositeSubscription mSubscriptions = null;
 
+    protected ContentResolver mContentResolver;
+    protected BriteContentResolver mBriteContentResolver;
+
     protected BehaviorSubject<List<String>> mFavouriteSlugsSubject = null;
     protected BehaviorSubject<List<String>> mOfflineSlugsSubject = null;
 
-    public MyNomadLifeRepository(MyNomadLifeAPI api, Application application) {
+    public MyNomadLifeRepository(MyNomadLifeAPI api, ContentResolver contentResolver,
+                                 BriteContentResolver briteContentResolver, Application application) {
         if (application instanceof MyNomadLifeApplication)
             mApp = (MyNomadLifeApplication) application;
-        mApi = api;
-    }
 
-    @Override
-    public Realm getRealm() {
-        return MyNomadLifeApplication.getDatabaseInstance(mApp);
+        mApi = api;
+        mContentResolver = contentResolver;
+        mBriteContentResolver = briteContentResolver;
     }
 
     protected Observable<CitiesResultEntity> prepareFiltersForAPI(Integer page) {
@@ -88,54 +87,102 @@ public class MyNomadLifeRepository implements IMyNomadLifeRepository {
     }
 
     @Override
-    public Observable<CitiesResultEntity> cities(Realm realm, boolean cleanAdd, Integer page) {
-
-        Observable<CitiesResultEntity> observableCities = prepareFiltersForAPI(page)
+    public Observable<CitiesResultEntity> cities(boolean cleanAdd, Integer page) {
+        return prepareFiltersForAPI(page)
                 .timeout(6, TimeUnit.SECONDS)
                 .retry(3)
                 .subscribeOn(Schedulers.io())
                 .doOnNext(result -> {
-                    if(cleanAdd) {
+                    if(cleanAdd)
                         removeAllCachedCities();
-                    }
 
                     addCitiesToCache(result.getEntries());
                 });
+    }
 
-        return Observable.zip(observableCities, getFavouriteCitiesSlugs(realm), getOfflineCitiesSlugs(realm),
-                UtilityHelper::setupFavouriteOfflineItems)
-                .subscribeOn(Schedulers.io());
+    protected List<String> getListOfFavouriteSlugs() {
+        Cursor cursor = mContentResolver.query(CitiesContract.CitiesFavouriteSlugs.CONTENT_URI,
+                CitiesProjection.CITIES_FAVOURITE_SLUGS_PROJECTION, null, null, CitiesContract.Cities.SORT_ORDER);
+
+        List<String> slugs = new ArrayList<>();
+
+        try {
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    String slug = UtilityHelper.getCursorString(cursor, CitiesContract.CitiesFavouriteSlugs.CITY_FAVOURITE_SLUGS_SLUG);
+                    slugs.add(slug);
+                }
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+
+        return slugs;
+    }
+
+    protected List<String> getListOfOfflineSlugs() {
+        Cursor cursor = mContentResolver.query(CitiesContract.CitiesOfflineSlugs.CONTENT_URI,
+                CitiesProjection.CITIES_OFFLINE_SLUGS_PROJECTION, null, null, CitiesContract.Cities.SORT_ORDER);
+        List<String> slugs = new ArrayList<>();
+
+        try {
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    String slug = UtilityHelper.getCursorString(cursor, CitiesContract.CitiesOfflineSlugs.CITY_OFFLINE_SLUGS_SLUG);
+                    slugs.add(slug);
+                }
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+
+        return slugs;
     }
 
     @Override
-    public Observable<List<CityEntity>> cachedCities(Realm realm) {
-        Observable<List<CityEntity>> observableCities = realm.where(City.class)
-                .findAll()
-                .asObservable()
-                .flatMap(results -> Observable.from(results)
-                        .map(RepositoryHelpers::cityEntityFactory).toList());
+    public CitiesResultEntity cachedCities() {
+        List<String> favouriteSlugs = getListOfFavouriteSlugs();
+        List<String> offlineSlugs = getListOfOfflineSlugs();
 
-        return Observable.zip(observableCities, getFavouriteCitiesSlugs(realm), getOfflineCitiesSlugs(realm),
-                UtilityHelper::setupFavouriteOfflineItems);
+        Cursor cursor = mContentResolver.query(CitiesContract.Cities.CONTENT_URI, CitiesProjection.CITIES_PROJECTION,
+                null, null, CitiesContract.Cities.SORT_ORDER);
+        List<CityEntity> citiesList = new ArrayList<>();
+
+        try {
+            if(cursor != null) {
+                while (cursor.moveToNext()) {
+                    CityEntity entity = RepositoryHelpers.cityEntityFavouriteOfflineFactory(RepositoryHelpers.cityEntityFactory(cursor),
+                            favouriteSlugs, offlineSlugs);
+                    citiesList.add(entity);
+                }
+            }
+        } finally {
+            if(cursor != null)
+                cursor.close();
+        }
+
+        CitiesResultEntity resultEntity = new CitiesResultEntity();
+        resultEntity.setEntries(citiesList);
+        return resultEntity;
     }
 
     @Override
-    public Observable<List<CityEntity>> searchCities(Realm realm, Integer page, String query) {
-
+    public Observable<List<CityEntity>> searchCities(Integer page, String query) {
         Observable<List<CityEntity>> observableCities = mApi.getCitiesSearch(page, query)
                 .timeout(6, TimeUnit.SECONDS)
                 .retry(3)
                 .map(CitiesResultEntity::getEntries)
                 .subscribeOn(Schedulers.io());
 
-        return Observable.zip(observableCities, getFavouriteCitiesSlugs(realm), getOfflineCitiesSlugs(realm),
+        return Observable.zip(observableCities, getFavouriteCitiesSlugs(), getOfflineCitiesSlugs(),
                 UtilityHelper::setupFavouriteOfflineItems)
                 .subscribeOn(Schedulers.io());
     }
 
-    protected Observable<List<CityEntity>> getSearchCitiesFromApi(Realm realm, RequestBody body) {
-
-        Observable<List<CityEntity>> observableCities = mApi.getCitiesListSearch(body)
+    protected Observable<List<CityEntity>> getSearchCitiesFromApi(RequestBody body) {
+        return mApi.getCitiesListSearch(body)
                 .timeout(6, TimeUnit.SECONDS)
                 .retry(3)
                 .map(CitiesResultEntity::getEntries)
@@ -144,13 +191,9 @@ public class MyNomadLifeRepository implements IMyNomadLifeRepository {
                     removeAllCachedCities();
                     addCitiesToCache(cities);
                 });
-
-        return Observable.zip(observableCities, getFavouriteCitiesSlugs(realm), getOfflineCitiesSlugs(realm),
-                UtilityHelper::setupFavouriteOfflineItems)
-                .subscribeOn(Schedulers.io());
     }
 
-    protected Observable<List<CityOfflineEntity>> getSearchOfflineCitiesFromApi(Realm realm, RequestBody body, boolean cleanAll) {
+    protected Observable<List<CityOfflineEntity>> getSearchOfflineCitiesFromApi(RequestBody body, boolean cleanAll) {
 
         Observable<List<CityOfflineEntity>> observableCities = mApi.getCitiesOfflineListSearch(body)
                 .timeout(6, TimeUnit.SECONDS)
@@ -161,37 +204,52 @@ public class MyNomadLifeRepository implements IMyNomadLifeRepository {
                     if(cleanAll) {
                         removeAllOfflineCities();
                         removeAllOfflineCitiesImages();
-                        removeAllOfflineCityPlacesToWork();
+                        removeAllOfflineCitiesPlacesToWork();
                     }
 
                     addOfflineCities(cities);
                 });
 
-        return Observable.zip(observableCities, getFavouriteCitiesSlugs(realm), getOfflineCitiesSlugs(realm),
+        return Observable.zip(observableCities, getFavouriteCitiesSlugs(), getOfflineCitiesSlugs(),
                 UtilityHelper::setupOfflineFavouriteOfflineItems)
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<List<String>> favouriteCitiesSlugs(Realm realm) {
+    public Observable<List<String>> favouriteCitiesSlugs() {
+        return mBriteContentResolver
+                .createQuery(CitiesContract.CitiesFavouriteSlugs.CONTENT_URI, CitiesProjection.CITIES_FAVOURITE_SLUGS_PROJECTION,
+                        null, null, CitiesContract.CitiesFavouriteSlugs.SORT_ORDER, true)
+                .map(query -> {
+                    Cursor cursor = query.run();
+                    List<String> slugs = new ArrayList<>();
 
-        return realm.where(CityFavouriteSlug.class)
-                .findAll()
-                .asObservable()
-                .flatMap(results -> Observable.from(results)
-                        .map(UtilityHelper::cityIdFactory).toList());
+                    try {
+                        if (cursor != null) {
+                            while (cursor.moveToNext()) {
+                                String slug = UtilityHelper.getCursorString(cursor, CitiesContract.CitiesFavouriteSlugs.CITY_FAVOURITE_SLUGS_SLUG);
+                                slugs.add(slug);
+                            }
+                        }
+                    } finally {
+                        if (cursor != null)
+                            cursor.close();
+                    }
+
+                    return slugs;
+                })
+                .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<List<String>> getFavouriteCitiesSlugs(Realm realm) {
-
+    public Observable<List<String>> getFavouriteCitiesSlugs() {
         mFavouriteSlugsSubject = BehaviorSubject.create();
-        favouriteCitiesSlugs(realm).subscribe(mFavouriteSlugsSubject);
+        favouriteCitiesSlugs().subscribe(mFavouriteSlugsSubject);
         return mFavouriteSlugsSubject.asObservable();
     }
 
     @Override
-    public Observable<List<CityEntity>> favouriteCities(Realm realm, List<String> citiesSlugs) {
+    public Observable<List<CityEntity>> favouriteCities(List<String> citiesSlugs) {
         JSONObject object = new JSONObject();
         String jsonInput;
 
@@ -203,58 +261,66 @@ public class MyNomadLifeRepository implements IMyNomadLifeRepository {
         }
 
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse(ConstantValues.HTTP_DATA_TYPE), jsonInput);
-        return getSearchCitiesFromApi(realm, body);
+        return getSearchCitiesFromApi(body);
     }
 
     @Override
-    public Observable<List<CityEntity>> cachedFavouriteCities(Realm realm) {
+    public Observable<List<String>> offlineCitiesSlugs() {
+        return mBriteContentResolver
+                .createQuery(CitiesContract.CitiesOfflineSlugs.CONTENT_URI, CitiesProjection.CITIES_OFFLINE_SLUGS_PROJECTION,
+                        null, null, CitiesContract.CitiesOfflineSlugs.SORT_ORDER, true)
+                .map(query -> {
+                    Cursor cursor = query.run();
+                    List<String> slugs = new ArrayList<>();
 
-        return cachedCities(realm)
-                .flatMap(cities -> Observable.from(cities)
-                        .filter(CityEntity::isFavourite).toList());
+                    try {
+                        if (cursor != null) {
+                            while (cursor.moveToNext()) {
+                                String slug = UtilityHelper.getCursorString(cursor, CitiesContract.CitiesOfflineSlugs.CITY_OFFLINE_SLUGS_SLUG);
+                                slugs.add(slug);
+                            }
+                        }
+                    } finally {
+                        if (cursor != null)
+                            cursor.close();
+                    }
+
+                    return slugs;
+                })
+                .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<List<String>> offlineCitiesSlugs(Realm realm) {
-
-        return realm.where(CityOfflineSlug.class)
-                .findAll()
-                .asObservable()
-                .flatMap(results -> Observable.from(results)
-                        .map(UtilityHelper::cityIdFactory).toList());
-    }
-
-    @Override
-    public Observable<List<String>> getOfflineCitiesSlugs(Realm realm) {
-
+    public Observable<List<String>> getOfflineCitiesSlugs() {
         mOfflineSlugsSubject = BehaviorSubject.create();
-        offlineCitiesSlugs(realm).subscribe(mOfflineSlugsSubject);
+        offlineCitiesSlugs().subscribe(mOfflineSlugsSubject);
         return mOfflineSlugsSubject.asObservable();
     }
 
     @Override
-    public Observable<List<CityOfflineEntity>> offlineCities(Realm realm) {
+    public List<CityOfflineEntity> offlineCities() {
+        List<String> favouriteSlugs = getListOfFavouriteSlugs();
+        List<String> offlineSlugs = getListOfOfflineSlugs();
 
-        Observable<List<CityOfflineEntity>> observableCities = realm.where(CityOffline.class)
-                .findAll()
-                .asObservable()
-                .flatMap(results -> Observable.from(results)
-                        .map(RepositoryHelpers::cityOfflineEntityFactory).toList())
-                .map(cities -> {
-                    Realm mapRealm = getRealm();
-                    for(CityOfflineEntity cityOfflineEntity : cities) {
-                        RealmResults<CityOfflineImage> citiesImages = mapRealm.where(CityOfflineImage.class).equalTo(ConstantValues.SLUG_COLUMN_NAME, cityOfflineEntity.getSlug()).findAll();
+        Cursor cursor = mContentResolver.query(CitiesContract.CitiesOffline.CONTENT_URI, CitiesProjection.CITIES_OFFLINE_PROJECTION,
+                null, null, CitiesContract.CitiesOffline.SORT_ORDER);
 
-                        if(citiesImages.size() > 0)
-                            UtilityHelper.setupImageFromDatabase(citiesImages.first(), cityOfflineEntity);
-                    }
+        List<CityOfflineEntity> citiesList = new ArrayList<>();
 
-                    UtilityHelper.closeDatabase(mapRealm);
-                    return cities;
-                });
+        try {
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    CityOfflineEntity cityOfflineEntity = RepositoryHelpers
+                            .cityOfflineEntityFavouriteOfflineFactory(RepositoryHelpers.cityOfflineEntityFactory(cursor), favouriteSlugs, offlineSlugs);
+                    citiesList.add(cityOfflineEntity);
+                }
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
 
-        return Observable.zip(observableCities, getFavouriteCitiesSlugs(realm), getOfflineCitiesSlugs(realm),
-                UtilityHelper::setupOfflineFavouriteOfflineItems);
+        return citiesList;
     }
 
     protected Observable<CityOfflineEntity> getOfflineCitiesFromApiImages(Observable<CityOfflineEntity> observableOfflineCities) {
@@ -262,19 +328,14 @@ public class MyNomadLifeRepository implements IMyNomadLifeRepository {
                 .flatMap((cityOfflineEntity) -> getCityImageFromApi(cityOfflineEntity.getSlug()),
                         (cityOfflineEntity, imageResponseBodyEntity) -> {
                             if (imageResponseBodyEntity != null && imageResponseBodyEntity.isData()) {
-                                Realm innerRealm = getRealm();
-
-                                RepositoryHelpers.saveImageToDatabase(innerRealm, imageResponseBodyEntity.getSlug(),
-                                        BitmapFactory.decodeByteArray(imageResponseBodyEntity.getImageData(), 0,
-                                                imageResponseBodyEntity.getImageData().length));
-
-                                UtilityHelper.closeDatabase(innerRealm);
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(imageResponseBodyEntity.getImageData(), 0, imageResponseBodyEntity.getImageData().length);
+                                addOfflineCityImage(imageResponseBodyEntity.getSlug(), bitmap);
                             }
                             return cityOfflineEntity;
                         });
     }
 
-    protected Observable<List<CityOfflineEntity>> getOfflineCitiesFromApi(Realm realm, List<String> citiesSlugs, boolean cleanAll) {
+    protected Observable<List<CityOfflineEntity>> getOfflineCitiesFromApi(List<String> citiesSlugs, boolean cleanAll) {
         JSONObject object = new JSONObject();
         String jsonInput;
 
@@ -286,7 +347,7 @@ public class MyNomadLifeRepository implements IMyNomadLifeRepository {
         }
 
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse(ConstantValues.HTTP_DATA_TYPE), jsonInput);
-        Observable<CityOfflineEntity> observableOfflineCities = getSearchOfflineCitiesFromApi(realm, body, cleanAll).flatMap(Observable::from);
+        Observable<CityOfflineEntity> observableOfflineCities = getSearchOfflineCitiesFromApi(body, cleanAll).flatMap(Observable::from);
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(mApp);
         boolean offlineModeAutoUpdatesImages = settings.getBoolean(ConstantValues.SETTINGS_OFFLINE_MODE_AUTO_UPDATES_IMAGES, true);
@@ -304,195 +365,130 @@ public class MyNomadLifeRepository implements IMyNomadLifeRepository {
     }
 
     @Override
-    public Observable<List<CityOfflineEntity>> offlineCitiesFromApi(Realm realm, List<String> offlineCitiesSlugs, boolean cleanAll) {
-        return getOfflineCitiesFromApi(realm, offlineCitiesSlugs, cleanAll);
+    public Observable<List<CityOfflineEntity>> offlineCitiesFromApi(List<String> offlineCitiesSlugs, boolean cleanAll) {
+        return getOfflineCitiesFromApi(offlineCitiesSlugs, cleanAll);
     }
 
     @Override
     public void addCitiesToCache(List<CityEntity> cities) {
-        Realm realm = MyNomadLifeApplication.getDatabaseInstance(mApp);
+        ContentValues[] values = new ContentValues[cities.size()];
 
-        if (realm != null) {
-            realm.beginTransaction();
+        int i = 0;
+        for(CityEntity entity : cities)
+            values[i++] = entity.getValues();
 
-            for(CityEntity entity : cities)
-                RepositoryHelpers.setupCity(realm, entity);
-
-            realm.commitTransaction();
-            UtilityHelper.closeDatabase(realm);
-        }
+        if(!cities.isEmpty())
+            mContentResolver.bulkInsert(CitiesContract.Cities.CONTENT_URI, values);
     }
 
     public void removeAllCachedCities() {
-        Realm realm = MyNomadLifeApplication.getDatabaseInstance(mApp);
-
-        if (realm != null) {
-            realm.beginTransaction();
-            realm.delete(City.class);
-            realm.commitTransaction();
-            UtilityHelper.closeDatabase(realm);
-        }
+        mContentResolver.delete(CitiesContract.Cities.CONTENT_URI, null, null);
     }
 
     @Override
     public void addOfflineCitySlug(String slug) {
-        Realm realm = MyNomadLifeApplication.getDatabaseInstance(mApp);
-
-        if(realm != null) {
-            RealmResults<CityFavouriteSlug> results = realm.where(CityFavouriteSlug.class).equalTo(ConstantValues.SLUG_COLUMN_NAME, slug).findAll();
-
-            if (results.size() < 1) {
-                realm.beginTransaction();
-
-                CityOfflineSlug city = realm.createObject(CityOfflineSlug.class);
-                int nextID = (realm.where(CityOfflineSlug.class).max(ConstantValues.ID_COLUMN_NAME).intValue() + 1);
-                city.setId(nextID);
-                city.setSlug(slug);
-
-                realm.commitTransaction();
-            }
-
-            UtilityHelper.closeDatabase(realm);
-        }
+        ContentValues values = new ContentValues();
+        values.put(CitiesContract.CitiesOfflineSlugs.CITY_OFFLINE_SLUGS_SLUG, slug);
+        mContentResolver.insert(CitiesContract.CitiesOfflineSlugs.CONTENT_URI, values);
     }
 
     @Override
     public void addOfflineCity(CityOfflineEntity city) {
-        Realm realm = MyNomadLifeApplication.getDatabaseInstance(mApp);
-
-        if (realm != null) {
-            realm.beginTransaction();
-            RepositoryHelpers.setupOfflineCity(realm, city);
-            realm.commitTransaction();
-
-            UtilityHelper.closeDatabase(realm);
-        }
+        mContentResolver.insert(CitiesContract.CitiesOffline.CONTENT_URI, city.getValues());
     }
 
-    private void removeOfflineCitySlugs(Realm realm, String slug) {
-        if(realm != null) {
-            RealmResults<CityOfflineSlug> slugsResults = realm.where(CityOfflineSlug.class).equalTo(ConstantValues.SLUG_COLUMN_NAME, slug).findAll();
-
-            if (slugsResults.size() > 0) {
-                realm.beginTransaction();
-                slugsResults.deleteAllFromRealm();
-                realm.commitTransaction();
-            }
-        }
+    private void removeOfflineCitySlugs(String slug) {
+        mContentResolver.delete(CitiesContract.CitiesOfflineSlugs.CONTENT_URI,
+                CitiesContract.CitiesOfflineSlugs.CITY_OFFLINE_SLUGS_SLUG + " = ?", new String[]{slug});
     }
 
     @Override
     public void removeOfflineCity(String slug) {
-        Realm realm = MyNomadLifeApplication.getDatabaseInstance(mApp);
+        mContentResolver.delete(CitiesContract.CitiesOffline.CONTENT_URI,
+                CitiesContract.CitiesOffline.CITY_SLUG + " = ?", new String[]{slug});
 
-        if (realm != null) {
-            RealmResults<CityOffline> results = realm.where(CityOffline.class).equalTo(ConstantValues.SLUG_COLUMN_NAME, slug).findAll();
-
-            if(results.size() > 0) {
-                realm.beginTransaction();
-                results.deleteAllFromRealm();
-                realm.commitTransaction();
-            }
-
-            removeOfflineCitySlugs(realm, slug);
-            removeOfflineCityImage(realm, slug);
-            removeAllOfflineCityPlacesToWork(realm, slug);
-
-            UtilityHelper.closeDatabase(realm);
-        }
+        removeOfflineCitySlugs(slug);
+        removeOfflineCityImage(slug);
+        removeAllOfflineCitiesPlacesToWork(slug);
     }
 
-    private void removeAllOfflineCitiesSlugs(Realm realm) {
-        realm.beginTransaction();
-        realm.delete(CityOfflineSlug.class);
-        realm.commitTransaction();
-    }
-
-    private void removeAllOfflineCities(Realm realm) {
-        realm.beginTransaction();
-        realm.delete(CityOffline.class);
-        realm.commitTransaction();
-    }
-
-    private void removeAllOfflineCityImages(Realm realm) {
-        realm.beginTransaction();
-        realm.delete(CityOfflineImage.class);
-        realm.commitTransaction();
-    }
-
-    private void removeAllOfflineCityPlacesToWork(Realm realm) {
-        realm.beginTransaction();
-        realm.delete(CityOfflinePlaceToWork.class);
-        realm.commitTransaction();
+    protected void removeAllOfflineCitiesSlugs() {
+        mContentResolver.delete(CitiesContract.CitiesOfflineSlugs.CONTENT_URI, null, null);
     }
 
     @Override
     public void removeAllOfflineCitiesData() {
-        Realm realm = MyNomadLifeApplication.getDatabaseInstance(mApp);
-
-        if(realm != null) {
-            removeAllOfflineCitiesSlugs(realm);
-            removeAllOfflineCities(realm);
-            removeAllOfflineCityImages(realm);
-            removeAllOfflineCityPlacesToWork(realm);
-            UtilityHelper.closeDatabase(realm);
-        }
+        removeAllOfflineCitiesSlugs();
+        removeAllOfflineCities();
+        removeAllOfflineCitiesImages();
+        removeAllOfflineCitiesPlacesToWork();
     }
 
     @Override
     public void addOfflineCities(List<CityOfflineEntity> cities) {
-        Realm realm = MyNomadLifeApplication.getDatabaseInstance(mApp);
-
-        if (realm != null) {
-            realm.beginTransaction();
-
-            for(CityOfflineEntity entity : cities) {
-                RepositoryHelpers.setupOfflineCity(realm, entity);
-                RepositoryHelpers.setupImage(realm, entity);
-            }
-
-            realm.commitTransaction();
-            UtilityHelper.closeDatabase(realm);
+        for(CityOfflineEntity entity : cities) {
+            mContentResolver.insert(CitiesContract.CitiesOffline.CONTENT_URI, entity.getValues());
         }
     }
 
     @Override
     public void removeAllOfflineCities() {
-        Realm realm = MyNomadLifeApplication.getDatabaseInstance(mApp);
-
-        if(realm != null) {
-            removeAllOfflineCities(realm);
-
-            if(!realm.isClosed())
-                realm.close();
-        }
+        mContentResolver.delete(CitiesContract.CitiesOffline.CONTENT_URI, null, null);
     }
 
+    @Override
     public void addOfflineCityImage(String citySlug, Bitmap bitmapImage) {
-        Realm realm = MyNomadLifeApplication.getDatabaseInstance(mApp);
-
-        if(realm != null) {
-            realm.beginTransaction();
-
-            CityOfflineImage cityOfflineImage = realm.createObject(CityOfflineImage.class);
-            int nextID = (realm.where(CityOfflineImage.class).max(ConstantValues.ID_COLUMN_NAME).intValue() + 1);
-            cityOfflineImage.setId(nextID);
-            cityOfflineImage.setSlug(citySlug);
-            cityOfflineImage.setImageData(UtilityHelper.bitmapToByteArray(bitmapImage));
-
-            realm.commitTransaction();
-
-            if(!realm.isClosed())
-                realm.close();
-        }
+        ContentValues values = new ContentValues();
+        values.put(CitiesContract.CitiesOfflineImages.CITY_IMAGE_SLUG, citySlug);
+        values.put(CitiesContract.CitiesOfflineImages.CITY_IMAGE_DATA, UtilityHelper.bitmapToByteArray(bitmapImage));
+        mContentResolver.insert(CitiesContract.CitiesOfflineImages.CONTENT_URI, values);
     }
 
-    public Observable<List<ImageResponseBodyEntity>> offlineCityImage(Realm realm, String citySlug) {
-        return realm.where(CityOfflineImage.class)
-                .equalTo(ConstantValues.SLUG_COLUMN_NAME, citySlug)
-                .findAll()
-                .asObservable()
-                .map(results -> UtilityHelper.processImageFromDatabase(citySlug, results));
+    @Override
+    public Observable<List<ImageResponseBodyEntity>> offlineCityImage(String citySlug) {
+        String selectionWhere;
+        String[] selectionArguments = new String[]{citySlug};
+
+        selectionWhere = CitiesContract.CitiesOfflineImages.CITY_IMAGE_SLUG + " = ?";
+        selectionArguments[0] = citySlug;
+
+        return mBriteContentResolver
+                .createQuery(CitiesContract.CitiesOfflineImages.CONTENT_URI, CitiesProjection.CITIES_OFFLINE_IMAGES_PROJECTION,
+                        selectionWhere, selectionArguments, CitiesContract.CitiesOfflineImages.SORT_ORDER, true)
+                .map(query -> {
+                    Cursor cursor = query.run();
+                    List<ImageResponseBodyEntity> images = new ArrayList<>();
+
+                    try {
+                        if (cursor != null) {
+                            while (cursor.moveToNext()) {
+                                ImageResponseBodyEntity imageResponseBodyEntity = new ImageResponseBodyEntity();
+                                imageResponseBodyEntity.setSlug(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesOfflineImages.CITY_IMAGE_SLUG));
+
+                                try {
+                                    byte[] imageData = UtilityHelper.getCursorBlob(cursor, CitiesContract.CitiesOfflineImages.CITY_IMAGE_DATA);
+
+                                    if (imageData != null && imageData.length > 0) {
+                                        imageResponseBodyEntity.setData(true);
+                                        imageResponseBodyEntity.setImageData(imageData);
+                                    } else {
+                                        imageResponseBodyEntity.setData(false);
+                                    }
+                                } catch (SQLiteException exception) {
+                                    imageResponseBodyEntity.setData(false);
+                                }
+
+                                images.add(imageResponseBodyEntity);
+                            }
+                        }
+                    } finally {
+                        if (cursor != null)
+                            cursor.close();
+                    }
+
+                    return images;
+                })
+                .subscribeOn(Schedulers.io());
     }
 
     protected Observable<ImageResponseBodyEntity> getCityImageFromApi(String slug) {
@@ -509,90 +505,58 @@ public class MyNomadLifeRepository implements IMyNomadLifeRepository {
             mSubscriptions.unsubscribe();
 
         mSubscriptions = new CompositeSubscription();
-
         List<Observable<ImageResponseBodyEntity>> responses = new ArrayList<>();
 
         for(String cityOfflineSlug : citySlugs)
             responses.add(getCityImageFromApi(cityOfflineSlug));
 
-        return Observable.zip(responses, (imageResponses) -> UtilityHelper.processImagesFromApi(getRealm(), imageResponses));
+        return Observable.zip(responses, (imageResponses) -> {
+            List<Boolean> imageResults = new ArrayList<>();
+
+            if(imageResponses != null) {
+                for(Object responseObject : imageResponses) {
+                    ImageResponseBodyEntity imageResponseBodyEntity = (ImageResponseBodyEntity) responseObject;
+
+                    if(imageResponseBodyEntity != null && imageResponseBodyEntity.isData()) {
+                        addOfflineCityImage(imageResponseBodyEntity.getSlug(),
+                                BitmapFactory.decodeByteArray(imageResponseBodyEntity.getImageData(), 0, imageResponseBodyEntity.getImageData().length));
+                        imageResults.add(true);
+                    }
+                    imageResults.add(false);
+                }
+            }
+
+            return imageResults;
+        });
     }
 
     @Override
-    public void removeOfflineCityImage(Realm realm, String slug) {
-        if(realm != null) {
-            RealmResults<CityOfflineImage> results = realm.where(CityOfflineImage.class)
-                    .equalTo(ConstantValues.SLUG_COLUMN_NAME, slug, Case.INSENSITIVE).findAll();
-
-            if(results.size() > 0) {
-                realm.beginTransaction();
-                results.deleteAllFromRealm();
-                realm.commitTransaction();
-            }
-
-            UtilityHelper.closeDatabase(realm);
-        }
+    public void removeOfflineCityImage(String slug) {
+        String whereString = CitiesContract.CitiesOfflineImages.CITY_IMAGE_SLUG + " = ?";
+        mContentResolver.delete(CitiesContract.CitiesOfflineImages.CONTENT_URI, whereString, new String[]{slug});
     }
 
     @Override
     public void removeAllOfflineCitiesImages() {
-        Realm realm = MyNomadLifeApplication.getDatabaseInstance(mApp);
-
-        if(realm != null) {
-            removeAllOfflineCityImages(realm);
-            UtilityHelper.closeDatabase(realm);
-        }
+        mContentResolver.delete(CitiesContract.CitiesOfflineImages.CONTENT_URI, null, null);
     }
 
     @Override
     public void addFavouriteCitySlugs(String slug) {
-        Realm realm = MyNomadLifeApplication.getDatabaseInstance(mApp);
-
-        if(realm != null) {
-            RealmResults<CityFavouriteSlug> results = realm.where(CityFavouriteSlug.class).equalTo(ConstantValues.SLUG_COLUMN_NAME, slug).findAll();
-
-            if (results.size() < 1) {
-                realm.beginTransaction();
-
-                CityFavouriteSlug city = realm.createObject(CityFavouriteSlug.class);
-                int nextID = (realm.where(CityFavouriteSlug.class).max(ConstantValues.ID_COLUMN_NAME).intValue() + 1);
-                city.setId(nextID);
-                city.setSlug(slug);
-
-                realm.commitTransaction();
-            }
-
-            UtilityHelper.closeDatabase(realm);
-        }
+        ContentValues values = new ContentValues();
+        values.put(CitiesContract.CitiesFavouriteSlugs.CITY_FAVOURITE_SLUGS_SLUG, slug);
+        mContentResolver.insert(CitiesContract.CitiesFavouriteSlugs.CONTENT_URI, values);
     }
 
     @Override
     public void removeFavouriteCitySlugs(String slug) {
-        Realm realm = MyNomadLifeApplication.getDatabaseInstance(mApp);
-
-        if(realm != null) {
-            RealmResults<CityFavouriteSlug> results = realm.where(CityFavouriteSlug.class).equalTo(ConstantValues.SLUG_COLUMN_NAME, slug).findAll();
-
-            if(results.size() > 0) {
-                realm.beginTransaction();
-                results.deleteAllFromRealm();
-                realm.commitTransaction();
-            }
-
-            UtilityHelper.closeDatabase(realm);
-        }
+        String whereString = CitiesContract.CitiesFavouriteSlugs.CITY_FAVOURITE_SLUGS_SLUG + " = ?";
+        mContentResolver.delete(CitiesContract.CitiesFavouriteSlugs.CONTENT_URI, whereString, new String[]{slug});
     }
 
     @Override
     public void removeAllFavouriteCitiesSlugs() {
-        Realm realm = MyNomadLifeApplication.getDatabaseInstance(mApp);
-
-        if(realm != null) {
-            realm.beginTransaction();
-            realm.delete(CityFavouriteSlug.class);
-            realm.commitTransaction();
-            UtilityHelper.closeDatabase(realm);
-        }
+        mContentResolver.delete(CitiesContract.CitiesFavouriteSlugs.CONTENT_URI, null, null);
     }
 
     protected Observable<List<CityPlaceToWorkEntity>> getCityPlacesToWork(String citySlug) {
@@ -606,14 +570,6 @@ public class MyNomadLifeRepository implements IMyNomadLifeRepository {
                         cityPlaceToWorkEntity.setCitySlug(citySlug);
 
                     return placesToWork;
-                });
-    }
-
-    @Override
-    public Observable<List<CityPlaceToWorkEntity>> cityPlacesToWork(String citySlug) {
-        return getCityPlacesToWork(citySlug).doOnNext(placesToWork -> {
-                    removeAllCityPlacesToWork();
-                    addCityPlacesToWorkToCache(placesToWork);
                 });
     }
 
@@ -666,124 +622,143 @@ public class MyNomadLifeRepository implements IMyNomadLifeRepository {
     }
 
     @Override
-    public Observable<List<CityPlaceToWorkEntity>> cachedCityPlacesToWork(Realm realm, String citySlug) {
-        return realm.where(CityPlaceToWork.class)
-                .equalTo(ConstantValues.CITY_SLUG_COLUMN_NAME, citySlug)
-                .findAll()
-                .asObservable()
-                .flatMap(results -> Observable.from(results)
-                        .map(RepositoryHelpers::cityPlaceToWorkEntityFactory).toList());
-    }
+    public List<CityPlaceToWorkEntity> cachedCityPlacesToWork(String citySlug, String sqlQuery) {
+        String selectionWhere = "";
+        List<String> queryList = createQueryList(sqlQuery);
+        String[] selectionArguments = new String[(queryList.size()*2)+1];
 
-    @Override
-    public Observable<List<CityPlaceToWorkEntity>> cachedCityPlacesToWork(Realm realm, String citySlug, String query) {
-        List<String> queryList = createQueryList(query);
-        RealmQuery<CityPlaceToWork> realmQuery = realm.where(CityPlaceToWork.class).beginGroup();
+        if(sqlQuery != null && !sqlQuery.isEmpty() && !sqlQuery.equals("")) {
+            for (int i = 0; i < queryList.size(); i++) {
+                selectionWhere += CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_NAME + " LIKE ? OR ";
+                selectionWhere += CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_SUBNAME + " LIKE ?";
 
-        for(int i = 0; i < queryList.size(); i++) {
-            realmQuery = realmQuery
-                    .contains(ConstantValues.NAME_COLUMN_NAME, queryList.get(i), Case.INSENSITIVE)
-                    .or()
-                    .contains(ConstantValues.SUB_NAME_COLUMN_NAME, queryList.get(i), Case.INSENSITIVE);
+                if (i != (queryList.size() - 1))
+                    selectionWhere += " OR ";
+            }
 
-            if(i != (queryList.size() - 1))
-                realmQuery = realmQuery.or();
+            int i = 0;
+            for(String item : queryList) {
+                selectionArguments[i] = "%" + item + "%";
+                selectionArguments[i+1] = "%" + item + "%";
+                i += 2;
+            }
+
+            selectionArguments[i] = citySlug;
+            selectionWhere = "(" + selectionWhere + ") AND " + CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_CITY_SLUG + " = ?";
+
+        } else {
+            selectionArguments = new String[]{citySlug};
+            selectionWhere = CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_CITY_SLUG + " = ?";
         }
 
-        return realmQuery.endGroup()
-                .findAll()
-                .asObservable()
-                .flatMap(results -> Observable.from(results)
-                        .map(RepositoryHelpers::cityPlaceToWorkEntityFactory).toList());
+        Cursor cursor = mContentResolver.query(CitiesContract.CitiesPlacesToWork.CONTENT_URI,
+                CitiesProjection.CITIES_OFFLINE_PLACES_TO_WORK_PROJECTION, selectionWhere, selectionArguments,
+                CitiesContract.CitiesPlacesToWork.SORT_ORDER);
+        List<CityPlaceToWorkEntity> placesToWork = new ArrayList<>();
+
+        try {
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    CityPlaceToWorkEntity entity = RepositoryHelpers.cityPlaceToWorkEntityFactory(cursor);
+                    placesToWork.add(entity);
+                }
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+
+        return placesToWork;
     }
 
     @Override
     public void addCityPlacesToWorkToCache(List<CityPlaceToWorkEntity> placesToWork) {
-        Realm realm = MyNomadLifeApplication.getDatabaseInstance(mApp);
+        ContentValues[] values = new ContentValues[placesToWork.size()];
 
-        if (realm != null) {
-            realm.beginTransaction();
+        int i = 0;
+        for(CityPlaceToWorkEntity entity : placesToWork)
+            values[i++] = entity.getValues();
 
-            for(CityPlaceToWorkEntity entity : placesToWork)
-                RepositoryHelpers.setupCityPlaceToWork(realm, entity);
-
-            realm.commitTransaction();
-            UtilityHelper.closeDatabase(realm);
-        }
+        mContentResolver.bulkInsert(CitiesContract.CitiesPlacesToWork.CONTENT_URI, values);
     }
 
     @Override
     public void removeAllCityPlacesToWork() {
-        Realm realm = MyNomadLifeApplication.getDatabaseInstance(mApp);
-
-        if(realm != null) {
-            realm.beginTransaction();
-            realm.delete(CityPlaceToWork.class);
-            realm.commitTransaction();
-            UtilityHelper.closeDatabase(realm);
-        }
+        mContentResolver.delete(CitiesContract.CitiesPlacesToWork.CONTENT_URI, null, null);
     }
 
     @Override
-    public Observable<List<CityOfflinePlaceToWorkEntity>> offlineCityPlacesToWork(Realm realm, String citySlug) {
-        return realm.where(CityOfflinePlaceToWork.class)
-                .equalTo(ConstantValues.CITY_SLUG_COLUMN_NAME, citySlug)
-                .findAll()
-                .asObservable()
-                .flatMap(results -> Observable.from(results)
-                        .map(RepositoryHelpers::cityOfflinePlaceToWorkEntityFactory).toList());
-    }
+    public List<CityOfflinePlaceToWorkEntity> offlineCityPlacesToWork(String citySlug, String sqlQuery) {
+        String selectionWhere = "";
+        List<String> queryList = createQueryList(sqlQuery);
+        String[] selectionArguments = new String[(queryList.size()*2)+1];
 
-    @Override
-    public Observable<List<CityOfflinePlaceToWorkEntity>> offlineCityPlacesToWork(Realm realm, String citySlug, String query) {
-        List<String> queryList = createQueryList(query);
-        RealmQuery<CityOfflinePlaceToWork> realmQuery = realm.where(CityOfflinePlaceToWork.class).beginGroup();
+        if(sqlQuery != null && !sqlQuery.isEmpty() && !sqlQuery.equals("")) {
+            for (int i = 0; i < queryList.size(); i++) {
+                selectionWhere += CitiesContract.CitiesOfflinePlacesToWork.CITY_PLACE_TO_WORK_NAME + " LIKE ? OR ";
+                selectionWhere += CitiesContract.CitiesOfflinePlacesToWork.CITY_PLACE_TO_WORK_SUBNAME + " LIKE ?";
 
-        for(int i = 0; i < queryList.size(); i++) {
-            realmQuery = realmQuery
-                    .contains(ConstantValues.NAME_COLUMN_NAME, queryList.get(i), Case.INSENSITIVE)
-                    .or()
-                    .contains(ConstantValues.SUB_NAME_COLUMN_NAME, queryList.get(i), Case.INSENSITIVE);
+                if (i != (queryList.size() - 1))
+                    selectionWhere += " OR ";
+            }
 
-            if(i != (queryList.size() - 1))
-                realmQuery = realmQuery.or();
+            int i = 0;
+            for(String item : queryList) {
+                selectionArguments[i] = "%" + item + "%";
+                selectionArguments[i+1] = "%" + item + "%";
+                i += 2;
+            }
+
+            selectionArguments[i] = citySlug;
+            selectionWhere = "(" + selectionWhere + ") AND " + CitiesContract.CitiesOfflinePlacesToWork.CITY_PLACE_TO_WORK_CITY_SLUG + " = ?";
+        } else {
+            selectionWhere = CitiesContract.CitiesOfflinePlacesToWork.CITY_PLACE_TO_WORK_CITY_SLUG + " = ?";
+            selectionArguments = new String[]{citySlug};
         }
 
-        return realmQuery.endGroup()
-                .equalTo(ConstantValues.CITY_SLUG_COLUMN_NAME, citySlug)
-                .findAll()
-                .asObservable()
-                .flatMap(results -> Observable.from(results)
-                        .map(RepositoryHelpers::cityOfflinePlaceToWorkEntityFactory).toList());
+        Cursor cursor = mContentResolver.query(CitiesContract.CitiesOfflinePlacesToWork.CONTENT_URI,
+                CitiesProjection.CITIES_OFFLINE_PLACES_TO_WORK_PROJECTION, selectionWhere, selectionArguments,
+                CitiesContract.CitiesOfflinePlacesToWork.SORT_ORDER);
+        List<CityOfflinePlaceToWorkEntity> offlinePlacesToWork = new ArrayList<>();
+
+        try {
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    CityOfflinePlaceToWorkEntity entity = RepositoryHelpers.cityOfflinePlaceToWorkEntityFactory(cursor);
+                    offlinePlacesToWork.add(entity);
+                }
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+
+        return offlinePlacesToWork;
     }
 
     @Override
-    public void addOfflineCityPlacesToWork(List<CityOfflinePlaceToWorkEntity> cityPlacesToWorkEntity) {
-        Realm realm = MyNomadLifeApplication.getDatabaseInstance(mApp);
+    public void addOfflineCityPlacesToWork(List<CityOfflinePlaceToWorkEntity> cityOfflinePlacesToWorkEntity) {
+        if(cityOfflinePlacesToWorkEntity != null && !cityOfflinePlacesToWorkEntity.isEmpty()) {
+            ContentValues[] values = new ContentValues[cityOfflinePlacesToWorkEntity.size()];
 
-        if (realm != null) {
-            realm.beginTransaction();
+            int i = 0;
+            for (CityOfflinePlaceToWorkEntity entity : cityOfflinePlacesToWorkEntity)
+                values[i++] = entity.getValues();
 
-            for(CityOfflinePlaceToWorkEntity entity : cityPlacesToWorkEntity)
-                RepositoryHelpers.setupCityOfflinePlaceToWork(realm, entity);
-
-            realm.commitTransaction();
-            UtilityHelper.closeDatabase(realm);
+            mContentResolver.bulkInsert(CitiesContract.CitiesOfflinePlacesToWork.CONTENT_URI, values);
         }
     }
 
     @Override
     public void addOfflineCityPlacesToWorkFromApi(List<CityPlaceToWorkEntity> cityPlacesToWorkEntity) {
-        Realm realm = MyNomadLifeApplication.getDatabaseInstance(mApp);
+        if(cityPlacesToWorkEntity != null && !cityPlacesToWorkEntity.isEmpty()) {
+            ContentValues[] values = new ContentValues[cityPlacesToWorkEntity.size()];
 
-        if (realm != null) {
-            realm.beginTransaction();
+            int i = 0;
+            for (CityPlaceToWorkEntity entity : cityPlacesToWorkEntity)
+                values[i++] = entity.getValues();
 
-            for(CityPlaceToWorkEntity entity : cityPlacesToWorkEntity)
-                RepositoryHelpers.setupCityOfflinePlaceToWork(realm, entity);
-
-            realm.commitTransaction();
-            UtilityHelper.closeDatabase(realm);
+            mContentResolver.bulkInsert(CitiesContract.CitiesOfflinePlacesToWork.CONTENT_URI, values);
         }
     }
 
@@ -793,18 +768,16 @@ public class MyNomadLifeRepository implements IMyNomadLifeRepository {
             mSubscriptions.unsubscribe();
 
         mSubscriptions = new CompositeSubscription();
-
         List<Observable<List<CityPlaceToWorkEntity>>> responses = new ArrayList<>();
 
         for(String cityOfflineSlug : citySlugs)
             responses.add(getCityPlacesToWork(cityOfflineSlug));
 
         return Observable.zip(responses, (placesToWorkResponses) -> {
-            Realm realm = getRealm();
             List<Boolean> placesToWorkResults = new ArrayList<>();
 
             if(placesToWorkResponses != null) {
-                removeAllOfflineCityPlacesToWork();
+                removeAllOfflineCitiesPlacesToWork();
 
                 for(Object responseObject : placesToWorkResponses) {
                     List<CityPlaceToWorkEntity> placesToWorkList = (List<CityPlaceToWorkEntity>) responseObject;
@@ -817,37 +790,40 @@ public class MyNomadLifeRepository implements IMyNomadLifeRepository {
                 }
             }
 
-            UtilityHelper.closeDatabase(realm);
             return placesToWorkResults;
         });
     }
 
     @Override
-    public void removeAllOfflineCityPlacesToWork(Realm realm, String citySlug) {
-        if(realm != null) {
-            RealmResults<CityOfflinePlaceToWork> results = realm.where(CityOfflinePlaceToWork.class)
-                    .equalTo(ConstantValues.CITY_SLUG_COLUMN_NAME, citySlug, Case.INSENSITIVE).findAll();
-
-            if(results.size() > 0) {
-                realm.beginTransaction();
-                results.deleteAllFromRealm();
-                realm.commitTransaction();
-            }
-
-            UtilityHelper.closeDatabase(realm);
-        }
+    public void removeAllOfflineCitiesPlacesToWork(String citySlug) {
+        String whereString = CitiesContract.CitiesOfflinePlacesToWork.CITY_PLACE_TO_WORK_CITY_SLUG + " = ?";
+        mContentResolver.delete(CitiesContract.CitiesOfflinePlacesToWork.CONTENT_URI, whereString, new String[]{citySlug});
     }
 
     @Override
-    public void removeAllOfflineCityPlacesToWork() {
-        Realm realm = MyNomadLifeApplication.getDatabaseInstance(mApp);
+    public void removeAllOfflineCitiesPlacesToWork() {
+        mContentResolver.delete(CitiesContract.CitiesOfflinePlacesToWork.CONTENT_URI, null, null);
+    }
 
-        if(realm != null) {
-            realm.beginTransaction();
-            realm.delete(CityOfflinePlaceToWork.class);
-            realm.commitTransaction();
-            UtilityHelper.closeDatabase(realm);
+    @Override
+    public List<ExchangeRateEntity> exchangeRates() {
+        Cursor cursor = mContentResolver.query(CitiesContract.ExchangeRates.CONTENT_URI, CitiesProjection.EXCHANGE_RATES_PROJECTION,
+                null, null, CitiesContract.ExchangeRates.SORT_ORDER);
+        List<ExchangeRateEntity> exchangeRateEntityList = new ArrayList<>();
+
+        try {
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    ExchangeRateEntity exchangeRateEntity = RepositoryHelpers.exchangeRateEntityFactory(cursor);
+                    exchangeRateEntityList.add(exchangeRateEntity);
+                }
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
         }
+
+        return exchangeRateEntityList;
     }
 }
 

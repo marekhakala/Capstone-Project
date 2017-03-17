@@ -1,43 +1,52 @@
 package com.marekhakala.mynomadlifeapp.UI.Fragment;
 
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.marekhakala.mynomadlifeapp.DataModel.CityOfflineEntity;
 import com.marekhakala.mynomadlifeapp.R;
 import com.marekhakala.mynomadlifeapp.AppComponent;
 import com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity;
 import com.marekhakala.mynomadlifeapp.UI.Adapter.AbstractDataSourceRecyclerViewAdapter.StateType;
 import com.marekhakala.mynomadlifeapp.UI.Adapter.OfflineCitiesDSRecyclerViewAdapter;
-import com.marekhakala.mynomadlifeapp.Utilities.UtilityHelper;
+import com.marekhakala.mynomadlifeapp.UI.Loader.OfflineModeCitiesLoader;
 
-import io.realm.Realm;
 import rx.Subscription;
 import rx.subscriptions.Subscriptions;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class OfflineModeListFragment extends AbstractListFragment {
+public class OfflineModeListFragment extends AbstractListFragment implements LoaderManager.LoaderCallbacks<List<CityOfflineEntity>> {
 
     public static final String FRAGMENT_TAG = "fragment_offline_list";
+    public static final int OFFLINE_MODE_LIST_ID = 1;
+
     protected OfflineCitiesDSRecyclerViewAdapter mAdapter = null;
     protected Subscription mSubscriptionApi = Subscriptions.empty();
+
+    @Inject
+    OfflineModeCitiesLoader offlineModeLoader;
 
     @Override
     public void onViewCreated(View view, Bundle bundle) {
         super.onViewCreated(view, bundle);
 
-        mAdapter = new OfflineCitiesDSRecyclerViewAdapter(getContext(), new ArrayList<>());
+        mAdapter = new OfflineCitiesDSRecyclerViewAdapter(getActivity(), new ArrayList<>());
         mAdapter.setListener(this);
 
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setOnActionListener(this);
         mRecyclerView.setRefreshEnabled(false);
 
+        getLoaderManager().initLoader(OFFLINE_MODE_LIST_ID, null, this);
         refreshData();
     }
 
@@ -97,25 +106,7 @@ public class OfflineModeListFragment extends AbstractListFragment {
     @Override
     protected void loadDataFromDB() {
         mAdapter.setCurrentState(StateType.LOADING_STATE);
-
-        if(mSubscription != null)
-            mSubscription.unsubscribe();
-
-        Realm realm = mRepository.getRealm();
-
-        mSubscription = mRepository.offlineCities(realm)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(cities -> {
-                    mAdapter.updateData(cities);
-
-                    if (mSelectedPosition != -1)
-                        mRecyclerView.scrollToPosition(mSelectedPosition);
-
-                    UtilityHelper.closeDatabase(realm);
-                }, throwable -> {
-                    mAdapter.setCurrentState(StateType.ERROR_STATE);
-                    UtilityHelper.closeDatabase(realm);
-                });
+        getLoaderManager().getLoader(OFFLINE_MODE_LIST_ID).forceLoad();
     }
 
     @Override
@@ -125,36 +116,31 @@ public class OfflineModeListFragment extends AbstractListFragment {
         if(mSubscription != null)
             mSubscription.unsubscribe();
 
-        Realm realm = mRepository.getRealm();
-        mSubscription = mRepository.getOfflineCitiesSlugs(realm)
+        mSubscription = mRepository.getOfflineCitiesSlugs()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(citiesSlugs -> {
                     if (citiesSlugs.size() > 0) {
-                        getDataFromAPI(realm, citiesSlugs);
+                        getDataFromAPI(citiesSlugs);
                     } else {
                         mAdapter.setCurrentState(StateType.EMPTY_STATE);
-                        UtilityHelper.closeDatabase(realm);
                     }
                 }, throwable -> {
                     mAdapter.setCurrentState(StateType.ERROR_STATE);
-                    UtilityHelper.closeDatabase(realm);
                 });
     }
 
-    protected void getDataFromAPI(Realm realm, List<String> citiesSlugs) {
+    protected void getDataFromAPI(List<String> citiesSlugs) {
         mAdapter.setCurrentState(StateType.LOADING_STATE);
 
         if(mSubscriptionApi != null)
             mSubscriptionApi.unsubscribe();
 
-        mSubscriptionApi = mRepository.offlineCitiesFromApi(realm, citiesSlugs, true)
+        mSubscriptionApi = mRepository.offlineCitiesFromApi(citiesSlugs, true)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(cities -> {
                     reloadUiFromDB();
-                    UtilityHelper.closeDatabase(realm);
                 }, throwable -> {
                     mAdapter.setCurrentState(StateType.ERROR_STATE);
-                    UtilityHelper.closeDatabase(realm);
                 });
     }
 
@@ -207,19 +193,16 @@ public class OfflineModeListFragment extends AbstractListFragment {
             if(mSubscription != null)
                 mSubscription.unsubscribe();
 
-            Realm realm = mRepository.getRealm();
-            mSubscription = mRepository.getOfflineCitiesSlugs(realm)
+            mSubscription = mRepository.getOfflineCitiesSlugs()
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(citiesSlugs -> {
                         if (citiesSlugs.size() > 0) {
                             getPlacesToWorkFromAPI(citiesSlugs);
                         } else {
                             mAdapter.setCurrentState(StateType.EMPTY_STATE);
-                            UtilityHelper.closeDatabase(realm);
                         }
                     }, throwable -> {
                         mAdapter.setCurrentState(StateType.ERROR_STATE);
-                        UtilityHelper.closeDatabase(realm);
                     });
         }
     }
@@ -231,6 +214,7 @@ public class OfflineModeListFragment extends AbstractListFragment {
             mSubscriptionApi.unsubscribe();
 
         mSubscriptionApi = mRepository.updateAllOfflineCitiesPlacesToWork(citySlugs)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(results -> {
                     reloadUiFromDB();
                 }, throwable -> {
@@ -251,19 +235,16 @@ public class OfflineModeListFragment extends AbstractListFragment {
             if(mSubscription != null)
                 mSubscription.unsubscribe();
 
-            Realm realm = mRepository.getRealm();
-            mSubscription = mRepository.getOfflineCitiesSlugs(realm)
+            mSubscription = mRepository.getOfflineCitiesSlugs()
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(citiesSlugs -> {
                         if (citiesSlugs.size() > 0) {
                             getImagesFromAPI(citiesSlugs);
                         } else {
                             mAdapter.setCurrentState(StateType.EMPTY_STATE);
-                            UtilityHelper.closeDatabase(realm);
                         }
                     }, throwable -> {
                         mAdapter.setCurrentState(StateType.ERROR_STATE);
-                        UtilityHelper.closeDatabase(realm);
                     });
         }
     }
@@ -284,5 +265,24 @@ public class OfflineModeListFragment extends AbstractListFragment {
 
     @Override
     public void onLoadMore() {}
+
+    @Override
+    public Loader<List<CityOfflineEntity>> onCreateLoader(int id, Bundle args) {
+        return offlineModeLoader;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<CityOfflineEntity>> loader, List<CityOfflineEntity> data) {
+        mAdapter.updateData(data);
+
+        if (mSelectedPosition != -1)
+            mRecyclerView.scrollToPosition(mSelectedPosition);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<CityOfflineEntity>> loader) {
+        mSelectedPosition = -1;
+        mAdapter.setCurrentState(StateType.EMPTY_STATE);
+    }
 }
 

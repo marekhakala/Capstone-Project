@@ -1,7 +1,8 @@
 package com.marekhakala.mynomadlifeapp.UI.Fragment;
 
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,7 +18,7 @@ public abstract class AbstractBaseFragment extends Fragment {
     public void onViewCreated(View view, Bundle bundle) {
         super.onViewCreated(view, bundle);
         ButterKnife.bind(this, view);
-        setupComponent((AppComponent) MyNomadLifeApplication.get(getActivity()).getComponent());
+        setupComponent(MyNomadLifeApplication.get(getActivity()).getComponent());
     }
 
     @Override

@@ -1,41 +1,50 @@
 package com.marekhakala.mynomadlifeapp.UI.Fragment;
 
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
 import com.marekhakala.mynomadlifeapp.AppComponent;
+import com.marekhakala.mynomadlifeapp.DataModel.CitiesResultEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityEntity;
 import com.marekhakala.mynomadlifeapp.R;
 import com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity;
 import com.marekhakala.mynomadlifeapp.UI.Adapter.AbstractDataSourceRecyclerViewAdapter.StateType;
 import com.marekhakala.mynomadlifeapp.UI.Adapter.CitiesDSRecyclerViewAdapter;
-import com.marekhakala.mynomadlifeapp.Utilities.UtilityHelper;
+import com.marekhakala.mynomadlifeapp.UI.Loader.CitiesLoader;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
-import io.realm.Realm;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.Subscriptions;
 
-public class FavouritesListFragment extends AbstractListFragment {
+public class FavouritesListFragment extends AbstractListFragment implements LoaderManager.LoaderCallbacks<CitiesResultEntity> {
 
     public static final String FRAGMENT_TAG = "fragment_favourites";
+    public static final int FAVOURITES_LIST_ID = 1;
+
     protected CitiesDSRecyclerViewAdapter mAdapter;
     protected Subscription mSubscriptionApi = Subscriptions.empty();
+
+    @Inject
+    CitiesLoader citiesLoader;
 
     @Override
     public void onViewCreated(View view, Bundle bundle) {
         super.onViewCreated(view, bundle);
-        mAdapter = new CitiesDSRecyclerViewAdapter(getContext(), new ArrayList<>());
+        mAdapter = new CitiesDSRecyclerViewAdapter(getActivity(), new ArrayList<>());
         mAdapter.setListener(this);
 
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setOnActionListener(this);
 
+        getLoaderManager().initLoader(FAVOURITES_LIST_ID, null, this);
         loadData();
     }
 
@@ -87,25 +96,7 @@ public class FavouritesListFragment extends AbstractListFragment {
     @Override
     protected void loadDataFromDB() {
         mAdapter.setCurrentState(StateType.LOADING_STATE);
-
-        if(mSubscription != null)
-            mSubscription.unsubscribe();
-
-        Realm realm = mRepository.getRealm();
-
-        mSubscription = mRepository.cachedFavouriteCities(realm)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(cities -> {
-                    mAdapter.updateData(cities);
-
-                    if (mSelectedPosition != -1)
-                        mRecyclerView.scrollToPosition(mSelectedPosition);
-
-                    UtilityHelper.closeDatabase(realm);
-                }, throwable -> {
-                    mAdapter.setCurrentState(StateType.ERROR_STATE);
-                    UtilityHelper.closeDatabase(realm);
-                });
+        getLoaderManager().getLoader(FAVOURITES_LIST_ID).forceLoad();
     }
 
     @Override
@@ -115,37 +106,31 @@ public class FavouritesListFragment extends AbstractListFragment {
         if(mSubscription != null)
             mSubscription.unsubscribe();
 
-        Realm realm = mRepository.getRealm();
-        mSubscription = mRepository.getFavouriteCitiesSlugs(realm)
+        mSubscription = mRepository.getFavouriteCitiesSlugs()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(citiesSlugs -> {
                     if (citiesSlugs.size() > 0) {
-                        getDataFromAPI(realm, citiesSlugs);
+                        getDataFromAPI(citiesSlugs);
                     } else {
                         mAdapter.setCurrentState(StateType.EMPTY_STATE);
-                        UtilityHelper.closeDatabase(realm);
                     }
                 }, throwable -> {
                     mAdapter.setCurrentState(StateType.ERROR_STATE);
-                    UtilityHelper.closeDatabase(realm);
                 });
     }
 
-    protected void getDataFromAPI(Realm realm, List<String> citiesSlugs) {
+    protected void getDataFromAPI(List<String> citiesSlugs) {
         mAdapter.setCurrentState(StateType.LOADING_STATE);
 
         if(mSubscriptionApi != null)
             mSubscriptionApi.unsubscribe();
 
-        mSubscriptionApi = mRepository.favouriteCities(realm, citiesSlugs)
+        mSubscriptionApi = mRepository.favouriteCities(citiesSlugs)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(cities -> {
-                    mAdapter.updateData(cities);
-
-                    UtilityHelper.closeDatabase(realm);
+                    getLoaderManager().getLoader(FAVOURITES_LIST_ID).forceLoad();
                 }, throwable -> {
                     mAdapter.setCurrentState(StateType.ERROR_STATE);
-                    UtilityHelper.closeDatabase(realm);
                 });
     }
 
@@ -172,4 +157,23 @@ public class FavouritesListFragment extends AbstractListFragment {
 
     @Override
     public void onLoadMore() {}
+
+    @Override
+    public Loader<CitiesResultEntity> onCreateLoader(int id, Bundle args) {
+        return citiesLoader;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<CitiesResultEntity> loader, CitiesResultEntity data) {
+        mAdapter.updateData(data.getEntries());
+
+        if (mSelectedPosition != -1)
+            mRecyclerView.scrollToPosition(mSelectedPosition);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<CitiesResultEntity> loader) {
+        mSelectedPosition = -1;
+        mAdapter.setCurrentState(StateType.EMPTY_STATE);
+    }
 }

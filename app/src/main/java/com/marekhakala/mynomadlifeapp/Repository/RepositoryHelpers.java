@@ -2,7 +2,8 @@ package com.marekhakala.mynomadlifeapp.Repository;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteException;
 
 import com.marekhakala.mynomadlifeapp.DataModel.CityCostOfLivingEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityEntity;
@@ -10,229 +11,162 @@ import com.marekhakala.mynomadlifeapp.DataModel.CityOfflineEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityOfflinePlaceToWorkEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityPlaceToWorkEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityScoresEntity;
+import com.marekhakala.mynomadlifeapp.DataModel.ExchangeRateEntity;
+import com.marekhakala.mynomadlifeapp.Database.CitiesContract;
 import com.marekhakala.mynomadlifeapp.R;
-import com.marekhakala.mynomadlifeapp.RealmDataModel.City;
-import com.marekhakala.mynomadlifeapp.RealmDataModel.CityCostOfLiving;
-import com.marekhakala.mynomadlifeapp.RealmDataModel.CityOffline;
-import com.marekhakala.mynomadlifeapp.RealmDataModel.CityOfflineImage;
-import com.marekhakala.mynomadlifeapp.RealmDataModel.CityOfflinePlaceToWork;
-import com.marekhakala.mynomadlifeapp.RealmDataModel.CityPlaceToWork;
-import com.marekhakala.mynomadlifeapp.RealmDataModel.CityScores;
 import com.marekhakala.mynomadlifeapp.Repository.Arguments.CostPerMonthArguments;
 import com.marekhakala.mynomadlifeapp.Repository.Arguments.InternetSpeedArguments;
 import com.marekhakala.mynomadlifeapp.Repository.Arguments.OtherFiltersArguments;
 import com.marekhakala.mynomadlifeapp.Repository.Arguments.PopulationArguments;
 import com.marekhakala.mynomadlifeapp.UI.Activity.FilterActivity;
-import com.marekhakala.mynomadlifeapp.Utilities.ConstantValues;
 import com.marekhakala.mynomadlifeapp.Utilities.UtilityHelper;
 
-import io.realm.Realm;
-import io.realm.RealmResults;
+import java.util.List;
+
+import timber.log.Timber;
 
 public class RepositoryHelpers {
 
-    public static CityEntity cityEntityFactory(City result) {
+    public static CityEntity cityEntityFactory(Cursor cursor) {
         CityEntity cityEntity = new CityEntity();
 
-        cityEntity.setSlug(result.getSlug());
-        cityEntity.setRegion(result.getRegion());
-        cityEntity.setCountry(result.getCountry());
-        cityEntity.setTemperatureC(result.getTemperatureC());
-        cityEntity.setTemperatureF(result.getTemperatureF());
-        cityEntity.setHumidity(result.getHumidity());
-        cityEntity.setRank(result.getRank());
-        cityEntity.setCostPerMonth(result.getCostPerMonth());
-        cityEntity.setInternetSpeed(result.getInternetSpeed());
-        cityEntity.setPopulation(result.getPopulation());
-        cityEntity.setGenderRatio(result.getGenderRatio());
-        cityEntity.setReligious(result.getReligious());
-        cityEntity.setCityCurrency(result.getCityCurrency());
-        cityEntity.setCityCurrencyRate(result.getCityCurrencyRate());
-        cityEntity.setScores(scoresEntityFactory(result.getScores()));
-        cityEntity.setCostOfLiving(costOfLivingEntityFactory(result.getCostOfLiving()));
-        cityEntity.setFavourite(result.getFavourite());
+        cityEntity.setSlug(UtilityHelper.getCursorString(cursor, CitiesContract.Cities.CITY_SLUG));
+        cityEntity.setRegion(UtilityHelper.getCursorString(cursor, CitiesContract.Cities.CITY_REGION));
+        cityEntity.setCountry(UtilityHelper.getCursorString(cursor, CitiesContract.Cities.CITY_COUNTRY));
+        cityEntity.setTemperatureC(UtilityHelper.getCursorInt(cursor, CitiesContract.Cities.CITY_TEMPERATURE_C));
+        cityEntity.setTemperatureF(UtilityHelper.getCursorInt(cursor, CitiesContract.Cities.CITY_TEMPERATURE_F));
+        cityEntity.setHumidity(UtilityHelper.getCursorInt(cursor, CitiesContract.Cities.CITY_HUMIDITY));
+        cityEntity.setRank(UtilityHelper.getCursorInt(cursor, CitiesContract.Cities.CITY_RANK));
+        cityEntity.setCostPerMonth(UtilityHelper.getCursorFloat(cursor, CitiesContract.Cities.CITY_COST_PER_MONTH));
+        cityEntity.setInternetSpeed(UtilityHelper.getCursorInt(cursor, CitiesContract.Cities.CITY_INTERNET_SPEED));
+        cityEntity.setPopulation(UtilityHelper.getCursorFloat(cursor, CitiesContract.Cities.CITY_POPULATION));
+        cityEntity.setGenderRatio(UtilityHelper.getCursorString(cursor, CitiesContract.Cities.CITY_GENDER_RATIO));
+        cityEntity.setReligious(UtilityHelper.getCursorString(cursor, CitiesContract.Cities.CITY_RELIGIOUS));
+        cityEntity.setCityCurrency(UtilityHelper.getCursorString(cursor, CitiesContract.Cities.CITY_CURRENCY));
+        cityEntity.setCityCurrencyRate(UtilityHelper.getCursorFloat(cursor, CitiesContract.Cities.CITY_CURRENCY_RATE));
+        cityEntity.setScores(scoresEntityFactory(cursor));
+        cityEntity.setCostOfLiving(costOfLivingEntityFactory(cursor));
+        cityEntity.setFavourite(false);
 
         return cityEntity;
     }
 
-    public static CityOfflineEntity cityOfflineEntityFactory(CityOffline result) {
-        CityOfflineEntity cityEntity = new CityOfflineEntity();
+    public static CityEntity cityEntityFavouriteOfflineFactory(CityEntity cityEntity, List<String> favouriteSlugs, List<String> offlineSlugs) {
+        if(favouriteSlugs.contains(cityEntity.getSlug()))
+            cityEntity.setFavourite(true);
+        else
+            cityEntity.setFavourite(false);
 
-        cityEntity.setSlug(result.getSlug());
-        cityEntity.setRegion(result.getRegion());
-        cityEntity.setCountry(result.getCountry());
-        cityEntity.setTemperatureC(result.getTemperatureC());
-        cityEntity.setTemperatureF(result.getTemperatureF());
-        cityEntity.setHumidity(result.getHumidity());
-        cityEntity.setRank(result.getRank());
-        cityEntity.setCostPerMonth(result.getCostPerMonth());
-        cityEntity.setInternetSpeed(result.getInternetSpeed());
-        cityEntity.setPopulation(result.getPopulation());
-        cityEntity.setGenderRatio(result.getGenderRatio());
-        cityEntity.setReligious(result.getReligious());
-        cityEntity.setCityCurrency(result.getCityCurrency());
-        cityEntity.setCityCurrencyRate(result.getCityCurrencyRate());
-        cityEntity.setScores(scoresEntityFactory(result.getScores()));
-        cityEntity.setCostOfLiving(costOfLivingEntityFactory(result.getCostOfLiving()));
-        cityEntity.setFavourite(result.getFavourite());
+        if(offlineSlugs.contains(cityEntity.getSlug()))
+            cityEntity.setOffline(true);
+        else
+            cityEntity.setOffline(false);
 
         return cityEntity;
     }
 
-    public static CityScoresEntity scoresEntityFactory(CityScores scores) {
+    public static CityOfflineEntity cityOfflineEntityFactory(Cursor cursor) {
+        CityOfflineEntity cityOfflineEntity = new CityOfflineEntity();
+
+        cityOfflineEntity.setSlug(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesOffline.CITY_SLUG));
+        cityOfflineEntity.setRegion(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesOffline.CITY_REGION));
+        cityOfflineEntity.setCountry(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesOffline.CITY_COUNTRY));
+        cityOfflineEntity.setTemperatureC(UtilityHelper.getCursorInt(cursor, CitiesContract.CitiesOffline.CITY_TEMPERATURE_C));
+        cityOfflineEntity.setTemperatureF(UtilityHelper.getCursorInt(cursor, CitiesContract.CitiesOffline.CITY_TEMPERATURE_F));
+        cityOfflineEntity.setHumidity(UtilityHelper.getCursorInt(cursor, CitiesContract.CitiesOffline.CITY_HUMIDITY));
+        cityOfflineEntity.setRank(UtilityHelper.getCursorInt(cursor, CitiesContract.CitiesOffline.CITY_RANK));
+        cityOfflineEntity.setCostPerMonth(UtilityHelper.getCursorFloat(cursor, CitiesContract.CitiesOffline.CITY_COST_PER_MONTH));
+        cityOfflineEntity.setInternetSpeed(UtilityHelper.getCursorInt(cursor, CitiesContract.CitiesOffline.CITY_INTERNET_SPEED));
+        cityOfflineEntity.setPopulation(UtilityHelper.getCursorFloat(cursor, CitiesContract.CitiesOffline.CITY_POPULATION));
+        cityOfflineEntity.setGenderRatio(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesOffline.CITY_GENDER_RATIO));
+        cityOfflineEntity.setReligious(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesOffline.CITY_RELIGIOUS));
+        cityOfflineEntity.setCityCurrency(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesOffline.CITY_CURRENCY));
+        cityOfflineEntity.setCityCurrencyRate(UtilityHelper.getCursorFloat(cursor, CitiesContract.CitiesOffline.CITY_CURRENCY_RATE));
+        cityOfflineEntity.setScores(scoresEntityFactory(cursor));
+        cityOfflineEntity.setCostOfLiving(costOfLivingEntityFactory(cursor));
+        cityOfflineEntity.setFavourite(false);
+
+        try {
+            byte[] imageData = UtilityHelper.getCursorBlob(cursor, CitiesContract.CitiesOfflineImages.CITY_IMAGE_DATA);
+            if (imageData != null && imageData.length > 0) {
+                cityOfflineEntity.setBitmapImage(UtilityHelper.byteArrayToBitmap(imageData));
+            }
+        } catch (SQLiteException exception) {
+            Timber.e("Data image error");
+        }
+
+        return cityOfflineEntity;
+    }
+
+    public static CityOfflineEntity cityOfflineEntityFavouriteOfflineFactory(CityOfflineEntity cityOfflineEntity,
+                                                                             List<String> favouriteSlugs, List<String> offlineSlugs) {
+        if(favouriteSlugs.contains(cityOfflineEntity.getSlug()))
+            cityOfflineEntity.setFavourite(true);
+        else
+            cityOfflineEntity.setFavourite(false);
+
+        if(offlineSlugs.contains(cityOfflineEntity.getSlug()))
+            cityOfflineEntity.setOffline(true);
+        else
+            cityOfflineEntity.setOffline(false);
+
+        return cityOfflineEntity;
+    }
+
+    public static CityScoresEntity scoresEntityFactory(Cursor cursor) {
         CityScoresEntity scoresEntity = new CityScoresEntity();
 
-        scoresEntity.setNomadScore(scores.getNomadScore());
-        scoresEntity.setLifeScore(scores.getLifeScore());
-        scoresEntity.setCost(scores.getCost());
-        scoresEntity.setInternet(scores.getInternet());
-        scoresEntity.setFun(scores.getFun());
-        scoresEntity.setSafety(scores.getSafety());
-        scoresEntity.setPeace(scores.getPeace());
-        scoresEntity.setNightlife(scores.getNightlife());
-        scoresEntity.setFreeWifiInCity(scores.getFreeWifiInCity());
-        scoresEntity.setPlacesToWork(scores.getPlacesToWork());
-        scoresEntity.setAcOrHeating(scores.getAcOrHeating());
-        scoresEntity.setFriendlyToForeigners(scores.getFriendlyToForeigners());
-        scoresEntity.setFemaleFriendly(scores.getFemaleFriendly());
-        scoresEntity.setGayFriendly(scores.getGayFriendly());
-        scoresEntity.setStartupScore(scores.getStartupScore());
-        scoresEntity.setEnglishSpeaking(scores.getEnglishSpeaking());
+        scoresEntity.setNomadScore(UtilityHelper.getCursorFloat(cursor, CitiesContract.Cities.CITY_SCORE_NOMAD_SCORE));
+        scoresEntity.setLifeScore(UtilityHelper.getCursorFloat(cursor, CitiesContract.Cities.CITY_SCORE_LIFE_SCORE));
+        scoresEntity.setCost(UtilityHelper.getCursorInt(cursor, CitiesContract.Cities.CITY_SCORE_COST));
+        scoresEntity.setInternet(UtilityHelper.getCursorInt(cursor, CitiesContract.Cities.CITY_SCORE_INTERNET));
+        scoresEntity.setFun(UtilityHelper.getCursorInt(cursor, CitiesContract.Cities.CITY_SCORE_FUN));
+        scoresEntity.setSafety(UtilityHelper.getCursorInt(cursor, CitiesContract.Cities.CITY_SCORE_SAFETY));
+        scoresEntity.setPeace(UtilityHelper.getCursorInt(cursor, CitiesContract.Cities.CITY_SCORE_PEACE));
+        scoresEntity.setNightlife(UtilityHelper.getCursorInt(cursor, CitiesContract.Cities.CITY_SCORE_NIGHTLIFE));
+        scoresEntity.setFreeWifiInCity(UtilityHelper.getCursorInt(cursor, CitiesContract.Cities.CITY_SCORE_FREE_WIFI_IN_CITY));
+        scoresEntity.setPlacesToWork(UtilityHelper.getCursorInt(cursor, CitiesContract.Cities.CITY_SCORE_PLACES_TO_WORK));
+        scoresEntity.setAcOrHeating(UtilityHelper.getCursorInt(cursor, CitiesContract.Cities.CITY_SCORE_AC_OR_HEATING));
+        scoresEntity.setFriendlyToForeigners(UtilityHelper.getCursorInt(cursor, CitiesContract.Cities.CITY_SCORE_FRIENDLY_TO_FOREIGNERS));
+        scoresEntity.setFemaleFriendly(UtilityHelper.getCursorInt(cursor, CitiesContract.Cities.CITY_SCORE_FEMALE_FRIENDLY));
+        scoresEntity.setGayFriendly(UtilityHelper.getCursorInt(cursor, CitiesContract.Cities.CITY_SCORE_GAY_FRIENDLY));
+        scoresEntity.setStartupScore(UtilityHelper.getCursorFloat(cursor, CitiesContract.Cities.CITY_SCORE_STARTUP_SCORE));
+        scoresEntity.setEnglishSpeaking(UtilityHelper.getCursorInt(cursor, CitiesContract.Cities.CITY_SCORE_ENGLISH_SPEAKING));
 
         return scoresEntity;
     }
 
-    public static CityCostOfLivingEntity costOfLivingEntityFactory(CityCostOfLiving costOfLiving) {
+    public static CityCostOfLivingEntity costOfLivingEntityFactory(Cursor cursor) {
         CityCostOfLivingEntity costOfLivingEntity = new CityCostOfLivingEntity();
 
-        costOfLivingEntity.setNomadCost(costOfLiving.getNomadCost());
-        costOfLivingEntity.setExpatCostOfLiving(costOfLiving.getExpatCostOfLiving());
-        costOfLivingEntity.setLocalCostOfLiving(costOfLiving.getLocalCostOfLiving());
-        costOfLivingEntity.setOneBedroomApartment(costOfLiving.getOneBedroomApartment());
-        costOfLivingEntity.setHotelRoom(costOfLiving.getHotelRoom());
-        costOfLivingEntity.setAirbnbApartmentMonth(costOfLiving.getAirbnbApartmentMonth());
-        costOfLivingEntity.setAirbnbApartmentDay(costOfLiving.getAirbnbApartmentDay());
-        costOfLivingEntity.setCoworkingSpace(costOfLiving.getCoworkingSpace());
-        costOfLivingEntity.setCocaColaInCafe(costOfLiving.getCocaColaInCafe());
-        costOfLivingEntity.setPintOfBeerInBar(costOfLiving.getPintOfBeerInBar());
-        costOfLivingEntity.setCappucinoInCafe(costOfLiving.getCappucinoInCafe());
+        costOfLivingEntity.setNomadCost(UtilityHelper.getCursorFloat(cursor, CitiesContract.Cities.CITY_COST_OF_LIVING_NOMAD_COST));
+        costOfLivingEntity.setExpatCostOfLiving(UtilityHelper.getCursorFloat(cursor, CitiesContract.Cities.CITY_COST_OF_LIVING_EXPAT_COST_OF_LIVING));
+        costOfLivingEntity.setLocalCostOfLiving(UtilityHelper.getCursorFloat(cursor, CitiesContract.Cities.CITY_COST_OF_LIVING_LOCAL_COST_OF_LIVING));
+        costOfLivingEntity.setOneBedroomApartment(UtilityHelper.getCursorFloat(cursor, CitiesContract.Cities.CITY_COST_OF_LIVING_ONE_BEDROOM_APARTMENT));
+        costOfLivingEntity.setHotelRoom(UtilityHelper.getCursorFloat(cursor, CitiesContract.Cities.CITY_COST_OF_LIVING_HOTEL_ROOM));
+        costOfLivingEntity.setAirbnbApartmentMonth(UtilityHelper.getCursorFloat(cursor, CitiesContract.Cities.CITY_COST_OF_LIVING_AIRBNB_APARTMENT_MONTH));
+        costOfLivingEntity.setAirbnbApartmentDay(UtilityHelper.getCursorFloat(cursor, CitiesContract.Cities.CITY_COST_OF_LIVING_AIRBNB_APARTMENT_DAY));
+        costOfLivingEntity.setCoworkingSpace(UtilityHelper.getCursorFloat(cursor, CitiesContract.Cities.CITY_COST_OF_LIVING_COWORKING_SPACE));
+        costOfLivingEntity.setCocaColaInCafe(UtilityHelper.getCursorFloat(cursor, CitiesContract.Cities.CITY_COST_OF_LIVING_COCA_COLA_IN_CAFE));
+        costOfLivingEntity.setPintOfBeerInBar(UtilityHelper.getCursorFloat(cursor, CitiesContract.Cities.CITY_COST_OF_LIVING_PINT_OF_BEER_IN_BAR));
+        costOfLivingEntity.setCappucinoInCafe(UtilityHelper.getCursorFloat(cursor, CitiesContract.Cities.CITY_COST_OF_LIVING_CAPPUCCINO_IN_CAFE));
 
         return costOfLivingEntity;
     }
 
-    public static City setupCity(Realm realm, CityEntity entity) {
-
-        City city = realm.createObject(City.class);
-        int nextID = (realm.where(City.class).max("id").intValue() + 1);
-        city.setId(nextID);
-
-        city.setSlug(entity.getSlug());
-        city.setRegion(entity.getRegion());
-        city.setCountry(entity.getCountry());
-        city.setTemperatureC(entity.getTemperatureC());
-        city.setTemperatureF(entity.getTemperatureF());
-        city.setHumidity(entity.getHumidity());
-        city.setRank(entity.getRank());
-        city.setCostPerMonth(entity.getCostPerMonth());
-        city.setInternetSpeed(entity.getInternetSpeed());
-        city.setPopulation(entity.getPopulation());
-        city.setGenderRatio(entity.getGenderRatio());
-        city.setReligious(entity.getReligious());
-        city.setCityCurrency(entity.getCityCurrency());
-        city.setCityCurrencyRate(entity.getCityCurrencyRate());
-        city.setScores(setupScores(realm, entity.getScores()));
-        city.setCostOfLiving(setupCostOfLiving(realm, entity.getCostOfLiving()));
-        city.setFavourite(entity.isFavourite());
-
-        return city;
-    }
-
-    public static CityOffline setupOfflineCity(Realm realm, CityOfflineEntity entity) {
-
-        CityOffline city = realm.createObject(CityOffline.class);
-        int nextID = (realm.where(CityOffline.class).max("id").intValue() + 1);
-        city.setId(nextID);
-
-        city.setSlug(entity.getSlug());
-        city.setRegion(entity.getRegion());
-        city.setCountry(entity.getCountry());
-        city.setTemperatureC(entity.getTemperatureC());
-        city.setTemperatureF(entity.getTemperatureF());
-        city.setHumidity(entity.getHumidity());
-        city.setRank(entity.getRank());
-        city.setCostPerMonth(entity.getCostPerMonth());
-        city.setInternetSpeed(entity.getInternetSpeed());
-        city.setPopulation(entity.getPopulation());
-        city.setGenderRatio(entity.getGenderRatio());
-        city.setReligious(entity.getReligious());
-        city.setCityCurrency(entity.getCityCurrency());
-        city.setCityCurrencyRate(entity.getCityCurrencyRate());
-        city.setScores(setupScores(realm, entity.getScores()));
-        city.setCostOfLiving(setupCostOfLiving(realm, entity.getCostOfLiving()));
-        city.setFavourite(entity.isFavourite());
-
-        return city;
-    }
-
-    public static CityScores setupScores(Realm realm, CityScoresEntity entity) {
-
-        CityScores scores = realm.createObject(CityScores.class);
-        int nextID = (realm.where(CityScores.class).max("id").intValue() + 1);
-        scores.setId(nextID);
-
-        scores.setNomadScore(entity.getNomadScore());
-        scores.setLifeScore(entity.getLifeScore());
-        scores.setCost(entity.getCost());
-        scores.setInternet(entity.getInternet());
-        scores.setFun(entity.getFun());
-        scores.setSafety(entity.getSafety());
-        scores.setPeace(entity.getPeace());
-        scores.setNightlife(entity.getNightlife());
-        scores.setFreeWifiInCity(entity.getFreeWifiInCity());
-        scores.setPlacesToWork(entity.getPlacesToWork());
-        scores.setAcOrHeating(entity.getAcOrHeating());
-        scores.setFriendlyToForeigners(entity.getFriendlyToForeigners());
-        scores.setFemaleFriendly(entity.getFemaleFriendly());
-        scores.setGayFriendly(entity.getGayFriendly());
-        scores.setStartupScore(entity.getStartupScore());
-        scores.setEnglishSpeaking(entity.getEnglishSpeaking());
-
-        return scores;
-    }
-
-    public static CityCostOfLiving setupCostOfLiving(Realm realm, CityCostOfLivingEntity entity) {
-        CityCostOfLiving cost = realm.createObject(CityCostOfLiving.class);
-        int nextID = (realm.where(CityCostOfLiving.class).max("id").intValue() + 1);
-        cost.setId(nextID);
-
-        cost.setNomadCost(entity.getNomadCost());
-        cost.setExpatCostOfLiving(entity.getExpatCostOfLiving());
-        cost.setLocalCostOfLiving(entity.getLocalCostOfLiving());
-        cost.setOneBedroomApartment(entity.getOneBedroomApartment());
-        cost.setHotelRoom(entity.getHotelRoom());
-        cost.setAirbnbApartmentMonth(entity.getAirbnbApartmentMonth());
-        cost.setAirbnbApartmentDay(entity.getAirbnbApartmentDay());
-        cost.setCoworkingSpace(entity.getCoworkingSpace());
-        cost.setCocaColaInCafe(entity.getCocaColaInCafe());
-        cost.setPintOfBeerInBar(entity.getPintOfBeerInBar());
-        cost.setCappucinoInCafe(entity.getCappucinoInCafe());
-
-        return cost;
-    }
-
-    public static CityPlaceToWorkEntity cityPlaceToWorkEntityFactory(CityPlaceToWork cityPlaceToWork) {
+    public static CityPlaceToWorkEntity cityPlaceToWorkEntityFactory(Cursor cursor) {
         CityPlaceToWorkEntity cityPlaceToWorkEntity = new CityPlaceToWorkEntity();
 
-        cityPlaceToWorkEntity.setCitySlug(cityPlaceToWork.getCitySlug());
-        cityPlaceToWorkEntity.setSlug(cityPlaceToWork.getSlug());
-        cityPlaceToWorkEntity.setName(cityPlaceToWork.getName());
-        cityPlaceToWorkEntity.setSubName(cityPlaceToWork.getSubName());
-        cityPlaceToWorkEntity.setCoworkingType(cityPlaceToWork.getCoworkingType());
-        cityPlaceToWorkEntity.setDistance(cityPlaceToWork.getDistance());
-        cityPlaceToWorkEntity.setLat(cityPlaceToWork.getLat());
-        cityPlaceToWorkEntity.setLng(cityPlaceToWork.getLng());
-        cityPlaceToWorkEntity.setDataUrl(cityPlaceToWork.getDataUrl());
-        cityPlaceToWorkEntity.setImageUrl(cityPlaceToWork.getImageUrl());
+        cityPlaceToWorkEntity.setCitySlug(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_CITY_SLUG));
+        cityPlaceToWorkEntity.setSlug(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_SLUG));
+        cityPlaceToWorkEntity.setName(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_NAME));
+        cityPlaceToWorkEntity.setSubName(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_SUBNAME));
+        cityPlaceToWorkEntity.setCoworkingType(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_COWORKING_TYPE));
+        cityPlaceToWorkEntity.setDistance(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_DISTANCE));
+        cityPlaceToWorkEntity.setLat(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_LAT));
+        cityPlaceToWorkEntity.setLng(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_LNG));
+        cityPlaceToWorkEntity.setDataUrl(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_DATA_URL));
+        cityPlaceToWorkEntity.setImageUrl(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_IMAGE_URL));
 
         return cityPlaceToWorkEntity;
     }
@@ -254,79 +188,32 @@ public class RepositoryHelpers {
         return cityOfflinePlaceToWorkEntity;
     }
 
-    public static CityOfflinePlaceToWorkEntity cityOfflinePlaceToWorkEntityFactory(CityOfflinePlaceToWork cityOfflinePlaceToWork) {
-
+    public static CityOfflinePlaceToWorkEntity cityOfflinePlaceToWorkEntityFactory(Cursor cursor) {
         CityOfflinePlaceToWorkEntity cityOfflinePlaceToWorkEntity = new CityOfflinePlaceToWorkEntity();
 
-        cityOfflinePlaceToWorkEntity.setCitySlug(cityOfflinePlaceToWork.getCitySlug());
-        cityOfflinePlaceToWorkEntity.setSlug(cityOfflinePlaceToWork.getSlug());
-        cityOfflinePlaceToWorkEntity.setName(cityOfflinePlaceToWork.getName());
-        cityOfflinePlaceToWorkEntity.setSubName(cityOfflinePlaceToWork.getSubName());
-        cityOfflinePlaceToWorkEntity.setCoworkingType(cityOfflinePlaceToWork.getCoworkingType());
-        cityOfflinePlaceToWorkEntity.setDistance(cityOfflinePlaceToWork.getDistance());
-        cityOfflinePlaceToWorkEntity.setLat(cityOfflinePlaceToWork.getLat());
-        cityOfflinePlaceToWorkEntity.setLng(cityOfflinePlaceToWork.getLng());
-        cityOfflinePlaceToWorkEntity.setDataUrl(cityOfflinePlaceToWork.getDataUrl());
-        cityOfflinePlaceToWorkEntity.setImageUrl(cityOfflinePlaceToWork.getImageUrl());
+        cityOfflinePlaceToWorkEntity.setCitySlug(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesOfflinePlacesToWork.CITY_PLACE_TO_WORK_CITY_SLUG));
+        cityOfflinePlaceToWorkEntity.setSlug(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesOfflinePlacesToWork.CITY_PLACE_TO_WORK_SLUG));
+        cityOfflinePlaceToWorkEntity.setName(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesOfflinePlacesToWork.CITY_PLACE_TO_WORK_NAME));
+        cityOfflinePlaceToWorkEntity.setSubName(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesOfflinePlacesToWork.CITY_PLACE_TO_WORK_SUBNAME));
+        cityOfflinePlaceToWorkEntity.setCoworkingType(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesOfflinePlacesToWork.CITY_PLACE_TO_WORK_COWORKING_TYPE));
+        cityOfflinePlaceToWorkEntity.setDistance(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesOfflinePlacesToWork.CITY_PLACE_TO_WORK_DISTANCE));
+        cityOfflinePlaceToWorkEntity.setLat(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesOfflinePlacesToWork.CITY_PLACE_TO_WORK_LAT));
+        cityOfflinePlaceToWorkEntity.setLng(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesOfflinePlacesToWork.CITY_PLACE_TO_WORK_LNG));
+        cityOfflinePlaceToWorkEntity.setDataUrl(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesOfflinePlacesToWork.CITY_PLACE_TO_WORK_DATA_URL));
+        cityOfflinePlaceToWorkEntity.setImageUrl(UtilityHelper.getCursorString(cursor, CitiesContract.CitiesOfflinePlacesToWork.CITY_PLACE_TO_WORK_IMAGE_URL));
 
         return cityOfflinePlaceToWorkEntity;
     }
 
-    public static CityPlaceToWork setupCityPlaceToWork(Realm realm, CityPlaceToWorkEntity cityPlaceToWorkEntity) {
-        CityPlaceToWork cityOfflinePlaceToWork = realm.createObject(CityPlaceToWork.class);
-        int nextID = (realm.where(CityPlaceToWork.class).max("id").intValue() + 1);
-        cityOfflinePlaceToWork.setId(nextID);
+    public static ExchangeRateEntity exchangeRateEntityFactory(Cursor cursor) {
+        ExchangeRateEntity exchangeRateEntity = new ExchangeRateEntity();
 
-        cityOfflinePlaceToWork.setCitySlug(cityPlaceToWorkEntity.getCitySlug());
-        cityOfflinePlaceToWork.setSlug(cityPlaceToWorkEntity.getSlug());
-        cityOfflinePlaceToWork.setName(cityPlaceToWorkEntity.getName());
-        cityOfflinePlaceToWork.setSubName(cityPlaceToWorkEntity.getSubName());
-        cityOfflinePlaceToWork.setCoworkingType(cityPlaceToWorkEntity.getCoworkingType());
-        cityOfflinePlaceToWork.setDistance(cityPlaceToWorkEntity.getDistance());
-        cityOfflinePlaceToWork.setLat(cityPlaceToWorkEntity.getLat());
-        cityOfflinePlaceToWork.setLng(cityPlaceToWorkEntity.getLng());
-        cityOfflinePlaceToWork.setDataUrl(cityPlaceToWorkEntity.getDataUrl());
-        cityOfflinePlaceToWork.setImageUrl(cityPlaceToWorkEntity.getImageUrl());
+        exchangeRateEntity.setCurrencyCode(UtilityHelper.getCursorString(cursor, CitiesContract.ExchangeRates.EXCHANGE_RATES_CURRENCY_CODE));
+        exchangeRateEntity.setUpdateDate(UtilityHelper.getCursorString(cursor, CitiesContract.ExchangeRates.EXCHANGE_RATES_UPDATE_DATE));
+        exchangeRateEntity.setBaseCurrencyCode(UtilityHelper.getCursorString(cursor, CitiesContract.ExchangeRates.EXCHANGE_RATES_BASE_CURRENCY_CODE));
+        exchangeRateEntity.setCurrencyRate(UtilityHelper.getCursorFloat(cursor, CitiesContract.ExchangeRates.EXCHANGE_RATES_CURRENCY_RATE));
 
-        return cityOfflinePlaceToWork;
-    }
-
-    public static CityOfflinePlaceToWork setupCityOfflinePlaceToWork(Realm realm, CityOfflinePlaceToWorkEntity cityOfflinePlaceToWorkEntity) {
-        CityOfflinePlaceToWork cityOfflinePlaceToWork = realm.createObject(CityOfflinePlaceToWork.class);
-        int nextID = (realm.where(CityOfflinePlaceToWork.class).max("id").intValue() + 1);
-        cityOfflinePlaceToWork.setId(nextID);
-
-        cityOfflinePlaceToWork.setCitySlug(cityOfflinePlaceToWorkEntity.getCitySlug());
-        cityOfflinePlaceToWork.setSlug(cityOfflinePlaceToWorkEntity.getSlug());
-        cityOfflinePlaceToWork.setName(cityOfflinePlaceToWorkEntity.getName());
-        cityOfflinePlaceToWork.setSubName(cityOfflinePlaceToWorkEntity.getSubName());
-        cityOfflinePlaceToWork.setCoworkingType(cityOfflinePlaceToWorkEntity.getCoworkingType());
-        cityOfflinePlaceToWork.setDistance(cityOfflinePlaceToWorkEntity.getDistance());
-        cityOfflinePlaceToWork.setLat(cityOfflinePlaceToWorkEntity.getLat());
-        cityOfflinePlaceToWork.setLng(cityOfflinePlaceToWorkEntity.getLng());
-        cityOfflinePlaceToWork.setDataUrl(cityOfflinePlaceToWorkEntity.getDataUrl());
-        cityOfflinePlaceToWork.setImageUrl(cityOfflinePlaceToWorkEntity.getImageUrl());
-
-        return cityOfflinePlaceToWork;
-    }
-
-    public static CityOfflinePlaceToWork setupCityOfflinePlaceToWork(Realm realm, CityPlaceToWorkEntity cityPlaceToWorkEntity) {
-        CityOfflinePlaceToWork cityOfflinePlaceToWork = realm.createObject(CityOfflinePlaceToWork.class);
-        int nextID = (realm.where(CityOfflinePlaceToWork.class).max("id").intValue() + 1);
-        cityOfflinePlaceToWork.setId(nextID);
-
-        cityOfflinePlaceToWork.setCitySlug(cityPlaceToWorkEntity.getCitySlug());
-        cityOfflinePlaceToWork.setSlug(cityPlaceToWorkEntity.getSlug());
-        cityOfflinePlaceToWork.setName(cityPlaceToWorkEntity.getName());
-        cityOfflinePlaceToWork.setSubName(cityPlaceToWorkEntity.getSubName());
-        cityOfflinePlaceToWork.setCoworkingType(cityPlaceToWorkEntity.getCoworkingType());
-        cityOfflinePlaceToWork.setDistance(cityPlaceToWorkEntity.getDistance());
-        cityOfflinePlaceToWork.setLat(cityPlaceToWorkEntity.getLat());
-        cityOfflinePlaceToWork.setLng(cityPlaceToWorkEntity.getLng());
-        cityOfflinePlaceToWork.setDataUrl(cityPlaceToWorkEntity.getDataUrl());
-        cityOfflinePlaceToWork.setImageUrl(cityPlaceToWorkEntity.getImageUrl());
-
-        return cityOfflinePlaceToWork;
+        return exchangeRateEntity;
     }
 
     public static CostPerMonthArguments prepareCostPerMonthArguments(Context context, SharedPreferences settings) {
@@ -458,30 +345,5 @@ public class RepositoryHelpers {
         }
 
         return arguments;
-    }
-
-    public static void setupImage(Realm realm, CityOfflineEntity entity) {
-        if(entity == null)
-            return;
-
-        RealmResults<CityOfflineImage> citiesImages = realm.where(CityOfflineImage.class).equalTo(ConstantValues.SLUG_COLUMN_NAME, entity.getSlug()).findAll();
-
-        if(citiesImages.size() > 0) {
-            CityOfflineImage cityOfflineImage = citiesImages.first();
-            Bitmap cityBitmapImage = UtilityHelper.byteArrayToBitmap(cityOfflineImage.getImageData());
-            entity.setBitmapImage(cityBitmapImage);
-        }
-    }
-
-    public static void saveImageToDatabase(Realm realm, String slug, Bitmap bitmap) {
-        realm.beginTransaction();
-
-        CityOfflineImage cityOfflineImage = realm.createObject(CityOfflineImage.class);
-        int nextID = (realm.where(CityOfflineImage.class).max(ConstantValues.ID_COLUMN_NAME).intValue() + 1);
-        cityOfflineImage.setId(nextID);
-        cityOfflineImage.setSlug(slug);
-        cityOfflineImage.setImageData(UtilityHelper.bitmapToByteArray(bitmap));
-
-        realm.commitTransaction();
     }
 }

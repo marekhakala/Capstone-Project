@@ -3,21 +3,18 @@ package com.marekhakala.mynomadlifeapp;
 import android.app.Application;
 import android.content.Context;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 import com.marekhakala.mynomadlifeapp.DataSource.DataSourceModule;
 import com.marekhakala.mynomadlifeapp.Repository.RepositoryModule;
 import com.marekhakala.mynomadlifeapp.UI.UiModule;
-import com.marekhakala.mynomadlifeapp.Utilities.ConstantValues;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.Iconics;
 
-import java.io.File;
-
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
-import io.realm.rx.RealmObservableFactory;
 import timber.log.Timber;
 
 public class MyNomadLifeApplication extends Application {
+    protected Tracker mTracker;
     protected AppComponent component;
 
     public static AppComponent appComponent(Context context) {
@@ -55,19 +52,13 @@ public class MyNomadLifeApplication extends Application {
                 .build();
     }
 
-    public static Realm getDatabaseInstance(Application application) {
-        String path = MyNomadLifeApplication.get(application).getPath();
+    synchronized public Tracker getDefaultTracker() {
+        if (mTracker == null) {
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
+            mTracker = analytics.newTracker(R.xml.global_tracker);
+        }
 
-        RealmConfiguration realmConfig = new RealmConfiguration
-                .Builder(application, new File(path))
-                .name(ConstantValues.REALM_DB_FILE)
-                .schemaVersion(ConstantValues.DB_SCHEMA_VERSION)
-                .deleteRealmIfMigrationNeeded()
-                .rxFactory(new RealmObservableFactory())
-                .build();
-
-        Realm.setDefaultConfiguration(realmConfig);
-
-        return Realm.getDefaultInstance();
+        return mTracker;
     }
 }

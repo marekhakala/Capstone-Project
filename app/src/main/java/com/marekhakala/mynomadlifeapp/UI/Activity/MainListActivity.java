@@ -11,6 +11,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.marekhakala.mynomadlifeapp.AppComponent;
 import com.marekhakala.mynomadlifeapp.DataModel.CityEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityOfflineEntity;
@@ -22,18 +26,20 @@ import com.marekhakala.mynomadlifeapp.UI.Fragment.MainListFragment;
 import com.marekhakala.mynomadlifeapp.UI.Fragment.OfflineModeListFragment;
 import com.marekhakala.mynomadlifeapp.UI.PrimaryDrawerInfoItem;
 import com.marekhakala.mynomadlifeapp.Utilities.ConstantValues;
+import com.marekhakala.mynomadlifeapp.Utilities.UtilityHelper;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 
 import static com.marekhakala.mynomadlifeapp.Utilities.ConstantValues.FAVOURITES_SECTION_CODE;
 import static com.marekhakala.mynomadlifeapp.Utilities.ConstantValues.MAIN_SECTION_CODE;
 import static com.marekhakala.mynomadlifeapp.Utilities.ConstantValues.OFFLINE_MODE_SECTION_CODE;
-import static com.marekhakala.mynomadlifeapp.Utilities.ConstantValues.SEARCH_SECTION_CODE;
 
 public class MainListActivity extends AbstractBaseActivity implements AbstractListFragment.Listener {
 
@@ -43,7 +49,17 @@ public class MainListActivity extends AbstractBaseActivity implements AbstractLi
         void onReloadDataFromCache();
     }
 
-    @Bind(R.id.toolbar) Toolbar mToolbar;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+
+    @Bind(R.id.main_list_adview)
+    AdView mAdView;
+
+    @Inject
+    Tracker mTracker;
+
+    @Inject
+    AdRequest mAdRequest;
 
     public static final String ACTIVITY_TAG = "activity_main_list";
     public static final String EXTRA_SECTION = "currentSection";
@@ -53,6 +69,7 @@ public class MainListActivity extends AbstractBaseActivity implements AbstractLi
     protected PrimaryDrawerItem mainListItem;
     protected PrimaryDrawerItem favouriteListItem;
     protected PrimaryDrawerItem offlineModeListItem;
+    protected PrimaryDrawerItem exchangeRatesItem;
 
     // Sections - Request codes
     public static final int LIST_VIEW_REQUEST_CODE = 101;
@@ -60,8 +77,8 @@ public class MainListActivity extends AbstractBaseActivity implements AbstractLi
     public static final int FILTER_REQUEST_CODE = 103;
     public static final int SETTINGS_REQUEST_CODE = 104;
     public static final int DETAIL_VIEW_REQUEST_CODE = 105;
-    public static final int ABOUT_APP_REQUEST_CODE = 106;
-
+    public static final int EXCHANGE_RATES_REQUEST_CODE = 106;
+    public static final int ABOUT_APP_REQUEST_CODE = 107;
 
     // Sections - Result codes
     public static final int LIST_VIEW_RESULT_CODE = 301;
@@ -69,7 +86,8 @@ public class MainListActivity extends AbstractBaseActivity implements AbstractLi
     public static final int FILTER_RESULT_CODE = 303;
     public static final int SETTINGS_RESULT_CODE = 304;
     public static final int DETAIL_VIEW_RESULT_CODE = 305;
-    public static final int ABOUT_APP_RESULT_CODE = 306;
+    public static final int EXCHANGE_RATES_RESULT_CODE = 306;
+    public static final int ABOUT_APP_RESULT_CODE = 307;
 
     protected String mCurrentSection = null;
     protected AbstractListFragment mCurrentFragment = null;
@@ -90,6 +108,13 @@ public class MainListActivity extends AbstractBaseActivity implements AbstractLi
             if (mCurrentFragment == null)
                 setupSectionFragment(MAIN_SECTION_CODE);
         }
+
+        // Analytics
+        mTracker.setScreenName(UtilityHelper.getScreenNameForAnalytics(mCurrentSection));
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+        // AdMob
+        mAdView.loadAd(mAdRequest);
     }
 
     @Override
@@ -119,6 +144,14 @@ public class MainListActivity extends AbstractBaseActivity implements AbstractLi
                         mListener.onReloadData();
                     else
                         mListener.onReloadDataFromCache();
+                }
+                break;
+
+            case EXCHANGE_RATES_RESULT_CODE:
+                if(data.hasExtra(MainListActivity.EXTRA_SECTION)) {
+                    mSectionClickEnabled = false;
+                    setupSectionFromBundle(data.getStringExtra(MainListActivity.EXTRA_SECTION));
+                    mSectionClickEnabled = true;
                 }
                 break;
 
@@ -165,8 +198,7 @@ public class MainListActivity extends AbstractBaseActivity implements AbstractLi
                     mListener.onReloadData();
                 return true;
             case R.id.menu_main_list_search:
-                startActivityForSection(new Intent(this, SearchActivity.class),
-                        SEARCH_SECTION_CODE, SEARCH_REQUEST_CODE);
+                startActivityForSection(new Intent(this, SearchActivity.class), SEARCH_REQUEST_CODE);
                 return true;
             case R.id.menu_favourites_refresh:
                 if(mListener != null)
@@ -177,8 +209,7 @@ public class MainListActivity extends AbstractBaseActivity implements AbstractLi
                     mListener.onReloadData();
                 return true;
             case R.id.menu_settings:
-                startActivityForSection(new Intent(this, SettingsActivity.class),
-                        ConstantValues.SETTINGS_SECTION_CODE, SETTINGS_REQUEST_CODE);
+                startActivityForSection(new Intent(this, SettingsActivity.class), SETTINGS_REQUEST_CODE);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -198,14 +229,18 @@ public class MainListActivity extends AbstractBaseActivity implements AbstractLi
                     setupSectionFragment(section);
                 } else {
                     intent = new Intent(this, MainListActivity.class);
-                    startActivityForSection(intent, MAIN_SECTION_CODE, LIST_VIEW_REQUEST_CODE);
+                    startActivityForSection(intent, LIST_VIEW_REQUEST_CODE);
                 }
+                break;
+            case ConstantValues.EXCHANGE_RATES_SECTION_CODE:
+                intent = new Intent(this, ExchangeRatesActivity.class);
+                intent.putExtra(EXTRA_SECTION, getCurrentSection());
+                startActivityForSection(intent, EXCHANGE_RATES_REQUEST_CODE);
                 break;
             case ConstantValues.ABOUT_SECTION_CODE:
                 intent = new Intent(this, AboutActivity.class);
                 intent.putExtra(EXTRA_SECTION, getCurrentSection());
-                startActivityForSection(intent,
-                        ConstantValues.ABOUT_SECTION_CODE, ABOUT_APP_REQUEST_CODE);
+                startActivityForSection(intent, ABOUT_APP_REQUEST_CODE);
                 break;
             default:
                 intent = new Intent(this, this.getClass());
@@ -214,7 +249,7 @@ public class MainListActivity extends AbstractBaseActivity implements AbstractLi
         }
     }
 
-    protected void startActivityForSection(Intent intent, String section, int requestCode) {
+    protected void startActivityForSection(Intent intent, int requestCode) {
         intent.putExtra(EXTRA_SECTION, mCurrentSection);
         startActivityForResult(intent, requestCode);
     }
@@ -236,7 +271,11 @@ public class MainListActivity extends AbstractBaseActivity implements AbstractLi
                 .withName(getResources().getString(R.string.section_offline_mode_list_title))
                 .withIcon(FontAwesome.Icon.faw_plane);
 
-        return new IDrawerItem[] {mainListItem, favouriteListItem, offlineModeListItem,
+        exchangeRatesItem = new PrimaryDrawerInfoItem().withCode(ConstantValues.EXCHANGE_RATES_SECTION_CODE)
+                .withName(getResources().getString(R.string.section_exchange_rates_title))
+                .withIcon(FontAwesome.Icon.faw_exchange);
+
+        return new IDrawerItem[] {mainListItem, favouriteListItem, offlineModeListItem, exchangeRatesItem,
                 new PrimaryDrawerInfoItem().withCode(ConstantValues.ABOUT_SECTION_CODE)
                         .withName(getResources().getString(R.string.section_about_title))
                         .withIcon(FontAwesome.Icon.faw_info_circle)};
@@ -275,12 +314,11 @@ public class MainListActivity extends AbstractBaseActivity implements AbstractLi
 
     protected void setupSectionFromBundle(String section) {
         if (section != null) {
-
             switch (section) {
                 case MAIN_SECTION_CODE:
                     setupSectionDrawer(mainListItem);
                     setTitle(getResources().getString(R.string.section_main_list_title));
-                    mCurrentFragment = (AbstractListFragment) getSupportFragmentManager().findFragmentByTag(MainListFragment.FRAGMENT_TAG);
+                    mCurrentFragment = (AbstractListFragment) getFragmentManager().findFragmentByTag(MainListFragment.FRAGMENT_TAG);
 
                     if(mCurrentFragment == null)
                         replaceFragment(new MainListFragment());
@@ -288,7 +326,7 @@ public class MainListActivity extends AbstractBaseActivity implements AbstractLi
                 case FAVOURITES_SECTION_CODE:
                     setupSectionDrawer(favouriteListItem);
                     setTitle(getResources().getString(R.string.section_favourites_list_title));
-                    mCurrentFragment = (AbstractListFragment) getSupportFragmentManager().findFragmentByTag(FavouritesListFragment.FRAGMENT_TAG);
+                    mCurrentFragment = (AbstractListFragment) getFragmentManager().findFragmentByTag(FavouritesListFragment.FRAGMENT_TAG);
 
                     if(mCurrentFragment == null)
                         replaceFragment(new FavouritesListFragment());
@@ -296,13 +334,20 @@ public class MainListActivity extends AbstractBaseActivity implements AbstractLi
                 case OFFLINE_MODE_SECTION_CODE:
                     setupSectionDrawer(offlineModeListItem);
                     setTitle(getResources().getString(R.string.section_offline_mode_list_title));
-                    mCurrentFragment = (AbstractListFragment) getSupportFragmentManager().findFragmentByTag(OfflineModeListFragment.FRAGMENT_TAG);
+                    mCurrentFragment = (AbstractListFragment) getFragmentManager().findFragmentByTag(OfflineModeListFragment.FRAGMENT_TAG);
 
                     if(mCurrentFragment == null)
                         replaceFragment(new OfflineModeListFragment());
                     break;
             }
+
             mCurrentSection = section;
+
+            if(section.equals(OFFLINE_MODE_SECTION_CODE)) {
+                mAdView.setVisibility(View.GONE);
+            } else {
+                mAdView.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -333,6 +378,12 @@ public class MainListActivity extends AbstractBaseActivity implements AbstractLi
                 break;
         }
 
+        if(section.equals(OFFLINE_MODE_SECTION_CODE)) {
+            mAdView.setVisibility(View.GONE);
+        } else {
+            mAdView.setVisibility(View.VISIBLE);
+        }
+
         setTitle(title);
         replaceFragment(fragment);
         mCurrentSection = section;
@@ -344,13 +395,13 @@ public class MainListActivity extends AbstractBaseActivity implements AbstractLi
             mCurrentFragment = (AbstractListFragment) fragment;
 
             if(fragment instanceof MainListFragment) {
-                getSupportFragmentManager().beginTransaction()
+                getFragmentManager().beginTransaction()
                         .replace(R.id.main_list_content_container, fragment, MainListFragment.FRAGMENT_TAG).commit();
             } else if(fragment instanceof FavouritesListFragment) {
-                getSupportFragmentManager().beginTransaction()
+                getFragmentManager().beginTransaction()
                         .replace(R.id.main_list_content_container, fragment, FavouritesListFragment.FRAGMENT_TAG).commit();
             } else if(fragment instanceof OfflineModeListFragment) {
-                getSupportFragmentManager().beginTransaction()
+                getFragmentManager().beginTransaction()
                         .replace(R.id.main_list_content_container, fragment, OfflineModeListFragment.FRAGMENT_TAG).commit();
             }
         }

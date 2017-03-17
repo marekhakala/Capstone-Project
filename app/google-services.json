@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "261873801370",
+    "project_id": "mynomadlife-app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:261873801370:android:1892ee3d073fb295",
+        "android_client_info": {
+          "package_name": "com.marekhakala.mynomadlifeapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqcbWZNgZuWPsCMDyr2PExeSOinbHhtqU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-93714307-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

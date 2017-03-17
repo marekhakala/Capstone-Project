@@ -5,14 +5,17 @@
     <!-- Permissions required by the REST adapter -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
 
     <application
         android:name="com.marekhakala.mynomadlifeapp.MyNomadLifeApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.NomadList">
+        android:theme="@style/Theme.NomadList"
+        android:supportsRtl="true">
 
         <activity
             android:name="com.marekhakala.mynomadlifeapp.UI.Activity.SplashActivity"
@@ -104,6 +107,21 @@
         </activity>
 
         <activity
+            android:name="com.marekhakala.mynomadlifeapp.UI.Activity.ExchangeRatesActivity"
+            android:parentActivityName="com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity"
+            android:theme="@style/Theme.NomadList.ExchangeRates">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity" />
+        </activity>
+
+        <activity
             android:name="com.marekhakala.mynomadlifeapp.UI.Activity.AboutActivity"
             android:parentActivityName="com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity"
             android:theme="@style/Theme.NomadList.About">
@@ -132,5 +150,34 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity" />
         </activity>
+
+        <provider
+            android:name=".Database.CitiesProvider"
+            android:authorities="@string/content_authority"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:syncable="true" />
+
+        <service android:name=".DataSource.ExchangeRatesFetchService" />
+
+        <receiver
+            android:name=".UI.Widget.ExchangeRatesWidgetProvider"
+            android:enabled="true"
+            android:label="@string/exchange_rates_title_text">
+
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.marekhakala.mynomadlifeapp.DATA_UPDATED_CODE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_today_exchange_rates" />
+        </receiver>
+
+        <service android:name=".UI.Widget.ExchangeRatesRemoteViewsService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 </manifest>

@@ -14,6 +14,8 @@
     <!-- Text colors -->
     <color name="text_black">#000000</color>
     <color name="text_white">#ffffff</color>
+    <color name="text_gray">#333333</color>
+    <color name="text_gray_light">#6D6D6D</color>
 
     <!-- FAB -->
     <color name="fab_background_color">#842522</color>
@@ -22,4 +24,8 @@
     <color name="color_bar_red_default">#FF4742</color>
     <color name="color_bar_yellow_default">#FFC924</color>
     <color name="color_bar_green_default">#2BDE73</color>
+
+    <!-- Widget view -->
+    <color name="widget_title_background">@color/theme_primary_dark</color>
+    <color name="exchange_rates_title_text">@color/theme_light</color>
 </resources>

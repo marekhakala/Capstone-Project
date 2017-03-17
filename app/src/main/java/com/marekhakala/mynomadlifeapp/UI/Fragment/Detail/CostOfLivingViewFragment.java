@@ -11,14 +11,14 @@ import com.marekhakala.mynomadlifeapp.AppComponent;
 import com.marekhakala.mynomadlifeapp.DataModel.CityCostOfLivingEntity;
 import com.marekhakala.mynomadlifeapp.R;
 import com.marekhakala.mynomadlifeapp.UI.Component.PriceValueView;
-import com.marekhakala.mynomadlifeapp.UI.Fragment.AbstractBaseFragment;
+import com.marekhakala.mynomadlifeapp.UI.Fragment.AbstractBaseV4Fragment;
 import com.marekhakala.mynomadlifeapp.Utilities.ConstantValues;
 
 import java.text.DecimalFormat;
 
 import butterknife.Bind;
 
-public class CostOfLivingViewFragment extends AbstractBaseFragment {
+public class CostOfLivingViewFragment extends AbstractBaseV4Fragment {
 
     public static final String FRAGMENT_TAG = "fragment_detail_view_cost_of_living";
 
@@ -69,7 +69,7 @@ public class CostOfLivingViewFragment extends AbstractBaseFragment {
     PriceValueView c1Inc2Value;
 
     public static CostOfLivingViewFragment newInstance(CityCostOfLivingEntity entity,
-                                                       String secondCurrencyCode, Double secondCurrencyRate) {
+                                                       String secondCurrencyCode, Float secondCurrencyRate) {
         CostOfLivingViewFragment fragment = new CostOfLivingViewFragment();
 
         Bundle bundle = new Bundle();
@@ -77,7 +77,7 @@ public class CostOfLivingViewFragment extends AbstractBaseFragment {
 
         if(secondCurrencyCode != null && secondCurrencyRate != null) {
             bundle.putString(EXTRA_SECOND_CURRENCY_CODE, secondCurrencyCode);
-            bundle.putDouble(EXTRA_SECOND_CURRENCY_RATE, secondCurrencyRate);
+            bundle.putFloat(EXTRA_SECOND_CURRENCY_RATE, secondCurrencyRate);
         }
 
         fragment.setArguments(bundle);
@@ -91,7 +91,7 @@ public class CostOfLivingViewFragment extends AbstractBaseFragment {
     public void onViewCreated(View view, Bundle bundle) {
         super.onViewCreated(view, bundle);
         String secondCurrencyCode = (String)getArguments().get(EXTRA_SECOND_CURRENCY_CODE);
-        Double secondCurrencyRate = (Double)getArguments().get(EXTRA_SECOND_CURRENCY_RATE);
+        Float secondCurrencyRate = (Float)getArguments().get(EXTRA_SECOND_CURRENCY_RATE);
 
         CityCostOfLivingEntity entity = (CityCostOfLivingEntity) getArguments().get(EXTRA_COST_OF_LIVING_ENTITY);
 
@@ -146,7 +146,7 @@ public class CostOfLivingViewFragment extends AbstractBaseFragment {
             else
                 setupValuesNone(cappucinoInCafeValue);
 
-            if(secondCurrencyCode == null || secondCurrencyRate == null) {
+            if(secondCurrencyCode == null || secondCurrencyRate == null || secondCurrencyCode.equals("none")) {
                 c1Inc2Container.setVisibility(View.GONE);
                 c1Inc2LineBreak.setVisibility(View.GONE);
             } else {
@@ -156,17 +156,16 @@ public class CostOfLivingViewFragment extends AbstractBaseFragment {
     }
 
     private void setupExchangeValues(TextView c1Inc2Text, PriceValueView c1Inc2Value,
-                                     String secondCurrencyCode, Double secondCurrencyRate) {
+                                     String secondCurrencyCode, Float secondCurrencyRate) {
 
         String labelValue = String.format(getResources().getString(R.string.currency_format_exchange),
                 ConstantValues.USD_CURRENCY, secondCurrencyCode, secondCurrencyCode, ConstantValues.USD_CURRENCY);
 
-        Double value1 = secondCurrencyRate;
         Double value2 = (1.0/secondCurrencyRate);
 
         c1Inc2Text.setText(labelValue);
         c1Inc2Value.setFirstCurrencyText(secondCurrencyCode);
-        c1Inc2Value.setFirstValue(value1.toString());
+        c1Inc2Value.setFirstValue(secondCurrencyRate.toString());
 
         DecimalFormat formatter = new DecimalFormat(getContext().getString(R.string.currency_format_exchange_value_second));
         c1Inc2Value.setExchangeRate(true);
@@ -174,13 +173,13 @@ public class CostOfLivingViewFragment extends AbstractBaseFragment {
         c1Inc2Value.setSecondValue(formatter.format(value2));
     }
 
-    private void setupValues(PriceValueView view, Double value, String secondCurrency, Double secondCurrencyRate) {
+    private void setupValues(PriceValueView view, Float value, String secondCurrency, Float secondCurrencyRate) {
         view.setFirstCurrencyText(ConstantValues.USD_CURRENCY);
         view.setFirstValue(value.toString());
 
-        if(secondCurrency != null && secondCurrencyRate != null && !secondCurrency.isEmpty()) {
+        if(secondCurrency != null && secondCurrencyRate != null && !secondCurrency.isEmpty() && !secondCurrency.equals("none")) {
             view.setSecondCurrencyText(secondCurrency);
-            Double valueInSecondCurrency = value*secondCurrencyRate;
+            Float valueInSecondCurrency = value*secondCurrencyRate;
             view.setSecondValue(valueInSecondCurrency.toString());
         } else {
             view.setSecondValue("");

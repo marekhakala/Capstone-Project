@@ -1,10 +1,12 @@
 package com.marekhakala.mynomadlifeapp.DataModel;
 
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.marekhakala.mynomadlifeapp.Database.CitiesContract;
 
 public class CityOfflinePlaceToWorkEntity implements Parcelable {
 
@@ -155,6 +157,23 @@ public class CityOfflinePlaceToWorkEntity implements Parcelable {
         this.lng = in.readString();
         this.dataUrl = in.readString();
         this.imageUrl = in.readString();
+    }
+
+    public ContentValues getValues() {
+        ContentValues values = new ContentValues();
+
+        values.put(CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_CITY_SLUG, this.citySlug);
+        values.put(CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_SLUG, this.slug);
+        values.put(CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_NAME, this.name);
+        values.put(CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_SUBNAME, this.subName);
+        values.put(CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_COWORKING_TYPE, this.coworkingType);
+        values.put(CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_DISTANCE, this.distance);
+        values.put(CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_LAT, this.lat);
+        values.put(CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_LNG, this.lng);
+        values.put(CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_DATA_URL, this.dataUrl);
+        values.put(CitiesContract.CitiesPlacesToWork.CITY_PLACE_TO_WORK_IMAGE_URL, this.imageUrl);
+
+        return values;
     }
 
     public static final Creator<CityPlaceToWorkEntity> CREATOR = new Creator<CityPlaceToWorkEntity>() {

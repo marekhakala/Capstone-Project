@@ -12,17 +12,8 @@ public class ConstantValues {
 
     public static final String HTTP_DATA_TYPE = "application/json; charset=utf-8";
 
-    // Realm DB options
-    public static String REALM_DB_FILE = "mynomadlife.realm.db";
-    public static long DB_SCHEMA_VERSION = 1;
-
-    public static final String NAME_COLUMN_NAME = "name";
-    public static final String SUB_NAME_COLUMN_NAME = "subName";
-    public static final String CITY_SLUG_COLUMN_NAME = "citySlug";
-    public static final String SLUG_COLUMN_NAME = "slug";
-    public static final String ID_COLUMN_NAME = "id";
-
     // UI sections
+    public static final String ACTIVITY_SECTION_TEXT = "Activity~";
     public static final String MAIN_SECTION_CODE = "main_list";
     public static final String START_SECTION_CODE = "start_list";
     public static final String FAVOURITES_SECTION_CODE = "favourites_list";
@@ -31,6 +22,7 @@ public class ConstantValues {
     public static final String FILTER_SECTION_CODE = "filter";
     public static final String DETAIL_VIEW_SECTION_CODE = "detail_view";
     public static final String SETTINGS_SECTION_CODE = "settings";
+    public static final String EXCHANGE_RATES_SECTION_CODE = "exchange_rates";
     public static final String ABOUT_SECTION_CODE = "about";
 
     public static final String EXTRA_ITEM_CITY = "city";
@@ -39,7 +31,6 @@ public class ConstantValues {
     public static final String CITY_ENTITY = "City";
     public static final String CITY_OFFLINE_ENTITY = "CityOffline";
 
-    public static final String TAGS_SEPARATOR = ",";
     public static final String API_SEARCH_PARAM = "slugs";
 
     // Settings

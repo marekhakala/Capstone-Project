@@ -10,11 +10,11 @@ public class CityScoresEntity implements Parcelable {
 
     @Expose
     @SerializedName("nomad_score")
-    private Double nomadScore;
+    private Float nomadScore;
 
     @Expose
     @SerializedName("life_score")
-    private Double lifeScore;
+    private Float lifeScore;
 
     @Expose
     private Integer cost;
@@ -60,25 +60,25 @@ public class CityScoresEntity implements Parcelable {
 
     @Expose
     @SerializedName("startup_score")
-    private Double startupScore;
+    private Float startupScore;
 
     @Expose
     @SerializedName("english_speaking")
     private Integer englishSpeaking;
 
-    public Double getNomadScore() {
+    public Float getNomadScore() {
         return nomadScore;
     }
 
-    public void setNomadScore(Double nomadScore) {
+    public void setNomadScore(Float nomadScore) {
         this.nomadScore = nomadScore;
     }
 
-    public Double getLifeScore() {
+    public Float getLifeScore() {
         return lifeScore;
     }
 
-    public void setLifeScore(Double lifeScore) {
+    public void setLifeScore(Float lifeScore) {
         this.lifeScore = lifeScore;
     }
 
@@ -178,11 +178,11 @@ public class CityScoresEntity implements Parcelable {
         this.gayFriendly = gayFriendly;
     }
 
-    public Double getStartupScore() {
+    public Float getStartupScore() {
         return startupScore;
     }
 
-    public void setStartupScore(Double startupScore) {
+    public void setStartupScore(Float startupScore) {
         this.startupScore = startupScore;
     }
 
@@ -223,8 +223,8 @@ public class CityScoresEntity implements Parcelable {
     }
 
     protected CityScoresEntity(Parcel in) {
-        this.nomadScore = (Double) in.readValue(Double.class.getClassLoader());
-        this.lifeScore = (Double) in.readValue(Double.class.getClassLoader());
+        this.nomadScore = (Float) in.readValue(Float.class.getClassLoader());
+        this.lifeScore = (Float) in.readValue(Float.class.getClassLoader());
         this.cost = (Integer) in.readValue(Integer.class.getClassLoader());
         this.internet = (Integer) in.readValue(Integer.class.getClassLoader());
         this.fun = (Integer) in.readValue(Integer.class.getClassLoader());
@@ -237,7 +237,7 @@ public class CityScoresEntity implements Parcelable {
         this.friendlyToForeigners = (Integer) in.readValue(Integer.class.getClassLoader());
         this.femaleFriendly = (Integer) in.readValue(Integer.class.getClassLoader());
         this.gayFriendly = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.startupScore = (Double) in.readValue(Double.class.getClassLoader());
+        this.startupScore = (Float) in.readValue(Float.class.getClassLoader());
         this.englishSpeaking = (Integer) in.readValue(Integer.class.getClassLoader());
     }
 

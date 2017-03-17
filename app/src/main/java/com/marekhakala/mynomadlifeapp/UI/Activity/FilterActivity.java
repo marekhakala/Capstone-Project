@@ -9,12 +9,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.marekhakala.mynomadlifeapp.AppComponent;
 import com.marekhakala.mynomadlifeapp.R;
 import com.marekhakala.mynomadlifeapp.UI.Component.FilterSingleButton;
 import com.marekhakala.mynomadlifeapp.UI.Component.FilterSingleSelectionButtons;
 import com.marekhakala.mynomadlifeapp.Utilities.ConstantValues;
+import com.marekhakala.mynomadlifeapp.Utilities.UtilityHelper;
 
+import javax.inject.Inject;
 import butterknife.Bind;
 
 public class FilterActivity extends AbstractBaseActivity {
@@ -74,6 +78,9 @@ public class FilterActivity extends AbstractBaseActivity {
     @Bind(R.id.filter_gay_friendly_button)
     FilterSingleButton filterGayFriendlyButton;
 
+    @Inject
+    Tracker mTracker;
+
     public static final String ACTIVITY_TAG = "activity_filter";
 
     protected String mCurrentSection = ConstantValues.FILTER_SECTION_CODE;
@@ -92,6 +99,10 @@ public class FilterActivity extends AbstractBaseActivity {
 
         if(getIntent().hasExtra(MainListActivity.EXTRA_SECTION))
             mReturnSection = getIntent().getStringExtra(MainListActivity.EXTRA_SECTION);
+
+        // Analytics
+        mTracker.setScreenName(UtilityHelper.getScreenNameForAnalytics(ConstantValues.FILTER_SECTION_CODE));
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     protected void restoreFilterStates() {

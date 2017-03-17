@@ -2,7 +2,6 @@
 <resources>
     <!-- Line -->
     <dimen name="line_container">13dp</dimen>
-    <dimen name="line_trailer_container">80dp</dimen>
 
     <!-- Text size -->
     <dimen name="text_size_micro">12sp</dimen>
@@ -139,4 +138,29 @@
     <dimen name="about_app_copyright_padding_top">10dp</dimen>
     <dimen name="about_app_copyright_padding_bottom">10dp</dimen>
     <dimen name="about_app_description">25dp</dimen>
+
+    <!-- Exchange rates View -->
+    <dimen name="exchange_rates_height">200dp</dimen>
+    <dimen name="exchange_rates_width">260dp</dimen>
+    <dimen name="exchange_rates_resize_height">@dimen/exchange_rates_height</dimen>
+    <dimen name="exchange_rates_resize_width">@dimen/exchange_rates_width</dimen>
+    <dimen name="exchange_rates_subtitle_text_size">20sp</dimen>
+    <dimen name="exchange_rates_icon_padding_top_bottom">20dp</dimen>
+    <dimen name="exchange_rates_icon_size">72dp</dimen>
+
+    <!-- Exchange rates View - Item -->
+    <dimen name="widget_item_today_exchange_rates_text_padding_top">5dp</dimen>
+    <dimen name="widget_item_today_exchange_rates_text_padding_bottom">5dp</dimen>
+    <dimen name="widget_item_today_exchange_rates_text_padding_start">10dp</dimen>
+    <dimen name="widget_item_today_exchange_rates_text_text_size">15sp</dimen>
+
+    <!-- Exchange rates Widget -->
+    <dimen name="widget_today_exchange_rates_padding">10dp</dimen>
+    <dimen name="widget_today_exchange_rates_first_text_size_default">18sp</dimen>
+    <dimen name="widget_today_exchange_rates_second_text_size_default">12sp</dimen>
+
+    <dimen name="widget_today_exchange_rates_row_min_height">60dp</dimen>
+    <dimen name="widget_today_exchange_rates_row_value_padding">5dp</dimen>
+    <dimen name="widget_today_exchange_rates_layout_height">56dp</dimen>
+    <dimen name="widget_item_today_exchange_rates_layout_height">40dp</dimen>
 </resources>

@@ -1,7 +1,10 @@
 package com.marekhakala.mynomadlifeapp.DataModel;
 
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.marekhakala.mynomadlifeapp.Database.CitiesContract;
 
 public class ImageResponseBodyEntity implements Parcelable {
 
@@ -54,6 +57,15 @@ public class ImageResponseBodyEntity implements Parcelable {
         this.slug = in.readString();
         this.isData = in.readByte() != 0;
         this.imageData = in.createByteArray();
+    }
+
+    public ContentValues getValues() {
+        ContentValues values = new ContentValues();
+
+        values.put(CitiesContract.CitiesOfflineImages.CITY_IMAGE_SLUG, this.slug);
+        values.put(CitiesContract.CitiesOfflineImages.CITY_IMAGE_DATA, this.imageData);
+
+        return values;
     }
 
     public static final Creator<ImageResponseBodyEntity> CREATOR = new Creator<ImageResponseBodyEntity>() {

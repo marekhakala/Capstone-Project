@@ -2,6 +2,7 @@ package com.marekhakala.mynomadlifeapp.Utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -10,29 +11,47 @@ import android.preference.PreferenceManager;
 import com.marekhakala.mynomadlifeapp.DataModel.CitiesResultEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityOfflineEntity;
+import com.marekhakala.mynomadlifeapp.DataModel.ExchangeRateEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.ImageResponseBodyEntity;
-import com.marekhakala.mynomadlifeapp.RealmDataModel.CityFavouriteSlug;
 import com.marekhakala.mynomadlifeapp.R;
-import com.marekhakala.mynomadlifeapp.RealmDataModel.CityOfflineImage;
-import com.marekhakala.mynomadlifeapp.RealmDataModel.CityOfflineSlug;
-import com.marekhakala.mynomadlifeapp.Repository.RepositoryHelpers;
 import com.marekhakala.mynomadlifeapp.UI.Component.PriceValueHolder;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.realm.Realm;
-import io.realm.RealmResults;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import timber.log.Timber;
 
 public class UtilityHelper {
+    public static String getCursorString(Cursor cursor, String column) {
+        return cursor.getString(cursor.getColumnIndexOrThrow(column));
+    }
+
+    public static boolean getCursorBoolean(Cursor cursor, String column) {
+        return getCursorInt(cursor, column) == 1;
+    }
+
+    public static long getCursorLong(Cursor cursor, String column) {
+        return cursor.getLong(cursor.getColumnIndexOrThrow(column));
+    }
+
+    public static int getCursorInt(Cursor cursor, String column) {
+        return cursor.getInt(cursor.getColumnIndexOrThrow(column));
+    }
+
+    public static Float getCursorFloat(Cursor cursor, String column) {
+        return cursor.getFloat(cursor.getColumnIndexOrThrow(column));
+    }
+
+    public static byte[] getCursorBlob(Cursor cursor, String column) {
+        return cursor.getBlob(cursor.getColumnIndexOrThrow(column));
+    }
+
     public static String getCityImageUri(String baseUrl, CityEntity city) {
         return Uri.parse(baseUrl).buildUpon().appendEncodedPath(city.getSlug() + ConstantValues.IMAGE_URL_PATH).build().toString();
     }
@@ -91,16 +110,8 @@ public class UtilityHelper {
         return UtilityHelper.getPriceValueNormal(priceValueHolder, context);
     }
 
-    public static String cityIdFactory(CityFavouriteSlug result) {
-        return result.getSlug();
-    }
-
-    public static String cityIdFactory(CityOfflineSlug result) {
-        return result.getSlug();
-    }
-
-    public static int getIntegerFromDoublePercentage(Double value) {
-        return (int) Math.round(value*10);
+    public static int getIntegerFromDoublePercentage(Float value) {
+        return Math.round(value*10);
     }
 
     public static Map<String, String> getCurrencies(Context context) {
@@ -133,8 +144,15 @@ public class UtilityHelper {
     }
 
     private static String getPriceValue(PriceValueHolder priceValueHolder, DecimalFormat formatter, Context context) {
-        String formattedString = formatter.format(Float.parseFloat(priceValueHolder.getValue()));
-        String periodString = setupPeriod(priceValueHolder.getValuePeriod(), context);
+        String formattedString;
+        String periodString;
+
+        try {
+            formattedString = formatter.format(Float.parseFloat(priceValueHolder.getValue()));
+            periodString = setupPeriod(priceValueHolder.getValuePeriod(), context);
+        } catch (NumberFormatException exception) {
+            return "";
+        }
 
         if(priceValueHolder.hasCurrencySymbol()) {
             return String.format(context.getResources().getString(R.string.currency_format),
@@ -196,14 +214,9 @@ public class UtilityHelper {
         return BitmapFactory.decodeByteArray(array, 0, array.length);
     }
 
-    public static String getPopulation(Double population, Context context) {
+    public static String getPopulation(Float population, Context context) {
         DecimalFormat formatter = new DecimalFormat(context.getString(R.string.currency_format_value));
         return formatter.format(population);
-    }
-
-    public static void closeDatabase(Realm realm) {
-        if(realm != null && !realm.isClosed())
-            realm.close();
     }
 
     public static ImageResponseBodyEntity processImageFromApi(String slug, Response<ResponseBody> response) {
@@ -222,52 +235,6 @@ public class UtilityHelper {
         }
 
         return imageResponseBodyEntity;
-    }
-
-    public static void setupImageFromDatabase(CityOfflineImage cityOfflineImage, CityOfflineEntity cityOfflineEntity) {
-        Bitmap cityImage = UtilityHelper.byteArrayToBitmap(cityOfflineImage.getImageData());
-        cityOfflineEntity.setBitmapImage(cityImage);
-    }
-
-    public static List<Boolean> processImagesFromApi(Realm innerRealm, Object[] imageResponses) {
-        List<Boolean> imageResults = new ArrayList<>();
-
-        if(imageResponses != null) {
-            for(Object responseObject : imageResponses) {
-                ImageResponseBodyEntity imageResponseBodyEntity = (ImageResponseBodyEntity) responseObject;
-
-                if(imageResponseBodyEntity != null && imageResponseBodyEntity.isData()) {
-                    RepositoryHelpers.saveImageToDatabase(innerRealm, imageResponseBodyEntity.getSlug(),
-                            BitmapFactory.decodeByteArray(imageResponseBodyEntity.getImageData(), 0,
-                                    imageResponseBodyEntity.getImageData().length));
-                    imageResults.add(true);
-                }
-                imageResults.add(false);
-            }
-        }
-
-        UtilityHelper.closeDatabase(innerRealm);
-        return imageResults;
-    }
-
-    public static List<ImageResponseBodyEntity> processImageFromDatabase(String citySlug,
-                                                                         RealmResults<CityOfflineImage> cityOfflineImages) {
-        List<ImageResponseBodyEntity> images = new ArrayList<>();
-
-        for(CityOfflineImage image : cityOfflineImages) {
-            ImageResponseBodyEntity imageResponseBodyEntity = new ImageResponseBodyEntity();
-            imageResponseBodyEntity.setSlug(citySlug);
-
-            if(image.getImageData().length > 0) {
-                imageResponseBodyEntity.setData(true);
-                imageResponseBodyEntity.setImageData(image.getImageData());
-            } else
-                imageResponseBodyEntity.setData(false);
-
-            images.add(imageResponseBodyEntity);
-        }
-
-        return images;
     }
 
     public static int settingsStringToInt(SharedPreferences settings, String settingsKey, int defaultValue) {
@@ -307,5 +274,23 @@ public class UtilityHelper {
         } catch (NumberFormatException exception) {
             return defaultValue;
         }
+    }
+
+    public static String getWidgetExchangeRateTitle(Context context, ExchangeRateEntity exchangeRateItemObject) {
+        return String.format(context.getString(R.string.exchange_rates_row_format_title),
+                exchangeRateItemObject.getBaseCurrencyCode().toUpperCase(),
+                exchangeRateItemObject.getCurrencyCode().toUpperCase());
+    }
+
+    public static String getWidgetExchangeRateValue(Context context, ExchangeRateEntity exchangeRateItemObject) {
+        DecimalFormat formatter = new DecimalFormat(context.getString(R.string.currency_format_exchange_value_second));
+        String formatedCurrencyRate = formatter.format(exchangeRateItemObject.getCurrencyRate());
+
+        return String.format(context.getString(R.string.exchange_rates_row_format_value),
+                formatedCurrencyRate, exchangeRateItemObject.getCurrencyCode().toUpperCase());
+    }
+
+    public static String getScreenNameForAnalytics(String section) {
+        return ConstantValues.ACTIVITY_SECTION_TEXT + section;
     }
 }

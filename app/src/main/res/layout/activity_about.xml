@@ -21,6 +21,7 @@
                 android:id="@+id/about_app_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/about_app_name"
                 android:src="@drawable/app_icon_color" />
 
             <TextView

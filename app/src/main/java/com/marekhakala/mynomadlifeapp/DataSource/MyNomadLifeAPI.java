@@ -4,6 +4,7 @@ import com.marekhakala.mynomadlifeapp.DataModel.CitiesOfflineResultEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CitiesResultEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityPlacesToWorkResultEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityEntity;
+import com.marekhakala.mynomadlifeapp.DataModel.ExchangeRatesResultEntity;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -46,4 +47,7 @@ public interface MyNomadLifeAPI {
 
     @GET("cities/{slug}/coworking")
     Observable<CityPlacesToWorkResultEntity> getListOfPlacesToWork(@Path("slug") String slug);
+
+    @GET("exchange_rates")
+    Observable<ExchangeRatesResultEntity> getExchangeRates();
 }

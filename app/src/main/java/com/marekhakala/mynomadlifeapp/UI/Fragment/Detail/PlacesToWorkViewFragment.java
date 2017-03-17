@@ -3,13 +3,13 @@ package com.marekhakala.mynomadlifeapp.UI.Fragment.Detail;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.marekhakala.mynomadlifeapp.AppComponent;
@@ -22,21 +22,22 @@ import com.marekhakala.mynomadlifeapp.UI.Adapter.AbstractDataSourceRecyclerViewA
 import com.marekhakala.mynomadlifeapp.UI.Adapter.CityPlacesToWorkDSRecyclerViewAdapter;
 import com.marekhakala.mynomadlifeapp.UI.Component.DataSourceRecyclerView;
 import com.marekhakala.mynomadlifeapp.UI.Component.OnCityPlaceToWorkItemClickListener;
-import com.marekhakala.mynomadlifeapp.UI.Fragment.AbstractBaseFragment;
-import com.marekhakala.mynomadlifeapp.Utilities.UtilityHelper;
+import com.marekhakala.mynomadlifeapp.UI.Fragment.AbstractBaseV4Fragment;
+import com.marekhakala.mynomadlifeapp.UI.Loader.PlacesToWorkLoader;
 
 import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
-
 import butterknife.Bind;
-import io.realm.Realm;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.Subscriptions;
 import timber.log.Timber;
 
-public class PlacesToWorkViewFragment extends AbstractBaseFragment implements OnCityPlaceToWorkItemClickListener {
+public class PlacesToWorkViewFragment extends AbstractBaseV4Fragment implements OnCityPlaceToWorkItemClickListener,
+        LoaderManager.LoaderCallbacks<List<CityPlaceToWorkEntity>> {
     public static final String FRAGMENT_TAG = "fragment_detail_view_places_to_work";
+    protected static final int PLACES_TO_WORK_LIST_ID = 1;
 
     public static final String EXTRA_CITY_ENTITY = "city";
     protected static final String EXTRA_STATE_SELECTED_POSITION = "selected_position";
@@ -57,6 +58,9 @@ public class PlacesToWorkViewFragment extends AbstractBaseFragment implements On
 
     @Inject
     IMyNomadLifeRepository mRepository;
+
+    @Inject
+    PlacesToWorkLoader placesToWorkLoader;
 
     protected CityPlacesToWorkDSRecyclerViewAdapter mAdapter;
     protected Subscription mSubscription = Subscriptions.empty();
@@ -94,9 +98,12 @@ public class PlacesToWorkViewFragment extends AbstractBaseFragment implements On
             searchEditText.setText(mSearchQuery);
         }
 
-        mAdapter = new CityPlacesToWorkDSRecyclerViewAdapter(getContext(), new ArrayList<>());
+        mAdapter = new CityPlacesToWorkDSRecyclerViewAdapter(getActivity(), new ArrayList<>());
         mAdapter.setListener(this);
         mRecyclerView.setAdapter(mAdapter);
+
+        getLoaderManager().initLoader(PLACES_TO_WORK_LIST_ID, null, this);
+        placesToWorkLoader.setCitySlug(citySlug);
         loadData();
     }
 
@@ -116,28 +123,19 @@ public class PlacesToWorkViewFragment extends AbstractBaseFragment implements On
 
         cleanButton.setOnClickListener(view -> {
             searchEditText.setText("");
+            mSearchQuery = "";
             setupSearchQuery();
         });
 
-        searchButton.setOnClickListener(view -> {
-            setupSearchQuery();
-        });
-
-        searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return setupSearchQuery();
-            }
-        });
+        searchButton.setOnClickListener(view -> setupSearchQuery());
+        searchEditText.setOnEditorActionListener((v, actionId, event) -> setupSearchQuery());
     }
 
     protected boolean setupSearchQuery() {
         if(!mAdapter.isWaitingForData()) {
-            if(!mAdapter.isWaitingForData()) {
-                mSelectedPosition = 0;
-                mSearchQuery = searchEditText.getText().toString();
-                loadDataFromCache();
-            }
+            mSelectedPosition = 0;
+            mSearchQuery = searchEditText.getText().toString();
+            loadDataFromCache();
             return true;
         }
         return false;
@@ -158,24 +156,8 @@ public class PlacesToWorkViewFragment extends AbstractBaseFragment implements On
 
     protected void loadDataFromCache() {
         mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.LOADING_STATE);
-
-        if(mSubscription != null)
-            mSubscription.unsubscribe();
-
-        Realm realm = mRepository.getRealm();
-
-        mSubscription = mRepository.cachedCityPlacesToWork(realm, citySlug, mSearchQuery)
-                .subscribe(placesToWork -> {
-                    mAdapter.updateData(placesToWork);
-
-                    if (mSelectedPosition != -1)
-                        mRecyclerView.scrollToPosition(mSelectedPosition);
-
-                    UtilityHelper.closeDatabase(realm);
-                }, throwable -> {
-                    mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.ERROR_STATE);
-                    UtilityHelper.closeDatabase(realm);
-                });
+        placesToWorkLoader.setSearchQuery(mSearchQuery);
+        getLoaderManager().getLoader(PLACES_TO_WORK_LIST_ID).forceLoad();
     }
 
     protected void loadDataFromAPI() {
@@ -187,8 +169,9 @@ public class PlacesToWorkViewFragment extends AbstractBaseFragment implements On
         mSubscription = mRepository.cityPlacesToWork(citySlug, mSearchQuery)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(placesToWork -> {
-                    mAdapter.updateData(placesToWork);
                     mUseCacheData = true;
+                    placesToWorkLoader.setSearchQuery(mSearchQuery);
+                    getLoaderManager().getLoader(PLACES_TO_WORK_LIST_ID).forceLoad();
                 }, throwable -> {
                     try {
                         mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.ERROR_STATE);
@@ -221,15 +204,34 @@ public class PlacesToWorkViewFragment extends AbstractBaseFragment implements On
             String geoUri = "https://maps.google.com/maps?q=loc:" + entity.getLat() + "," + entity.getLng() + " (" + entity.getName() + ")";
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(geoUri));
             mSelectedPosition = index;
-            getContext().startActivity(intent);
+            getActivity().startActivity(intent);
         } else {
             getActivity().runOnUiThread(() -> {
-                Toast.makeText(getActivity(), getContext().getString(R.string.city_item_detail_view_places_to_work_gps_not_available), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getActivity().getString(R.string.city_item_detail_view_places_to_work_gps_not_available), Toast.LENGTH_SHORT).show();
             });
         }
     }
 
     @Override
     public void onClicked(CityOfflinePlaceToWorkEntity entity, View view, int index) {}
+
+    @Override
+    public Loader<List<CityPlaceToWorkEntity>> onCreateLoader(int id, Bundle args) {
+        return placesToWorkLoader;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<CityPlaceToWorkEntity>> loader, List<CityPlaceToWorkEntity> data) {
+        mAdapter.updateData(data);
+
+        if (mSelectedPosition != -1)
+            mRecyclerView.scrollToPosition(mSelectedPosition);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<CityPlaceToWorkEntity>> loader) {
+        mSelectedPosition = -1;
+        mAdapter.setCurrentState(AbstractDataSourceRecyclerViewAdapter.StateType.EMPTY_STATE);
+    }
 }
 

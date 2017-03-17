@@ -10,133 +10,133 @@ public class CityCostOfLivingEntity implements Parcelable {
 
     @Expose
     @SerializedName("nomad_cost")
-    private Double nomadCost;
+    private Float nomadCost;
 
     @Expose
     @SerializedName("expat_cost_of_living")
-    private Double expatCostOfLiving;
+    private Float expatCostOfLiving;
 
     @Expose
     @SerializedName("local_cost_of_living")
-    private Double localCostOfLiving;
+    private Float localCostOfLiving;
 
     @Expose
     @SerializedName("one_bedroom_apartment")
-    private Double oneBedroomApartment;
+    private Float oneBedroomApartment;
 
     @Expose
     @SerializedName("hotel_room")
-    private Double hotelRoom;
+    private Float hotelRoom;
 
     @Expose
     @SerializedName("airbnb_apartment_month")
-    private Double airbnbApartmentMonth;
+    private Float airbnbApartmentMonth;
 
     @Expose
     @SerializedName("airbnb_apartment_day")
-    private Double airbnbApartmentDay;
+    private Float airbnbApartmentDay;
 
     @Expose
     @SerializedName("coworking_space")
-    private Double coworkingSpace;
+    private Float coworkingSpace;
 
     @Expose
     @SerializedName("coca_cola_in_cafe")
-    private Double cocaColaInCafe;
+    private Float cocaColaInCafe;
 
     @Expose
     @SerializedName("pint_of_beer_in_bar")
-    private Double pintOfBeerInBar;
+    private Float pintOfBeerInBar;
 
     @Expose
     @SerializedName("cappucino_in_cafe")
-    private Double cappucinoInCafe;
+    private Float cappucinoInCafe;
 
-    public Double getNomadCost() {
+    public Float getNomadCost() {
         return nomadCost;
     }
 
-    public void setNomadCost(Double nomadCost) {
+    public void setNomadCost(Float nomadCost) {
         this.nomadCost = nomadCost;
     }
 
-    public Double getExpatCostOfLiving() {
+    public Float getExpatCostOfLiving() {
         return expatCostOfLiving;
     }
 
-    public void setExpatCostOfLiving(Double expatCostOfLiving) {
+    public void setExpatCostOfLiving(Float expatCostOfLiving) {
         this.expatCostOfLiving = expatCostOfLiving;
     }
 
-    public Double getLocalCostOfLiving() {
+    public Float getLocalCostOfLiving() {
         return localCostOfLiving;
     }
 
-    public void setLocalCostOfLiving(Double localCostOfLiving) {
+    public void setLocalCostOfLiving(Float localCostOfLiving) {
         this.localCostOfLiving = localCostOfLiving;
     }
 
-    public Double getOneBedroomApartment() {
+    public Float getOneBedroomApartment() {
         return oneBedroomApartment;
     }
 
-    public void setOneBedroomApartment(Double oneBedroomApartment) {
+    public void setOneBedroomApartment(Float oneBedroomApartment) {
         this.oneBedroomApartment = oneBedroomApartment;
     }
 
-    public Double getHotelRoom() {
+    public Float getHotelRoom() {
         return hotelRoom;
     }
 
-    public void setHotelRoom(Double hotelRoom) {
+    public void setHotelRoom(Float hotelRoom) {
         this.hotelRoom = hotelRoom;
     }
 
-    public Double getAirbnbApartmentMonth() {
+    public Float getAirbnbApartmentMonth() {
         return airbnbApartmentMonth;
     }
 
-    public void setAirbnbApartmentMonth(Double airbnbApartmentMonth) {
+    public void setAirbnbApartmentMonth(Float airbnbApartmentMonth) {
         this.airbnbApartmentMonth = airbnbApartmentMonth;
     }
 
-    public Double getAirbnbApartmentDay() {
+    public Float getAirbnbApartmentDay() {
         return airbnbApartmentDay;
     }
 
-    public void setAirbnbApartmentDay(Double airbnbApartmentDay) {
+    public void setAirbnbApartmentDay(Float airbnbApartmentDay) {
         this.airbnbApartmentDay = airbnbApartmentDay;
     }
 
-    public Double getCoworkingSpace() {
+    public Float getCoworkingSpace() {
         return coworkingSpace;
     }
 
-    public void setCoworkingSpace(Double coworkingSpace) {
+    public void setCoworkingSpace(Float coworkingSpace) {
         this.coworkingSpace = coworkingSpace;
     }
 
-    public Double getCocaColaInCafe() {
+    public Float getCocaColaInCafe() {
         return cocaColaInCafe;
     }
 
-    public void setCocaColaInCafe(Double cocaColaInCafe) {
+    public void setCocaColaInCafe(Float cocaColaInCafe) {
         this.cocaColaInCafe = cocaColaInCafe;
     }
 
-    public Double getPintOfBeerInBar() {
+    public Float getPintOfBeerInBar() {
         return pintOfBeerInBar;
     }
 
-    public void setPintOfBeerInBar(Double pintOfBeerInBar) {
+    public void setPintOfBeerInBar(Float pintOfBeerInBar) {
         this.pintOfBeerInBar = pintOfBeerInBar;
     }
 
-    public Double getCappucinoInCafe() {
+    public Float getCappucinoInCafe() {
         return cappucinoInCafe;
     }
 
-    public void setCappucinoInCafe(Double cappucinoInCafe) {
+    public void setCappucinoInCafe(Float cappucinoInCafe) {
         this.cappucinoInCafe = cappucinoInCafe;
     }
 
@@ -164,17 +164,17 @@ public class CityCostOfLivingEntity implements Parcelable {
     }
 
     protected CityCostOfLivingEntity(Parcel in) {
-        this.nomadCost = (Double) in.readValue(Double.class.getClassLoader());
-        this.expatCostOfLiving = (Double) in.readValue(Double.class.getClassLoader());
-        this.localCostOfLiving = (Double) in.readValue(Double.class.getClassLoader());
-        this.oneBedroomApartment = (Double) in.readValue(Double.class.getClassLoader());
-        this.hotelRoom = (Double) in.readValue(Double.class.getClassLoader());
-        this.airbnbApartmentMonth = (Double) in.readValue(Double.class.getClassLoader());
-        this.airbnbApartmentDay = (Double) in.readValue(Double.class.getClassLoader());
-        this.coworkingSpace = (Double) in.readValue(Double.class.getClassLoader());
-        this.cocaColaInCafe = (Double) in.readValue(Double.class.getClassLoader());
-        this.pintOfBeerInBar = (Double) in.readValue(Double.class.getClassLoader());
-        this.cappucinoInCafe = (Double) in.readValue(Double.class.getClassLoader());
+        this.nomadCost = (Float) in.readValue(Double.class.getClassLoader());
+        this.expatCostOfLiving = (Float) in.readValue(Double.class.getClassLoader());
+        this.localCostOfLiving = (Float) in.readValue(Double.class.getClassLoader());
+        this.oneBedroomApartment = (Float) in.readValue(Double.class.getClassLoader());
+        this.hotelRoom = (Float) in.readValue(Double.class.getClassLoader());
+        this.airbnbApartmentMonth = (Float) in.readValue(Double.class.getClassLoader());
+        this.airbnbApartmentDay = (Float) in.readValue(Double.class.getClassLoader());
+        this.coworkingSpace = (Float) in.readValue(Double.class.getClassLoader());
+        this.cocaColaInCafe = (Float) in.readValue(Double.class.getClassLoader());
+        this.pintOfBeerInBar = (Float) in.readValue(Double.class.getClassLoader());
+        this.cappucinoInCafe = (Float) in.readValue(Double.class.getClassLoader());
     }
 
     public static final Creator<CityCostOfLivingEntity> CREATOR = new Creator<CityCostOfLivingEntity>() {

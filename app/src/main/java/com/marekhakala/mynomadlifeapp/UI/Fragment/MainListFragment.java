@@ -1,12 +1,15 @@
 package com.marekhakala.mynomadlifeapp.UI.Fragment;
 
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.marekhakala.mynomadlifeapp.DataModel.CitiesResultEntity;
 import com.marekhakala.mynomadlifeapp.R;
 import com.marekhakala.mynomadlifeapp.AppComponent;
 import com.marekhakala.mynomadlifeapp.UI.Activity.FilterActivity;
@@ -14,26 +17,32 @@ import com.marekhakala.mynomadlifeapp.UI.Activity.MainListActivity;
 import com.marekhakala.mynomadlifeapp.UI.Adapter.AbstractDataSourceRecyclerViewAdapter.StateType;
 import com.marekhakala.mynomadlifeapp.UI.Adapter.CitiesDSRecyclerViewAdapter;
 import com.marekhakala.mynomadlifeapp.UI.Component.DataSourceRecyclerView;
-import com.marekhakala.mynomadlifeapp.Utilities.UtilityHelper;
+import com.marekhakala.mynomadlifeapp.UI.Loader.CitiesLoader;
 
-import io.realm.Realm;
 import java.util.ArrayList;
+import javax.inject.Inject;
+
 import rx.android.schedulers.AndroidSchedulers;
 
-public class MainListFragment extends AbstractListFragment implements DataSourceRecyclerView.OnActionListener {
+public class MainListFragment extends AbstractListFragment implements DataSourceRecyclerView.OnActionListener,
+        LoaderManager.LoaderCallbacks<CitiesResultEntity> {
 
     public static final String FRAGMENT_TAG = "fragment_main_list";
     public static final String EXTRA_STATE_CURRENT_PAGE = "current_page";
     public static final String EXTRA_STATE_TOTAL_NUMBER_OF_PAGES = "total_number_of_pages";
+    public static final int MAIN_LIST_ID = 1;
 
     protected CitiesDSRecyclerViewAdapter mAdapter;
     protected Integer mCurrentPage = 1;
     protected Integer mTotalNumberOfPages = 1;
 
+    @Inject
+    CitiesLoader citiesLoader;
+
     @Override
     public void onViewCreated(View view, Bundle bundle) {
         super.onViewCreated(view, bundle);
-        mAdapter = new CitiesDSRecyclerViewAdapter(getContext(), new ArrayList<>());
+        mAdapter = new CitiesDSRecyclerViewAdapter(getActivity(), new ArrayList<>());
         mAdapter.setListener(this);
 
         mRecyclerView.setAdapter(mAdapter);
@@ -47,6 +56,7 @@ public class MainListFragment extends AbstractListFragment implements DataSource
         if (mSelectedPosition != -1)
             mRecyclerView.scrollToPosition(mSelectedPosition);
 
+        getLoaderManager().initLoader(MAIN_LIST_ID, null, this);
         loadData();
     }
 
@@ -118,66 +128,46 @@ public class MainListFragment extends AbstractListFragment implements DataSource
     @Override
     protected void loadDataFromDB() {
         mAdapter.setCurrentState(StateType.LOADING_STATE);
-
-        if(mSubscription != null)
-            mSubscription.unsubscribe();
-
-        Realm realm = mRepository.getRealm();
-
-        mSubscription = mRepository.cachedCities(realm)
-                .subscribe(cities -> {
-                    mAdapter.updateData(cities);
-
-                    if (mSelectedPosition != -1)
-                        mRecyclerView.scrollToPosition(mSelectedPosition);
-
-                    UtilityHelper.closeDatabase(realm);
-                }, throwable -> {
-                    mAdapter.setCurrentState(StateType.ERROR_STATE);
-                    UtilityHelper.closeDatabase(realm);
-                });
+        getLoaderManager().getLoader(MAIN_LIST_ID).forceLoad();
     }
 
     @Override
     protected void loadDataFromAPI() {
-        loadDataFromAPI(false, false);
+        loadDataFromAPI(mCurrentPage, false);
     }
 
-    protected void loadDataFromAPI(boolean refreshing, boolean loadMore) {
-        loadDataFromAPI(mCurrentPage, refreshing, loadMore);
-    }
-
-    protected void loadDataFromAPI(Integer page, boolean refreshing, boolean loadMore) {
-        if (loadMore) {
-            mAdapter.setCurrentState(StateType.LOAD_MORE_STATE);
-        } else {
-            if(refreshing) {
-                mAdapter.setCurrentState(StateType.REFRESHING_STATE);
-            } else {
-                mAdapter.setCurrentState(StateType.LOADING_STATE);
-            }
-        }
+    protected void loadDataFromAPI(Integer page, boolean refreshing) {
+        if(refreshing)
+            mAdapter.setCurrentState(StateType.REFRESHING_STATE);
+        else
+            mAdapter.setCurrentState(StateType.LOADING_STATE);
 
         if(mSubscription != null)
             mSubscription.unsubscribe();
 
-        boolean cleanAdd = !loadMore;
-        Realm realm = mRepository.getRealm();
-
-        mSubscription = mRepository.cities(realm, cleanAdd, page)
+        mSubscription = mRepository.cities(true, page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     mTotalNumberOfPages = result.getTotalPages();
-
-                    if(loadMore)
-                        mAdapter.addData(result.getEntries());
-                    else
-                        mAdapter.updateData(result.getEntries());
-
-                    UtilityHelper.closeDatabase(realm);
+                    getLoaderManager().getLoader(MAIN_LIST_ID).forceLoad();
                 }, throwable -> {
                     mAdapter.setCurrentState(StateType.ERROR_STATE);
-                    UtilityHelper.closeDatabase(realm);
+                });
+    }
+
+    protected void loadMoreDataFromAPI(Integer page) {
+        mAdapter.setCurrentState(StateType.LOAD_MORE_STATE);
+
+        if(mSubscription != null)
+            mSubscription.unsubscribe();
+
+        mSubscription = mRepository.cities(false, page)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    mTotalNumberOfPages = result.getTotalPages();
+                    mAdapter.addData(result.getEntries());
+                }, throwable -> {
+                    mAdapter.setCurrentState(StateType.ERROR_STATE);
                 });
     }
 
@@ -208,7 +198,28 @@ public class MainListFragment extends AbstractListFragment implements DataSource
     public void onLoadMore() {
         if(!mAdapter.isWaitingForData() && mCurrentPage < mTotalNumberOfPages) {
             mCurrentPage += 1;
-            loadDataFromAPI(false, true);
+            loadMoreDataFromAPI(mCurrentPage);
         }
+    }
+
+    @Override
+    public Loader<CitiesResultEntity> onCreateLoader(int id, Bundle args) {
+        return citiesLoader;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<CitiesResultEntity> loader, CitiesResultEntity data) {
+        mAdapter.updateData(data.getEntries());
+
+        if (mSelectedPosition != -1)
+            mRecyclerView.scrollToPosition(mSelectedPosition);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<CitiesResultEntity> loader) {
+        mTotalNumberOfPages = 1;
+        mCurrentPage = 1;
+        mSelectedPosition = -1;
+        mAdapter.setCurrentState(StateType.EMPTY_STATE);
     }
 }

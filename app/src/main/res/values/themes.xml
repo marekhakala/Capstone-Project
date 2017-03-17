@@ -25,5 +25,6 @@
     <style name="Theme.NomadList.Search" parent="Theme.NomadList.Base" />
     <style name="Theme.NomadList.Detail" parent="Theme.NomadList.Base" />
     <style name="Theme.NomadList.About" parent="Theme.NomadList.Base" />
+    <style name="Theme.NomadList.ExchangeRates" parent="Theme.NomadList.Base" />
     <style name="Theme.NomadList.Settings" parent="Theme.NomadList.Base" />
 </resources>

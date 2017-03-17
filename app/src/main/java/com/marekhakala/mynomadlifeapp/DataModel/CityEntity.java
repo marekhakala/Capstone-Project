@@ -1,10 +1,12 @@
 package com.marekhakala.mynomadlifeapp.DataModel;
 
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.marekhakala.mynomadlifeapp.Database.CitiesContract;
 
 public class CityEntity implements Parcelable {
 
@@ -34,7 +36,7 @@ public class CityEntity implements Parcelable {
 
     @Expose
     @SerializedName("cost_per_month")
-    private Double costPerMonth;
+    private Float costPerMonth;
 
     @Expose
     @SerializedName("internet_speed")
@@ -42,7 +44,7 @@ public class CityEntity implements Parcelable {
 
     @Expose
     @SerializedName("population")
-    private Double population;
+    private Float population;
 
     @Expose
     @SerializedName("gender_ratio")
@@ -57,7 +59,7 @@ public class CityEntity implements Parcelable {
 
     @Expose
     @SerializedName("city_currency_rate")
-    private Double cityCurrencyRate;
+    private Float cityCurrencyRate;
 
     @Expose
     private CityScoresEntity scores;
@@ -126,11 +128,11 @@ public class CityEntity implements Parcelable {
         this.rank = rank;
     }
 
-    public Double getCostPerMonth() {
+    public Float getCostPerMonth() {
         return costPerMonth;
     }
 
-    public void setCostPerMonth(Double costPerMonth) {
+    public void setCostPerMonth(Float costPerMonth) {
         this.costPerMonth = costPerMonth;
     }
 
@@ -142,11 +144,11 @@ public class CityEntity implements Parcelable {
         this.internetSpeed = internetSpeed;
     }
 
-    public Double getPopulation() {
+    public Float getPopulation() {
         return population;
     }
 
-    public void setPopulation(Double population) {
+    public void setPopulation(Float population) {
         this.population = population;
     }
 
@@ -174,11 +176,11 @@ public class CityEntity implements Parcelable {
         this.cityCurrency = cityCurrency;
     }
 
-    public Double getCityCurrencyRate() {
+    public Float getCityCurrencyRate() {
         return cityCurrencyRate;
     }
 
-    public void setCityCurrencyRate(Double cityCurrencyRate) {
+    public void setCityCurrencyRate(Float cityCurrencyRate) {
         this.cityCurrencyRate = cityCurrencyRate;
     }
 
@@ -252,17 +254,70 @@ public class CityEntity implements Parcelable {
         this.temperatureF = (Integer) in.readValue(Integer.class.getClassLoader());
         this.humidity = (Integer) in.readValue(Integer.class.getClassLoader());
         this.rank = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.costPerMonth = (Double) in.readValue(Double.class.getClassLoader());
+        this.costPerMonth = (Float) in.readValue(Float.class.getClassLoader());
         this.internetSpeed = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.population = (Double) in.readValue(Double.class.getClassLoader());
+        this.population = (Float) in.readValue(Float.class.getClassLoader());
         this.genderRatio = in.readString();
         this.religious = in.readString();
         this.cityCurrency = in.readString();
-        this.cityCurrencyRate = (Double) in.readValue(Double.class.getClassLoader());
+        this.cityCurrencyRate = (Float) in.readValue(Float.class.getClassLoader());
         this.scores = in.readParcelable(CityScoresEntity.class.getClassLoader());
         this.costOfLiving = in.readParcelable(CityCostOfLivingEntity.class.getClassLoader());
         this.favourite = in.readByte() != 0;
         this.offline = in.readByte() != 0;
+    }
+
+    public ContentValues getValues() {
+        ContentValues values = new ContentValues();
+
+        // General
+        values.put(CitiesContract.Cities.CITY_SLUG, this.slug);
+        values.put(CitiesContract.Cities.CITY_REGION, this.region);
+        values.put(CitiesContract.Cities.CITY_COUNTRY, this.country);
+        values.put(CitiesContract.Cities.CITY_TEMPERATURE_C, this.temperatureC);
+        values.put(CitiesContract.Cities.CITY_TEMPERATURE_F, this.temperatureF);
+        values.put(CitiesContract.Cities.CITY_HUMIDITY, this.humidity);
+        values.put(CitiesContract.Cities.CITY_RANK, this.rank);
+        values.put(CitiesContract.Cities.CITY_COST_PER_MONTH, this.costPerMonth);
+        values.put(CitiesContract.Cities.CITY_INTERNET_SPEED, this.internetSpeed);
+        values.put(CitiesContract.Cities.CITY_POPULATION, this.population);
+        values.put(CitiesContract.Cities.CITY_GENDER_RATIO, this.genderRatio);
+        values.put(CitiesContract.Cities.CITY_RELIGIOUS, this.religious);
+        values.put(CitiesContract.Cities.CITY_CURRENCY, this.cityCurrency);
+        values.put(CitiesContract.Cities.CITY_CURRENCY_RATE, this.cityCurrencyRate);
+
+        // Scores
+        values.put(CitiesContract.Cities.CITY_SCORE_NOMAD_SCORE, this.scores.getNomadScore());
+        values.put(CitiesContract.Cities.CITY_SCORE_LIFE_SCORE, this.scores.getLifeScore());
+        values.put(CitiesContract.Cities.CITY_SCORE_COST, this.scores.getCost());
+        values.put(CitiesContract.Cities.CITY_SCORE_INTERNET, this.scores.getInternet());
+        values.put(CitiesContract.Cities.CITY_SCORE_FUN, this.scores.getFun());
+        values.put(CitiesContract.Cities.CITY_SCORE_SAFETY, this.scores.getSafety());
+        values.put(CitiesContract.Cities.CITY_SCORE_PEACE, this.scores.getPeace());
+        values.put(CitiesContract.Cities.CITY_SCORE_NIGHTLIFE, this.scores.getNightlife());
+        values.put(CitiesContract.Cities.CITY_SCORE_FREE_WIFI_IN_CITY, this.scores.getFreeWifiInCity());
+        values.put(CitiesContract.Cities.CITY_SCORE_PLACES_TO_WORK, this.scores.getPlacesToWork());
+        values.put(CitiesContract.Cities.CITY_SCORE_AC_OR_HEATING, this.scores.getAcOrHeating());
+        values.put(CitiesContract.Cities.CITY_SCORE_FRIENDLY_TO_FOREIGNERS, this.scores.getFriendlyToForeigners());
+        values.put(CitiesContract.Cities.CITY_SCORE_FEMALE_FRIENDLY, this.scores.getFemaleFriendly());
+        values.put(CitiesContract.Cities.CITY_SCORE_GAY_FRIENDLY, this.scores.getGayFriendly());
+        values.put(CitiesContract.Cities.CITY_SCORE_STARTUP_SCORE, this.scores.getStartupScore());
+        values.put(CitiesContract.Cities.CITY_SCORE_ENGLISH_SPEAKING, this.scores.getEnglishSpeaking());
+
+        // Cost of living
+        values.put(CitiesContract.Cities.CITY_COST_OF_LIVING_NOMAD_COST, this.costOfLiving.getNomadCost());
+        values.put(CitiesContract.Cities.CITY_COST_OF_LIVING_EXPAT_COST_OF_LIVING, this.costOfLiving.getExpatCostOfLiving());
+        values.put(CitiesContract.Cities.CITY_COST_OF_LIVING_LOCAL_COST_OF_LIVING, this.costOfLiving.getLocalCostOfLiving());
+        values.put(CitiesContract.Cities.CITY_COST_OF_LIVING_ONE_BEDROOM_APARTMENT, this.costOfLiving.getOneBedroomApartment());
+        values.put(CitiesContract.Cities.CITY_COST_OF_LIVING_HOTEL_ROOM, this.costOfLiving.getHotelRoom());
+        values.put(CitiesContract.Cities.CITY_COST_OF_LIVING_AIRBNB_APARTMENT_MONTH, this.costOfLiving.getAirbnbApartmentMonth());
+        values.put(CitiesContract.Cities.CITY_COST_OF_LIVING_AIRBNB_APARTMENT_DAY, this.costOfLiving.getAirbnbApartmentDay());
+        values.put(CitiesContract.Cities.CITY_COST_OF_LIVING_COWORKING_SPACE, this.costOfLiving.getCoworkingSpace());
+        values.put(CitiesContract.Cities.CITY_COST_OF_LIVING_COCA_COLA_IN_CAFE, this.costOfLiving.getCocaColaInCafe());
+        values.put(CitiesContract.Cities.CITY_COST_OF_LIVING_PINT_OF_BEER_IN_BAR, this.costOfLiving.getPintOfBeerInBar());
+        values.put(CitiesContract.Cities.CITY_COST_OF_LIVING_CAPPUCCINO_IN_CAFE, this.costOfLiving.getCappucinoInCafe());
+
+        return values;
     }
 
     public CityOfflineEntity offlineCopy() {

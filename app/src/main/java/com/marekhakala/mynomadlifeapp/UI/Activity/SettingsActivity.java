@@ -21,13 +21,13 @@ public class SettingsActivity extends AbstractBaseActivity {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
+    public static final String ACTIVITY_TAG = "activity_settings";
     public static final String EXTRA_TEMPERATURE_UNIT_TYPE_CHANGED = "temperature_unit_type_changed";
     public static final String EXTRA_FILTER_VALUES_CHANGED = "filter_values_changed";
 
     protected MyPreferenceFragment myPreferenceFragment;
     protected int mRequestCode = MainListActivity.SETTINGS_REQUEST_CODE;
     protected String mReturnSection = ConstantValues.MAIN_SECTION_CODE;
-    public static final String ACTIVITY_TAG = "activity_settings";
 
     @Override
     protected void onCreate(Bundle bundle) {

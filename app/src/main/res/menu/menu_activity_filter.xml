@@ -7,11 +7,11 @@
         android:id="@+id/menu_filter_reset"
         android:icon="@drawable/ic_autorenew"
         android:title="@string/menu_reset"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_filter_done"
         android:title="@string/menu_filter_done"
         android:icon="@drawable/ic_done"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>

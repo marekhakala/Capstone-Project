@@ -208,4 +208,27 @@
     <style name="CityItemDetailViewPlaceToWorkSearchButton">
         <item name="backgroundTint">@color/fab_background_color</item>
     </style>
+
+    <!-- Exchange rates row -->
+    <style name="WidgetItemTodayExchangeRatesRow">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/widget_today_exchange_rates_row_min_height</item>
+    </style>
+
+    <style name="WidgetItemTodayExchangeRatesText">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingTop">@dimen/widget_item_today_exchange_rates_text_padding_top</item>
+        <item name="android:paddingBottom">@dimen/widget_item_today_exchange_rates_text_padding_bottom</item>
+        <item name="android:paddingStart">@dimen/widget_item_today_exchange_rates_text_padding_start</item>
+        <item name="android:textSize">@dimen/widget_item_today_exchange_rates_text_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_black</item>
+    </style>
+
+    <style name="WidgetItemTodayExchangeRatesValue">
+        <item name="android:padding">@dimen/widget_today_exchange_rates_row_value_padding</item>
+        <item name="android:textSize">@dimen/widget_item_today_exchange_rates_text_text_size</item>
+        <item name="android:gravity">end|center_vertical</item>
+        <item name="android:textColor">@color/text_black</item>
+    </style>
 </resources>

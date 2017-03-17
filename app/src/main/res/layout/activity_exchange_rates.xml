@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@color/text_white">
+
+            <com.mikepenz.iconics.view.IconicsImageView
+                android:layout_width="@dimen/exchange_rates_icon_size"
+                android:layout_height="@dimen/exchange_rates_icon_size"
+                android:paddingTop="@dimen/exchange_rates_icon_padding_top_bottom"
+                android:paddingBottom="@dimen/exchange_rates_icon_padding_top_bottom"
+                app:iiv_color="@color/text_gray_light"
+                app:iiv_icon="faw-exchange" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_gray_light"
+                android:text="@string/exchange_rates_subtitle_text"
+                android:textSize="@dimen/exchange_rates_subtitle_text_size"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <include
+            android:id="@+id/widget_item_today_exchange_rates_c1_in_c2_line_break"
+            layout="@layout/detail_view_line_break" />
+
+        <com.marekhakala.mynomadlifeapp.UI.Component.DataSourceRecyclerView
+            android:id="@+id/exchange_rates_list_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dsIsRefreshable="true"
+            app:dsLayoutType="Grid"
+            app:dsGridLayoutSpanCount="1"
+            app:dsLoadingLayoutId="@layout/loading_layout"
+            app:dsEmptyLayoutId="@layout/empty_layout"
+            app:dsErrorLayoutId="@layout/error_layout" />
+    </LinearLayout>
+</LinearLayout>

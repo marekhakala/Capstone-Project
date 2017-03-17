@@ -6,16 +6,23 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.marekhakala.mynomadlifeapp.AppComponent;
 import com.marekhakala.mynomadlifeapp.R;
 import com.marekhakala.mynomadlifeapp.Utilities.ConstantValues;
+import com.marekhakala.mynomadlifeapp.Utilities.UtilityHelper;
 
+import javax.inject.Inject;
 import butterknife.Bind;
 
 public class AboutActivity extends AbstractBaseActivity {
 
     @Bind(R.id.toolbar) Toolbar mToolbar;
     public static final String ACTIVITY_TAG = "activity_about";
+
+    @Inject
+    Tracker mTracker;
 
     protected String mCurrentSection = ConstantValues.ABOUT_SECTION_CODE;
     protected int mRequestCode = MainListActivity.ABOUT_APP_REQUEST_CODE;
@@ -31,6 +38,10 @@ public class AboutActivity extends AbstractBaseActivity {
 
         if(getIntent().hasExtra(MainListActivity.EXTRA_SECTION))
             mReturnSection = getIntent().getStringExtra(MainListActivity.EXTRA_SECTION);
+
+        // Analytics
+        mTracker.setScreenName(UtilityHelper.getScreenNameForAnalytics(ConstantValues.ABOUT_SECTION_CODE));
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     protected void setupResult() {
@@ -84,6 +95,7 @@ public class AboutActivity extends AbstractBaseActivity {
 
     @Override
     protected void setupComponent(AppComponent component) {
+        component.inject(this);
     }
 
     @Override

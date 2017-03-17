@@ -18,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.marekhakala.mynomadlifeapp.AppComponent;
 import com.marekhakala.mynomadlifeapp.DataModel.CityEntity;
 import com.marekhakala.mynomadlifeapp.R;
@@ -33,7 +35,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.Bind;
-import io.realm.Realm;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.subscriptions.Subscriptions;
@@ -72,6 +73,9 @@ public class DetailViewActivity extends AbstractBaseActivity {
 
     @Bind(R.id.city_datail_view_nested_scroll_view)
     NestedScrollView nestedScrollView;
+
+    @Inject
+    Tracker mTracker;
 
     @Inject
     IMyNomadLifeRepository mRepository;
@@ -118,6 +122,10 @@ public class DetailViewActivity extends AbstractBaseActivity {
         setupCityEntity(city);
         this.cityEntity = city;
         pagerAdapter.setCityEntity(city);
+
+        // Analytics
+        mTracker.setScreenName(UtilityHelper.getScreenNameForAnalytics(ConstantValues.DETAIL_VIEW_SECTION_CODE));
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         initView();
         invalidateOptionsMenu();
@@ -322,19 +330,16 @@ public class DetailViewActivity extends AbstractBaseActivity {
         if(mSubscriptionApi != null)
             mSubscriptionApi.unsubscribe();
 
-        Realm realm = mRepository.getRealm();
-        mSubscriptionApi = mRepository.offlineCitiesFromApi(realm, citiesSlugs, false)
+        mSubscriptionApi = mRepository.offlineCitiesFromApi(citiesSlugs, false)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(cities -> {
                     mRepository.addOfflineCitySlug(cityEntity.getSlug());
                     setOfflineModeState(true);
-                    UtilityHelper.closeDatabase(realm);
                     this.runOnUiThread(() -> {
                         Toast.makeText(this, getString(R.string.city_item_detail_view_offline_mode_add), Toast.LENGTH_SHORT).show();
                         mOfflineModeLoading = false;
                     });
                 }, throwable -> {
-                    UtilityHelper.closeDatabase(realm);
                     this.runOnUiThread(() -> {
                         Toast.makeText(this, getString(R.string.city_item_detail_view_offline_mode_add_error), Toast.LENGTH_LONG).show();
                         mOfflineModeLoading = false;

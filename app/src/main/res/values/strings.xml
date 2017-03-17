@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">MyNomadLife</string>
+    <string name="content_authority" translatable="false">com.marekhakala.mynomadlifeapp.provider</string>
 
     <!-- Menus -->
     <string name="menu_go_up">Go Up</string>
@@ -32,6 +33,7 @@
     <string name="section_filter_title">Filter</string>
     <string name="section_search_title">Search</string>
     <string name="section_settings_title">Settings</string>
+    <string name="section_exchange_rates_title">Exchange rates</string>
     <string name="section_about_title">About</string>
 
     <!-- Filters -->
@@ -76,7 +78,7 @@
     <string name="city_item_detail_view_cost_of_living_period_monthly">monthly</string>
 
     <!-- City item : Scores -->
-    <string name="city_item_detail_view_scores_format" formatted="false">#,#</string>
+    <string name="city_item_detail_view_scores_format" formatted="false">#.##</string>
     <string name="city_item_detail_view_scores_format_full" formatted="false">/10</string>
     <string name="city_item_detail_view_scores_format2_full" formatted="false">/5</string>
     <string name="city_item_detail_view_scores_bad_text">bad</string>
@@ -364,6 +366,8 @@
         v1.0.0 &#169; 2017
     </string>
 
+    <string name="about_app_name">MyNomadLife</string>
+
     <string name="internet_speed_label">Mbps</string>
     <string name="humidity_label">%</string>
     <string name="temperature_celsius_label">°C</string>
@@ -390,10 +394,27 @@
 
     <!-- City - Detail view -->
     <string name="city_item_detail_view_place_to_work_search_button">Search</string>
-    <string name="city_item_detail_view_places_to_work_search_hint">Search...</string>
+    <string name="city_item_detail_view_places_to_work_search_hint">Search…</string>
     <string name="city_item_detail_view_offline_mode_remove">City was successfully removed from offline mode.</string>
     <string name="city_item_detail_view_offline_mode_add">City was successfully added to offline mode.</string>
     <string name="city_item_detail_view_offline_mode_add_error">Error: City was not successfully add to offline mode.</string>
-    <string name="city_item_detail_view_offline_mode_please_wait">Please wait...</string>
+    <string name="city_item_detail_view_offline_mode_please_wait">Please wait…</string>
 
+    <!-- Exchange rates View/Widget -->
+    <string name="exchange_rates_title_text">Exchange Rates</string>
+    <string name="exchange_rates_message_empty">List is empty</string>
+    <string name="exchange_rates_c1_in_c2_text">1 USD in EUR</string>
+    <string name="exchange_rates_c1_in_c2_value">0.94733 EUR</string>
+    <string name="exchange_rates_subtitle_text">Base currency USD</string>
+    <string name="exchange_rates_row_format_title" formatted="false">1 %s in %s</string>
+    <string name="exchange_rates_row_format_value" formatted="false">%s %s</string>
+    <string name="widget_update_period_millis">86400000</string>
+
+
+    <!-- Detail View - Buttons -->
+    <string name="clean_button_places_to_work">Clean search for places to work</string>
+    <string name="search_button_places_to_work">Search place for work</string>
+
+    <!-- AdMob -->
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
 </resources>

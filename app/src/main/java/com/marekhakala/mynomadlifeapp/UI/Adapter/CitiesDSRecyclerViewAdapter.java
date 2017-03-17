@@ -59,19 +59,11 @@ public class CitiesDSRecyclerViewAdapter extends AbstractDataSourceRecyclerViewA
         });
 
         holder.favouriteButton.setOnClickListener(view -> {
-            boolean favouriteButtonPressed = false;
-
-            if(!favouriteButtonPressed) {
-                favouriteButtonPressed = true;
-
-                if (listener != null) {
-                    boolean state = !holder.favouriteButton.getState();
-                    holder.favouriteButton.setState(state);
-                    cityEntity.setFavourite(state);
-                    listener.onFavouriteClicked(cityEntity.getSlug(), state);
-                }
-
-                favouriteButtonPressed = false;
+            if (listener != null) {
+                boolean state = !holder.favouriteButton.getState();
+                holder.favouriteButton.setState(state);
+                cityEntity.setFavourite(state);
+                listener.onFavouriteClicked(cityEntity.getSlug(), state);
             }
         });
     }

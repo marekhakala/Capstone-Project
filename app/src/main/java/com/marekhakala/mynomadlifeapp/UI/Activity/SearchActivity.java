@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.marekhakala.mynomadlifeapp.AppComponent;
 import com.marekhakala.mynomadlifeapp.DataModel.CitiesResultEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityEntity;
@@ -24,11 +26,9 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.Bind;
-import io.realm.Realm;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -45,6 +45,9 @@ public class SearchActivity extends AbstractBaseActivity implements
 
     @Bind(R.id.search_view)
     MaterialSearchView mSearchView;
+
+    @Inject
+    Tracker mTracker;
 
     @Inject
     IMyNomadLifeRepository mRepository;
@@ -82,6 +85,10 @@ public class SearchActivity extends AbstractBaseActivity implements
         mAdapter.setListener(this);
         mRecyclerView.setAdapter(mAdapter);
 
+        // Analytics
+        mTracker.setScreenName(UtilityHelper.getScreenNameForAnalytics(ConstantValues.SEARCH_SECTION_CODE));
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
         if (bundle != null) {
             mRestoreSearchData = bundle.getBoolean(EXTRA_RESTORE_SEARCH_DATA, false);
 
@@ -98,9 +105,7 @@ public class SearchActivity extends AbstractBaseActivity implements
             else
                 mSearchResults = new ArrayList<>();
 
-            if(bundle != null)
-                mCurrentPage = bundle.getInt(EXTRA_STATE_CURRENT_PAGE, 1);
-
+            mCurrentPage = bundle.getInt(EXTRA_STATE_CURRENT_PAGE, 1);
             mReturnSection = bundle.getString(MainListActivity.EXTRA_SECTION, ConstantValues.MAIN_SECTION_CODE);
             restoreUi();
         }
@@ -189,7 +194,7 @@ public class SearchActivity extends AbstractBaseActivity implements
     }
 
     protected void loadDataFromAPI(boolean loadMore) {
-        loadDataFromAPI(mCurrentPage, false);
+        loadDataFromAPI(mCurrentPage, loadMore);
     }
 
     protected void loadDataFromAPI(Integer page, boolean loadMore) {
@@ -200,20 +205,21 @@ public class SearchActivity extends AbstractBaseActivity implements
             if (mSubscription != null)
                 mSubscription.unsubscribe();
 
-            Realm realm = mRepository.getRealm();
-
-            mSubscription = mRepository.searchCities(realm, mCurrentPage, mSearchQuery)
+            mSubscription = mRepository.searchCities(page, mSearchQuery)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(cities -> {
                         mSearchResults = cities;
-                        mAdapter.updateData(cities);
+
+                        if(loadMore)
+                            mAdapter.addData(cities);
+                        else
+                            mAdapter.updateData(cities);
+
                         mSearchData = false;
-                        UtilityHelper.closeDatabase(realm);
                     }, throwable -> {
                         mSearchResults = new ArrayList<>();
                         mAdapter.setCurrentState(StateType.ERROR_STATE);
                         mSearchData = false;
-                        UtilityHelper.closeDatabase(realm);
                     });
         }
     }
@@ -222,10 +228,8 @@ public class SearchActivity extends AbstractBaseActivity implements
         mSearchData = true;
         mAdapter.setCurrentState(StateType.LOADING_STATE);
 
-        Realm realm = mRepository.getRealm();
-
-        Observable.zip(mRepository.favouriteCitiesSlugs(realm),
-                mRepository.offlineCitiesSlugs(realm), (favouriteCitiesSlugs, offlineCitiesSlugs) -> {
+        Observable.zip(mRepository.favouriteCitiesSlugs(),
+                mRepository.offlineCitiesSlugs(), (favouriteCitiesSlugs, offlineCitiesSlugs) -> {
                     for(CityEntity cityEntity : mSearchResults) {
                         cityEntity.setFavourite(favouriteCitiesSlugs.contains(cityEntity.getSlug()));
                         cityEntity.setOffline(offlineCitiesSlugs.contains(cityEntity.getSlug()));
@@ -242,12 +246,10 @@ public class SearchActivity extends AbstractBaseActivity implements
                         mRecyclerView.scrollToPosition(mSelectedPosition);
 
                     mSearchData = false;
-                    UtilityHelper.closeDatabase(realm);
                 }, throwable -> {
                     mSearchResults = new ArrayList<>();
                     mAdapter.setCurrentState(StateType.ERROR_STATE);
                     mSearchData = false;
-                    UtilityHelper.closeDatabase(realm);
                 });
     }
 
@@ -256,9 +258,7 @@ public class SearchActivity extends AbstractBaseActivity implements
         super.onPostCreate(bundle);
     }
 
-    public void refreshData() {
-
-    }
+    public void refreshData() {}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

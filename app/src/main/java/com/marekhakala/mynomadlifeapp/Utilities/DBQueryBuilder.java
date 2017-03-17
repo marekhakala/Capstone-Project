@@ -98,3 +98,4 @@ public class DBQueryBuilder {
         return db.delete(mTable, getSelection(), getSelectionArgs());
     }
 }
+

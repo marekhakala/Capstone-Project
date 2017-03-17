@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/widget_today_exchange_rates_layout"
+        android:layout_height="@dimen/widget_today_exchange_rates_layout_height"
+        android:layout_width="match_parent"
+        android:background="@color/widget_title_background"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/widget_today_exchange_rates_text"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:paddingStart="@dimen/widget_today_exchange_rates_padding"
+            android:paddingEnd="@dimen/widget_today_exchange_rates_padding"
+            android:text="@string/exchange_rates_title_text"
+            android:textColor="@color/exchange_rates_title_text"
+            android:background="@color/widget_title_background"
+            android:textAppearance="?android:textAppearanceLarge" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/widget_today_exchange_rates_content_layout"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:background="@android:color/white">
+
+        <ListView
+            android:id="@+id/widget_today_exchange_rates_list"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:dividerHeight="1dp"
+            android:divider="@color/exchange_rates_title_text"
+            tools:listitem="@layout/item_widget_today_exchange_rates" />
+
+        <TextView
+            android:id="@+id/widget_today_exchange_rates_empty_text"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:text="@string/exchange_rates_message_empty"
+            android:textColor="@color/text_black"
+            android:background="@android:color/white"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+    </FrameLayout>
+</LinearLayout>

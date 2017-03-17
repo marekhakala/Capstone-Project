@@ -10,13 +10,13 @@ import com.marekhakala.mynomadlifeapp.AppComponent;
 import com.marekhakala.mynomadlifeapp.DataModel.CityEntity;
 import com.marekhakala.mynomadlifeapp.DataModel.CityOfflineEntity;
 import com.marekhakala.mynomadlifeapp.R;
-import com.marekhakala.mynomadlifeapp.UI.Fragment.AbstractBaseFragment;
+import com.marekhakala.mynomadlifeapp.UI.Fragment.AbstractBaseV4Fragment;
 import com.marekhakala.mynomadlifeapp.Utilities.ConstantValues;
 import com.marekhakala.mynomadlifeapp.Utilities.UtilityHelper;
 
 import butterknife.Bind;
 
-public class InfoViewFragment extends AbstractBaseFragment {
+public class InfoViewFragment extends AbstractBaseV4Fragment {
 
     public static final String FRAGMENT_TAG = "fragment_detail_view_info";
 

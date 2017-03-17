@@ -32,6 +32,7 @@
             android:layout_gravity="center"
             android:src="@drawable/ic_close_black"
             android:clickable="true"
+            android:contentDescription="@string/clean_button_places_to_work"
             android:background="@color/text_white" />
 
         <!-- City - Place to work - Search button -->
@@ -44,6 +45,7 @@
             android:layout_margin="5dp"
             android:src="@drawable/ic_search_white"
             android:clickable="true"
+            android:contentDescription="@string/search_button_places_to_work"
             android:background="@color/fab_background_color" />
     </LinearLayout>
 

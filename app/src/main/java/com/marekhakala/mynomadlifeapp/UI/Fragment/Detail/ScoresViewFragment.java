@@ -9,14 +9,14 @@ import com.marekhakala.mynomadlifeapp.AppComponent;
 import com.marekhakala.mynomadlifeapp.DataModel.CityScoresEntity;
 import com.marekhakala.mynomadlifeapp.R;
 import com.marekhakala.mynomadlifeapp.UI.Component.ColorBarView;
-import com.marekhakala.mynomadlifeapp.UI.Fragment.AbstractBaseFragment;
+import com.marekhakala.mynomadlifeapp.UI.Fragment.AbstractBaseV4Fragment;
 import com.marekhakala.mynomadlifeapp.Utilities.UtilityHelper;
 
 import java.text.DecimalFormat;
 
 import butterknife.Bind;
 
-public class ScoresViewFragment extends AbstractBaseFragment {
+public class ScoresViewFragment extends AbstractBaseV4Fragment {
 
     public static final String FRAGMENT_TAG = "fragment_detail_view_scores";
 
@@ -120,8 +120,8 @@ public class ScoresViewFragment extends AbstractBaseFragment {
         }
     }
 
-    private void setupPercentageText(Double value, ColorBarView view) {
-        DecimalFormat twoDForm = new DecimalFormat("#.##");
+    private void setupPercentageText(Float value, ColorBarView view) {
+        DecimalFormat twoDForm = new DecimalFormat(getResources().getString(R.string.city_item_detail_view_scores_format));
         String formattedStringFull = twoDForm.format(value) + getResources().getString(R.string.city_item_detail_view_scores_format_full);
 
         view.setText(formattedStringFull);
@@ -130,7 +130,7 @@ public class ScoresViewFragment extends AbstractBaseFragment {
     }
 
     private void setupPercentageText2(Integer value, ColorBarView view) {
-        DecimalFormat twoDForm = new DecimalFormat("#.##");
+        DecimalFormat twoDForm = new DecimalFormat(getResources().getString(R.string.city_item_detail_view_scores_format));
         String formattedStringFull = twoDForm.format(value) + getResources().getString(R.string.city_item_detail_view_scores_format2_full);
         view.setText(formattedStringFull);
 
