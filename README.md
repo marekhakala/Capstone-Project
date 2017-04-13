@@ -1,4 +1,4 @@
-# MyNomadLife App 1.0.0 (Udacity Nanodegree Capstone Project)
+# MyNomadLife App v1.0.0
 
 ![MyNomadLife App Logo](images/first_image.png)
 
@@ -28,6 +28,10 @@ The application will provides guide for digital nomads. The app brings public in
  * [SQLBrite](https://github.com/square/sqlbrite) - A lightweight wrapper around SQLiteOpenHelper and ContentResolver
  * [Timber](https://github.com/JakeWharton/timber) - Advanced logging library
  * [LeakCanary](https://github.com/square/leakcanary) - A memory leak detection library
+
+## Udacity Nanodegree Capstone Project
+
+![Udacity Nanodegree Capstone Project](images/udacity_logo.png)
 
  # License - Apache License, Version 2.0
 
