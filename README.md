@@ -19,15 +19,15 @@ The application will provides guide for digital nomads. The app brings public in
  * You can display places to work for selected city
 
 ## Libraries
- * [Support Design libraries - Material design library](https://developer.android.com/topic/libraries/support-library/features.html)
- * [Dagger 2 - Dependency Injection library](http://google.github.io/dagger/)
- * [Butter Knife - UI binding library](http://jakewharton.github.io/butterknife/)
- * [Retrofit 2 - Web API library](http://square.github.io/retrofit/)
- * [Picasso - Image handling library](http://square.github.io/picasso/)
- * [RxJava - Asynchronous and event-based programs library](https://github.com/ReactiveX/RxJava)
- * [SQLBrite - A lightweight wrapper around SQLiteOpenHelper and ContentResolver](https://github.com/square/sqlbrite)
- * [Timber - Advanced logging library](https://github.com/JakeWharton/timber)
- * [LeakCanary - A memory leak detection library](https://github.com/square/leakcanary)
+ * [Support Design libraries](https://developer.android.com/topic/libraries/support-library/features.html) - Material design library
+ * [Dagger 2](http://google.github.io/dagger/) - Dependency Injection library
+ * [Butter Knife](http://jakewharton.github.io/butterknife/) - UI binding library
+ * [Retrofit 2](http://square.github.io/retrofit/) - Web API library
+ * [Picasso](http://square.github.io/picasso/) - Image handling library
+ * [RxJava](https://github.com/ReactiveX/RxJava) - Asynchronous and event-based programs library
+ * [SQLBrite](https://github.com/square/sqlbrite) - A lightweight wrapper around SQLiteOpenHelper and ContentResolver
+ * [Timber](https://github.com/JakeWharton/timber) - Advanced logging library
+ * [LeakCanary](https://github.com/square/leakcanary) - A memory leak detection library
 
  # License - Apache License, Version 2.0
 
