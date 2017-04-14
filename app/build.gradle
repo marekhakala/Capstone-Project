@@ -8,7 +8,7 @@ android {
         config {
             keyAlias 'udacity'
             keyPassword 'password'
-            storeFile file('$rootdir/keystore.jks')
+            storeFile file("$rootDir/keystore.jks")
             storePassword 'password'
         }
     }
