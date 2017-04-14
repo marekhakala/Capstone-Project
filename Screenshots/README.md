@@ -1,51 +1,43 @@
-# MyNomadLife App v1.0.0
+# MyNomadLife App (Screenshots)
 
-The application provides guide for digital nomads. The app brings public information from website www.nomadlist.com that are provided by my own RubyOnRails (REST) API application from http://mnl.showmelink.co.uk/api/v1/ to native Android app. Imagine that you are digital nomad, which want work and travel around the world. Then this app is right for you, because the app offer you score for cities. Further provide you the ability to store information for offline mode and function for mark your favorite cities.
+## Home screen
+![Home screen](Home.png)
 
-* [Screenshots](Screenshots/)
-* [Backend application - Ruby On Rails application](https://github.com/marekhakala/mnl-backend-app/)
+## Favorites screen
+![Favorites screen](Favourites.png)
 
-![MyNomadLife App Logo](images/first_image.png)
+## Offline mode screen
+![Offline_mode screen](Offline_mode.png)
 
-![MyNomadLife App Logo](images/second_image.png)
+## Sidebar menu
+![Sidebar screen](Sidebar.png)
 
-## Features
+## Search screen
+![Search screen](Search.png)
 
- * The app gets list of cities from website over API
- * You can search city with parameters
- * You can mark city as favorite
- * You can mark city for offline mode
- * You can display score of city
- * You can display places to work for selected city
+## Filter screen
+![Filter screen](Filter.png)
 
-## Libraries
- * [Support Design libraries](https://developer.android.com/topic/libraries/support-library/features.html) - Material design library
- * [Dagger 2](http://google.github.io/dagger/) - Dependency Injection library
- * [Butter Knife](http://jakewharton.github.io/butterknife/) - UI binding library
- * [Retrofit 2](http://square.github.io/retrofit/) - Web API library
- * [Picasso](http://square.github.io/picasso/) - Image handling library
- * [RxJava](https://github.com/ReactiveX/RxJava) - Asynchronous and event-based programs library
- * [SQLBrite](https://github.com/square/sqlbrite) - A lightweight wrapper around SQLiteOpenHelper and ContentResolver
- * [Timber](https://github.com/JakeWharton/timber) - Advanced logging library
- * [LeakCanary](https://github.com/square/leakcanary) - A memory leak detection library
+## Settings screen
+![Settings screen](Settings.png)
 
-## Udacity Nanodegree Capstone Project
+## Detail view - Scores screen
+![Detail view - Scores screen](Detailview_scores.png)
 
-![Udacity Nanodegree Capstone Project](images/udacity_logo.png)
+## Detail view - Info screen
+![Detail view - Info screen](Detailview_info.png)
 
- # License - Apache License, Version 2.0
+## Detail view - Cost of living screen
+![Detail view - Cost of living screen](Detailview_cost_of_living.png)
 
- ```
- # (C) Copyright 2017 by Marek Hakala <hakala.marek@gmail.com>
- # Licensed under the Apache License, Version 2.0 (the "License");
- # you may not use this file except in compliance with the License.
- # You may obtain a copy of the License at
- #
- # http://www.apache.org/licenses/LICENSE-2.0
- #
- # Unless required by applicable law or agreed to in writing, software
- # distributed under the License is distributed on an "AS IS" BASIS,
- # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- # See the License for the specific language governing permissions and
- #    limitations under the License.
- ```
+## Detail view - Places to work screen 1
+![Detail view - Places to work screen 1](Detailview_places_to_work_1.png)
+
+## Detail view - Places to work screen 2
+![Detail view - Places to work screen 2](Detailview_places_to_work_2.png)
+
+## Exchange rates screen
+![Exchange rates screen](Exchange_rates.png)
+
+## About app screen
+![About app screen](About.png)
