@@ -1,6 +1,6 @@
 # MyNomadLife App v1.0.0
 
-The application provides a guide for digital nomads. The app brings public information from website www.nomadlist.com that provided by my RubyOnRails (REST) API application from http://mnl.showmelink.co.uk/api/v1/ to a native Android app. Imagine that you are a digital nomad, who want work and travel around the world. Then this app is right for you because the app offers you score for cities. Further, provide you the ability to store information for offline mode and function for marking your favorite cities.
+The application provides a guide for digital nomads. The app brings public information from website www.nomadlist.com that provided by my RubyOnRails (REST) API application from http://mnl.showmelink.co.uk/api/v1/ to a native Android application. Imagine that you are a digital nomad, who want work and travel around the world. Then this application is right for you because the app offers you score for cities. Further, provide you the ability to store information for offline mode and function for marking your favorite cities.
 
 * [Screenshots](Screenshots/)
 * [Backend application - Ruby On Rails application](https://github.com/marekhakala/mynomadlife-api)
