@@ -1,6 +1,6 @@
 # My Nomad Life v1.0.0
 
-![MyNomadLife Logo](images/first_image.png)(images/mynomadlife.png)
+![MyNomadLife Logo](images/mynomadlife.png)
 
 My Nomad Life is an application that provides the guide for digital nomads. If you are a traveler, then this application is right for you because the app offers you overview for your destination. Further, you can explore scores for cities, offline mode, or build a list of favorite cities.
 
